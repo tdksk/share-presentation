@@ -7,8 +7,8 @@
       , clicking = false;
     socket.on('location', function (data) {
       var ctx = container.getContext('2d');
-      var x = data.x - 120;
-      var y = data.y - 130;
+      var x = data.x;
+      var y = data.y;
       ctx.beginPath();
       ctx.strokeStyle = getRandomColor();
       ctx.lineWidth = 5;
@@ -27,6 +27,7 @@
       }
     });
 
+    // TODO: Generalize id
     $('#canvas').mousedown(function () {
       clicking = true;
     });
@@ -37,6 +38,7 @@
       , beforeY: undefined
       });
     });
+    // TODO: Generalize id
     $('#canvas').mousemove(function (e) {
       if (clicking) {
         socket.emit('location', {
@@ -57,9 +59,14 @@
     });
   }
 
-  function init(container) {
-    container.width = 800;
-    container.height = 500;
+  function init(container, width, height) {
+    container.width = width;
+    container.height = height;
+    container.style.position = 'absolute';
+    container.style.left = '0';
+    container.style.top = '0';
+    container.style.zIndex = '1';
+    container.style.float = 'left';
   }
 
   function getRandomColor() {

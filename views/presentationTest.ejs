@@ -8,9 +8,20 @@
     <script src='/socket.io/socket.io.js'></script>
     <script src='/js/presentation.js'></script>
     <script src='/js/sharePresentation.js'></script>
+    <script src='/js/canvas.js'></script>
+    <script>
+      $(function () {
+        var canvas = document.getElementById('canvas');
+        var width = $(document).width();
+        var height = $(document).height();
+        init(canvas, width, height);
+        draw(canvas);
+      });
+    </script>
   </head>
   <body>
     <div id="container">
+      <canvas id="canvas"></canvas>
       <article>
         <div class="wrapper title">
           <h1>TechStuDIG2012</h1>
