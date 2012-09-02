@@ -5,15 +5,6 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/css/style.css'>
     <script src='/js/jquery-1.8.0.min.js'></script>
-    <script src='/socket.io/socket.io.js'></script>
-    <script src='/js/client.js'></script>
-    <script>
-      $(function () {
-        var container = document.getElementById('canvas');
-        init(container);
-        draw(container);
-      });
-    </script>
   </head>
   <body>
     <h1> <%= items[0].user_id %></h1>
