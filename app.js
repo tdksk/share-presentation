@@ -30,8 +30,11 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.post('/canvas', routes.canvas);
-app.get('/signup', routes.signup);
-app.post('/create', routes.create);
+app.get('/newuser', routes.newuser);
+app.post('/createuser', routes.createuser);
+app.get('/newpresentation', routes.newpresentation);
+app.post('/createpresentation', routes.createpresentation);
+app.post('/list', routes.list);
 
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

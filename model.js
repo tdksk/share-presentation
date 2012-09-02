@@ -11,4 +11,12 @@ var User = new mongoose.Schema({
 , created_at: { type: Date, default: Date.now }
 });
 
+
+var Presentation = new mongoose.Schema({
+  presentation_id: { type: String, required: true, index: { unique: true, sparse: true }, validate: [validator, 'Empty Error'] }
+, user_id: { type: String, required: true, validate: [validator, 'Empty Error'] }
+, created_at: { type: Date, default: Date.now }
+});
+
 exports.User = db.model('User', User);
+exports.Presentation = db.model('Presentation', Presentation);
