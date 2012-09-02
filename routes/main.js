@@ -36,3 +36,7 @@ exports.create = function (req, res) {
     }
   });
 };
+
+exports.presentationTest = function(req, res){
+  res.render('presentationTest', { title: 'Share Presentation Test' });
+};

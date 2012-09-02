@@ -32,12 +32,16 @@ app.get('/', routes.index);
 app.post('/canvas', routes.canvas);
 app.get('/signup', routes.signup);
 app.post('/create', routes.create);
+app.get('/presentationTest', routes.presentationTest);
 
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
 io.sockets.on('connection', function (socket) {
+  socket.on('page', function (data) {
+    socket.broadcast.emit('page', data);
+  });
   socket.on('location', function (data) {
     io.sockets.emit('location', data);
   });
