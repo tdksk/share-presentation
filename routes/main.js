@@ -33,6 +33,7 @@ exports.list = function(req, res){
         var parts = cookie.split('=');
         cookies[ parts[ 0 ].trim() ] = ( parts[ 1 ] || '' ).trim();
       });
+      cookies.id = req.body.user_id;
       res.render('list', { title: 'Presentation\'s list', items: items });
     } else {
       console.log(err);
@@ -40,16 +41,6 @@ exports.list = function(req, res){
     }
   });
 };
-
-/*exports.canvas = function (req, res) { User.findOne({ user_id: req.body.user_id, password: req.body.password }, function (err, item) {
-    if (item) {
-      res.render('canvas', { title: 'Share Canvas', item: item });
-    } else {
-      console.log(err);
-      res.redirect('back');
-    }
-  });
-};*/
 
 exports.newuser = function (req, res) {
   res.render('newuser', { title: 'Sign up' });
@@ -73,22 +64,12 @@ exports.newpresentation = function (req, res){
 
 exports.createpresentation = function (req, res){
   var newPresentation = new Presentation(req.body);
+  res.redirect('back');
   newPresentation.save(function (err) {
     if(err){
       console.log(err);
       res.redirect('back');
     }else{
-      res.redirect('back');
-    }
-  });
-};
-
-exports.list = function(req, res){
-  Presentation.find({ user_id: req.body.user_id }, function (err, items) {
-    if (items) {
-      res.render('list', { title: 'Presentation\'s list', items: items });
-    } else {
-      console.log(err);
       res.redirect('back');
     }
   });
