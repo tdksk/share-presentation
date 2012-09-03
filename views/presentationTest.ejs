@@ -4,19 +4,22 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title><%= title %></title>
     <link rel='stylesheet' href='/css/presentation.css'>
-    <script src='/js/jquery-1.8.0.min.js'></script>
     <script src='/socket.io/socket.io.js'></script>
     <script src='/js/presentation.js'></script>
     <script src='/js/sharePresentation.js'></script>
     <script src='/js/canvas.js'></script>
     <script>
-      $(function () {
+      document.addEventListener('DOMContentLoaded', function () {
         var canvas = document.getElementById('canvas');
-        var width = $(document).width();
-        var height = $(document).height();
+        var container = document.getElementById('container');
+        // var containerStyle = document.defaultView.getComputedStyle(container, '');
+        // var width = containerStyle.width;
+        // var height = containerStyle.height;
+        var width = '900';
+        var height = '600';
         init(canvas, width, height);
         draw(canvas);
-      });
+      }, false);
     </script>
   </head>
   <body>

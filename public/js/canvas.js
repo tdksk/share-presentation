@@ -4,20 +4,20 @@
   function draw(container) {
     var beforeX
       , beforeY
-      , clicking = false;
+      , isClicking = false;
     socket.on('location', function (data) {
       var ctx = container.getContext('2d');
-      var x = data.x;
-      var y = data.y;
+      var currentX = data.x;
+      var currentY = data.y;
       ctx.beginPath();
       ctx.strokeStyle = getRandomColor();
       ctx.lineWidth = 5;
       ctx.moveTo(beforeX, beforeY);
-      ctx.lineTo(x, y);
+      ctx.lineTo(currentX, currentY);
       ctx.stroke();
 
-      beforeX = x;
-      beforeY = y;
+      beforeX = currentX;
+      beforeY = currentY;
     });
 
     socket.on('clear', function (data) {
@@ -27,26 +27,29 @@
       }
     });
 
-    // TODO: Generalize id
-    $('#canvas').mousedown(function () {
-      clicking = true;
-    });
-    $(document).mouseup(function () {
-      clicking = false;
+    container.addEventListener('mousedown', function (e) {dragStart(e);}, false);
+    container.addEventListener('mousemove', function (e) {dragging(e);}, false);
+    document.addEventListener('mouseup', function (e) {dragEnd(e);}, false);
+
+    function dragStart(e) {
+      isClicking = true;
+    }
+    function dragging(e) {
+      if (!isClicking) {
+        return;
+      }
+      socket.emit('location', {
+        x: e.offsetX
+      , y: e.offsetY
+      });
+    }
+    function dragEnd(e) {
+      isClicking = false;
       socket.emit('location', {
         beforeX: undefined
       , beforeY: undefined
       });
-    });
-    // TODO: Generalize id
-    $('#canvas').mousemove(function (e) {
-      if (clicking) {
-        socket.emit('location', {
-          x: e.pageX
-        , y: e.pageY
-        });
-      }
-    });
+    }
   }
 
   function clearCanvas(id) {
@@ -62,10 +65,10 @@
   function init(container, width, height) {
     container.width = width;
     container.height = height;
-    container.style.position = 'absolute';
+    container.style.position = 'relative';
     container.style.left = '0';
     container.style.top = '0';
-    container.style.zIndex = '1';
+    container.style.zIndex = '1000';
     container.style.float = 'left';
   }
 
