@@ -12,11 +12,8 @@
       document.addEventListener('DOMContentLoaded', function () {
         var canvas = document.getElementById('canvas');
         var container = document.getElementById('container');
-        // var containerStyle = document.defaultView.getComputedStyle(container, '');
-        // var width = containerStyle.width;
-        // var height = containerStyle.height;
-        var width = '900';
-        var height = '600';
+        var width = container.offsetWidth;
+        var height = container.offsetHeight;
         init(canvas, width, height);
         draw(canvas);
       }, false);

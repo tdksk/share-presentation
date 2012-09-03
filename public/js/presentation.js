@@ -119,6 +119,7 @@
     currentPage.className = 'move_to_left';
     nextPage.className = 'move_from_right';
 
+    discountIndex(_currentIndex);
     _currentIndex++;
     _initPage(_currentIndex);
   }
@@ -139,6 +140,7 @@
     currentPage.className = 'move_to_right';
     nextPage.className = 'move_from_left';
 
+    discountIndex(_currentIndex);
     _currentIndex--;
     _initPage(_currentIndex, true);
   }
@@ -164,6 +166,8 @@
     if(showFlg){
       _hideElems = [];
     }
+
+    countIndex(index);
   }
 
   function _movedPage(e){
