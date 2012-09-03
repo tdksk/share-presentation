@@ -43,16 +43,49 @@ app.post('/createuser', routes.createuser);
 app.get('/newpresentation', routes.newpresentation);
 app.post('/createpresentation', routes.createpresentation);
 app.post('/list', routes.list);
+app.get('/presentationTest', routes.presentationTest);
 
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
+var count = []
+  , currentIndex
+  , isReset;
 io.sockets.on('connection', function (socket) {
+  io.sockets.emit('showCount', count);
+  socket.on('page', function (data) {
+    socket.broadcast.emit('page', data);
+  });
   socket.on('location', function (data) {
     io.sockets.emit('location', data);
   });
   socket.on('clear', function (data) {
     io.sockets.emit('clear', data);
+  });
+  socket.on('count', function (data) {
+    if (count[data.pageNum] == null) {
+      count[data.pageNum] = 0;
+    }
+    switch (data.action) {
+      case 'count':
+        count[data.pageNum]++;
+        break;
+      case 'discount':
+        count[data.pageNum]--;
+        break;
+    }
+    io.sockets.emit('showCount', count);
+    currentIndex = data.pageNum;
+  });
+  socket.on('reset', function () {
+    count = [];
+    isReset = true;
+    io.sockets.emit('reload');
+  });
+  socket.on('disconnect', function () {
+    if (!isReset) {
+      count[currentIndex]--;
+    }
   });
 });

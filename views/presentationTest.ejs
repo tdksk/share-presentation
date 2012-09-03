@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/presentation.css'>
+    <script src='/socket.io/socket.io.js'></script>
+    <script src='/js/presentation.js'></script>
+    <script src='/js/sharePresentation.js'></script>
+    <script src='/js/canvas.js'></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var canvas = document.getElementById('canvas');
+        var container = document.getElementById('container');
+        var width = container.offsetWidth;
+        var height = container.offsetHeight;
+        init(canvas, width, height);
+        draw(canvas);
+      }, false);
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <canvas id="canvas"></canvas>
+      <article>
+        <div class="wrapper title">
+          <h1>TechStuDIG2012</h1>
+          <h2>Advanced JavaScript</h2>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>目次</h1>
+          <section>
+            <ul>
+              <li>
+                <h2>関数</h2>
+                <p>呼び出しパターン<br>即時関数</p>
+              </li>
+              <li>
+                <h2>スコープ</h2>
+                <p>グローバルスコープとローカルスコープ<br>変数<br>スコープチェーン</p>
+              <li>
+                <h2>オブジェクト</h2>
+                <p>プロトタイプ</p>
+              </li>
+              <li>
+                <h2>タイマー</h2>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper title">
+          <h1>関数</h1>
+          <h2>呼び出しパターン</h2>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>thisについて</h1>
+          <section>
+            <p>thisって知ってますか？</p>
+            <pre><code>var obj = {
+                value : 0,
+                getValue : function(){
+                return this.value;
+                }
+                };</code></pre>
+            <p>で、thisってどれのこと？</p>
+            <p>thisは関数の呼び出し方によって変わってくる</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>関数の呼び出し方</h1>
+          <section>
+            <ul class="list">
+              <li>関数呼び出し</li>
+              <li>メソッド呼び出し</li>
+              <li>コンストラクタ呼び出し</li>
+              <li>apply呼び出し</li>
+            </ul>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>関数呼び出し</h1>
+          <section>
+            <pre><code>function normalFunc(){
+                console.log(this);
+                }
+                normalFunc();</code></pre>
+            <p>通常の関数呼び出しを行うとthisにはグローバルオブジェクトがセットされる</p>
+            <p>ブラウザにおけるグローバルオブジェクトはwindow</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>メソッド呼び出し</h1>
+          <section>
+            <pre><code>var mouko = {
+                level : 5,
+                getLevel : function(){
+                return this.level;
+                }
+                };
+                console.log(mouko.getLevel());</code></pre>
+            <p>関数がオブジェクトのプロパティとして格納されている場合、メソッドと呼ぶ</p>
+            <p>メソッド内でthisは、呼び出しを行ったオブジェクトを参照する</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>メソッド呼び出し</h1>
+          <section>
+            <p>この場合はどうなる？</p>
+            <pre><code>var mouko = {
+                level : 5,
+                getLevel : function(){
+                return this.level;
+                }
+                };
+                var hokkyoku = {
+                level : 9
+                };
+                hokkyoku.getLevel = mouko.getLevel;  //hokkyokuのgetLevelにmoukoのgetLevelを代入
+                console.log(hokkyoku.getLevel());</code></pre>
+            <p>呼び出しを行ったオブジェクトはhokkyokuなのでthisはhokkyokuとなる</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>メソッド内での関数呼び出し</h1>
+          <section>
+            <pre><code>var mouko = {
+                level : 5,
+                getLevel : function(){
+                function multi(value){
+                return this.level * value;
+                }
+                return multi(2);
+                }
+                };
+                console.log(mouko.getLevel());</code></pre>
+            <p>multi内のthisの値は普通moukoを期待する</p>
+            <p>メソッド内の入れ子関数を通常の関数呼び出しで呼び出すと、thisがグローバルオブジェクトを参照してしまう</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>メソッド内での関数呼び出し</h1>
+          <section>
+            <p>thisを一度変数に格納することで解決できる</p>
+            <pre><code>var mouko = {
+                level : 5,
+                getLevel : function(){
+                var self = this;
+                function multi(value){
+                return self.level * value;  //ok
+                }
+                return multi(2);
+                }
+                };
+                console.log(mouko.getLevel());</code></pre>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>コンストラクタ呼び出し</h1>
+          <section>
+            <p>thisは生成されたオブジェクト自身を参照する</p>
+            <pre><code>function Shop(name){
+                this.name = name;
+                this.getName = function(){
+                return this.name;
+                }
+                }
+                var shop = new Shop("shinjuku");
+                console.log(shop.getName());</code></pre>
+            <p>newをつけ忘れるとthisはグローバルオブジェクトを参照することになる</p>
+            <p>区別できるようコンストラクタ関数の先頭は大文字にするのが慣例</p>        
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>apply呼び出し</h1>
+          <section>
+            <p>apply及びcallメソッドを使うと、thisにセットされる値を自由に設定できる</p>
+            <p>同様のメソッドでcallがあるが、引数を配列で渡すかどうかだけの違い</p>
+            <pre><code>var mouko = {
+                level : 5,
+                getLevel : function(){
+                return this.level;
+                }
+                };
+                var hokkyoku = {
+                level : 9
+                };
+
+                console.log("mouko :" + mouko.getLevel());
+                console.log("hokkyoku :" + mouko.getLevel.apply(hokkyoku));</code></pre>    
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper title">
+          <h1>関数</h1>
+          <h2>即時関数</h2>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>グローバルの汚染</h1>
+          <section>
+            <p>もしvar宣言をしなかったり、</p>
+            <p>関数の外で宣言されたものは全てグローバル変数になる</p>
+            <pre><code>var value = 0
+                function doSomething(){
+                word = "test";
+                }
+                doSomething();
+            </code></pre>
+            <p>グローバルを利用しやすい環境になっている</p>
+            <p>モジュールを使ったり複数人で開発する場合、変数名が衝突してしまうかも</p>
+            <p>グローバルをなるべく利用しないように即時関数を使うと良い</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>即時関数</h1>
+          <section>
+            <pre><code>(function(global){
+                var value1, value2;  //privateな変数
+                function func1(){
+                
+                }
+                function func2(){
+                
+                }
+                global.func1 = func1;  //publicにしたいものだけグローバルに追加
+                })(this);</code></pre>
+            <p>定義して直後に実行する</p>
+            <p>スコープを手に入れられるのでグローバルを汚染せずに済む</p>
+            <p>必要なものだけグローバルに追加すればよい</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>即時関数の戻り値</h1>
+          <section>
+            <p>必要なものだけreturnすることができる</p>
+            <pre><code>var Methods = (function(){
+                var val1, val2;
+                function _func1(){
+                console.log("func1");
+                }
+                function func2(){
+                _func1();
+                console.log("func2");
+                }
+                
+                return {
+                func2 : func2
+                }
+                })();
+                Methods.func2();
+                Methods._func1();
+            </code></pre>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper title">
+          <h1>スコープ</h1>
+          <h2>グローバルスコープとローカルスコープ</h2>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>グローバルスコープ</h1>
+          <section>
+            <p>プログラム全体で有効</p>
+            <p>グローバル変数は、グローバルオブジェクトのプロパティ</p>
+            <p>ブラウザにおけるグローバルオブジェクトはwindow</p>
+            <pre><code>var value = 100  //グローバル変数
+                console.log(value);
+                console.log(window.value);
+                console.log(window["value"]);
+            </code></pre>
+            <p>オブジェクトなので、このような形式で呼び出しできる</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>ローカルスコープ</h1>
+          <section>
+            <p>ブロックレベルのスコープはない</p>
+            <pre><code>function doLoop(){
+                var i = 0;
+                for(i = 0; i &lt; 3; i++){
+                var j = i;
+                }
+                console.log(j);
+                }
+                doLoop();</code></pre>
+            <p>ブロックの外からでもブロック内で定義した変数を参照できる</p>
+            <p>どこで定義しようと、関数全体で有効</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>ローカルスコープ</h1>
+          <section>
+            <p>これはどうなる？</p>
+            <pre><code>var value = "global";
+                function test(){
+                console.log(value);
+                var value = "local";
+                console.log(value);
+                }
+                test();</code></pre>
+            <p>関数の先頭で変数を定義しておいたほうが良い</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper title">
+          <h1>スコープ</h1>
+          <h2>変数</h2>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>変数オブジェクト</h1>
+          <section>
+            <p>変数の読み書きとは、</p>
+            <p>名前をキーにして値を格納したオブジェクトへの読み書き</p>
+            <pre><code>function func1(){
+                var x = 1;
+                console.log(x);
+                }
+                func1();</code></pre>
+            <p>実際には、関数の実行時にActivationオブジェクトという変数オブジェクトが作られる</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>Activationオブジェクト</h1>
+          <section>
+            <p>ローカル変数、引数、Argumentsオブジェクトが格納される</p>
+            <p>アクセスすることはできない</p>
+            <pre><code>function add(a, b){
+                var result;
+                result = a + b;
+                return result;
+                }
+                add(5, 10);</code></pre>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>Argumentsオブジェクト</h1>
+          <section>
+            <p>引数、引数の数、callee（呼ばれた関数つまり自分自身）が格納される</p>
+            <p>配列風オブジェクトで配列ではない（配列のメソッドが使えない）</p>
+            <pre><code>function calc(a, b){
+                console.log(arguments[0]);    //最初の引数
+                console.log(arguments.length);  //引数の数
+                console.log(arguments.callee);  //関数自身
+                }
+                calc(1, 4);</code></pre>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper title">
+          <h1>スコープ</h1>
+          <h2>スコープチェーン</h2>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>変数名の解決</h1>
+          <section>
+            <pre><code>var x = 1;
+                function func1(){
+                var y = 2;
+                console.log("x : " + x + " y : " + y);
+                }
+                func1();</code></pre>
+            <p>xはfunc1の中にはないが、</p>
+            <p>ちゃんと参照できる</p>
+            <p>どうやってxを参照しているのか</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>変数名の解決</h1>
+          <section>
+            <p>スコープを外側にたどって変数を解決する</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>スコープチェーン</h1>
+          <section>
+            <p>Functionオブジェクトの内部プロパティ</p>
+            <p>変数オブジェクトの集合体</p>
+            <p>スコープチェーンに格納されている変数オブジェクトを順番に調べていき変数を解決する</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>最適化</h1>
+          <section>
+            <p>スコープチェーンが深くなる程、読み込みも書き出しも遅くなる</p>
+            <p>スコープ外のものをローカル変数に格納すると良い</p>
+            <pre><code>function changeUI(){
+                var doc = document,
+                body = doc.body,
+                elem = doc.getElementById('elem');
+                
+                //何かしらの処理
+                }</code></pre>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>Closure</h1>
+          <section>
+            <p>入れ子型の関数を使うと外側の関数の変数オブジェクトを参照できる</p>
+            <pre><code>function createCounter() {
+                var i = 0;
+                return function() {
+                return i++;
+                };
+                }
+                var c1 = createCounter();
+                console.log(c1());
+                console.log(c1());</code></pre>
+            <p>通常関数を抜けると、</p>
+            <p>ローカル変数を格納しているActivationオブジェクトは破棄されるが、</p>
+            <p>関数呼び出しが終わってもローカル変数を参照し続けることができる</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper title">
+          <h1>オブジェクト</h1>
+          <h2>プロトタイプ</h2>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>コンストラクタ</h1>
+          <section>
+            <p>カスタムのコンストラクタ関数を使ってオブジェクトを作成することができる</p>
+            <pre><code>function Shop(name){
+                this.name = name;
+                this.getName = function(){
+                return this.name;
+                }
+                }
+                var shop = new Shop("shinjuku");
+                console.log(shop.getName());</code></pre>
+            <p>これだとコンストラクタが呼ばれるたびにメソッドが生成される</p>
+            <p>プロトタイプに追加して各インスタンスで共有出来た方がよい</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>プロトタイプ</h1>
+          <section>
+            <pre><code>function Nakamoto(name, level){
+                this.name = name;
+                this.level = level;
+                }
+                Nakamoto.prototype.getLevel = function(){
+                return this.level;
+                };
+                var mouko = new Nakamoto("蒙古タンメン", 5);
+                var hokkyoku = new Nakamoto("北極ラーメン", 9);
+                console.log(mouko.getLevel());
+                console.log(hokkyoku.getLevel());</code></pre>
+            <p>コンストラクタ関数のprototypeプロパティにオブジェクトを代入すると、</p>
+            <p>各インスタンスで共有できるようになる</p>
+            <p>では実際どうやってgetLevelを解決するのか</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>オブジェクトメンバの解決</h1>
+          <section>
+            <p>prototypeプロパティを連鎖的に辿る仕組みをプロトタイプチェーンと呼ぶ</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>プロトタイプチェーン</h1>
+          <section>
+            <p>各インスタンスは、コンストラクタ関数のprototypeプロパティへの暗黙の参照を保持している</p>
+            <p>Firefox、Safari、Chromeでは__proto__でアクセスできる</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>最適化</h1>
+          <section>
+            <p>入れ子になったメンバを参照すると、ドットが現れる度にメンバの解決を行う</p>
+            <p>複数回使う場合はローカル変数にキャッシュした方がよい</p>
+            <pre><code>function changeOpacity(elem){
+                var current, resultj;
+                current = elem.style.opacity;
+                if(current == 1){
+                result = 0;
+                else if(current == 0){
+                result = 1;
+                }else{
+                result = 0.5;
+                }
+                elem.style.opacity = result;
+                }</code></pre>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper title">
+          <h1>タイマー</h1>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>タイマーの基本</h1>
+          <section>
+            <p>setTimeoutかsetIntervalで生成する</p>
+            <pre><code>function timeoutFunc(){
+                console.log('timeout');
+                }
+                var id = setTimeout(timeoutFunc, 500);</code></pre>
+            <p>実行する関数と、遅延時間（ミリ秒）を引数にとる</p>
+            <p>返り値のidを引数にclearTimeoutで実行をキャンセルできる</p>
+            <pre><code>clearTimeout(id)</code></pre>
+            <p>setTimeoutは一度だけの実行、setIntervalは繰り返し実行される</p>
+            <p>setIntervalはclearIntervalで繰り返しをキャンセルできる</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>タイマーの実行</h1>
+          <section>
+            <pre><code>function delayFunc(){
+                console.log('log0');
+                }
+                setTimeout(delayFunc, 500);
+                console.log('log1');</code></pre>
+            <p>どういう順番で出力されると思いますか？</p>
+            <p>非同期で実行されるという所に注意が必要</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>JavaScript実行の仕組み</h1>
+          <section>
+            <p>UIのアップデートとJavaScriptの実行はUIスレッドによって行われている</p>
+            <p>タスクはUIキューに追加されていき、</p>
+            <p>アイドル状態であれば、順番に処理して行くというシンプルな仕組み</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>タイマー実行の仕組み</h1>
+          <section>
+            <pre><code>function delayFunc(){
+                console.log('log0');
+                }
+                setTimeout(delayFunc, 500);</code></pre>
+            <p>setTimeoutがn秒に実行されたら、n + 500ms後にキューに実行する関数の処理が追加される</p>
+            <p>UIスレッドがアイドル状態であれば、ほぼ500ms後に実行される</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper">
+          <h1>遅延時間の正確性</h1>
+          <section>
+            <pre><code>function delayFunc(){
+                console.log("timeout");
+                }
+                setTimeout(delayFunc, 500);
+                //ここで１秒以上かかる処理を実行</code></pre>
+            <p>delayFuncが実行されるのは１秒以上後</p>
+          </section>
+        </div>
+      </article>
+      <article>
+        <div class="wrapper title">
+          <h1>おしまい</h1>
+          <h2>ありがとうございました</h2>
+          
+        </div>
+      </article>
+    </div>
+  </body>
+</html>

@@ -82,3 +82,18 @@ exports.createpresentation = function (req, res){
     }
   });
 };
+
+exports.list = function(req, res){
+  Presentation.find({ user_id: req.body.user_id }, function (err, items) {
+    if (items) {
+      res.render('list', { title: 'Presentation\'s list', items: items });
+    } else {
+      console.log(err);
+      res.redirect('back');
+    }
+  });
+};
+
+exports.presentationTest = function(req, res){
+  res.render('presentationTest', { title: 'Share Presentation Test' });
+};
