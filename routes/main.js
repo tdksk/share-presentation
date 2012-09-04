@@ -6,24 +6,24 @@
 var model = require('../model');
 var User = model.User;
 var Presentation = model.Presentation;
-var cookies = {};
 
 var _COOKIES_EXPIRES = 60 * 60 * 24;  // cookieの有効期限 (24時間)
 
 exports.index = function (req, res) {
   // ログイン済みユーザは('/')でlistへリダイレクト
+  var cookies = {};
+  req.headers.cookie && req.headers.cookie.split(';').forEach(function(cookie) {
+    var parts = cookie.split('=');
+    cookies[ parts[ 0 ].trim() ] = ( parts[ 1 ] || '' ).trim();
+  });
   if (cookies.id) {
-    Presentation.find({ user_id: cookies.id}, function (err, items) {
-      if (items) {
-        res.render('list', {
-          title: 'Presentation\'s list'
-        , presentations: items
-        , user_id: cookies.id
-        });
-      } else {
-        console.log(err);
-        res.redirect('back');
-      }
+    // Find user's presentations
+    Presentation.find({ user_id: cookies.id }, function (err, items) {
+      res.render('list', {
+        title: 'Presentation\'s list'
+      , presentations: items
+      , user_id: cookies.id
+      });
     });
   } else {
     res.render('index', { title: 'Share Presentation' });
@@ -34,13 +34,8 @@ exports.list = function (req, res) {
   // Check login
   User.findOne({ user_id: req.body.user_id, password: req.body.password }, function (err, user) {
     if (user) {
-      // cookie発行&保持
+      // cookie生成
       res.cookie('id', req.body.user_id, { expires: new Date(Date.now() + _COOKIES_EXPIRES), httpOnly: true });
-      req.headers.cookie && req.headers.cookie.split(';').forEach(function(cookie) {
-        var parts = cookie.split('=');
-        cookies[ parts[ 0 ].trim() ] = ( parts[ 1 ] || '' ).trim();
-      });
-      cookies.id = req.body.user_id;
 
       // Find user's presentations
       Presentation.find({ user_id: req.body.user_id }, function (err, items) {
