@@ -5,18 +5,7 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/css/presentation.css'>
     <script src='/socket.io/socket.io.js'></script>
-    <script src='/js/presentation.js'></script>
-    <script src='/js/canvas.js'></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        var canvas = document.getElementById('canvas');
-        var container = document.getElementById('container');
-        var width = container.offsetWidth;
-        var height = container.offsetHeight;
-        init(canvas, width, height);
-        draw(canvas);
-      }, false);
-    </script>
+    <script src='/js/client.js'></script>
   </head>
   <body>
     <div id="container">

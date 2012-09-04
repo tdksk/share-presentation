@@ -81,7 +81,7 @@ io.sockets.on('connection', function (socket) {
   socket.on('reset', function () {
     count = [];
     isReset = true;
-    io.sockets.emit('reload');
+    io.sockets.emit('reset');
   });
   socket.on('disconnect', function () {
     if (!isReset) {
