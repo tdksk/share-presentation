@@ -41,7 +41,6 @@
     page.style.display = 'block';
 
     _initCanvas(width, height);
-    _initScripts();
     _initPage(_currentIndex);
 
     window.canvas = canvas;
@@ -56,27 +55,6 @@
     canvas.style.zIndex = '1000';
     canvas.style.float = 'left';
 
-  }
-
-  function _initScripts() {
-    var pres = document.getElementsByTagName('pre'),
-        i, len, pre, btn;
-
-    for(i = 0, len = pres.length; i < len; i++){
-      pre = pres[i];
-      pre.addEventListener('click', _executeScript, false);
-    }
-  }
-
-  function _executeScript(e) {
-    var target = e.currentTarget,
-        code = target.getElementsByTagName('code')[0],
-        script = document.createElement('script');
-
-    script.type = 'text/javascript';
-    script.innerHTML = code.innerHTML.replace(/&lt;/,"<");
-    document.body.appendChild(script);
-    document.body.removeChild(script);
   }
 
   function _keyPressAction(e) {
