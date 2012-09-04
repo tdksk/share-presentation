@@ -1,9 +1,14 @@
-(function(){
+(function () {
+  /**
+   * Presentation
+   */
   var _pages,
       _currentIndex = 0,
       _elemIndex = 0,
       _hideElems,
       _scriptArr = [];
+
+  var socket = io.connect();
 
   var _ANIMATION_TIME = '1s';
 
@@ -53,16 +58,22 @@
     switch(code){
       //Enter
       case 13 :
+        _sendKeyCode(code);
         _progressPage();
         break;
       //Right
       case 39 :
+        _sendKeyCode(code);
         _nextPage();
         break;
       //Left
       case 37 :
+        _sendKeyCode(code);
         _prevPage();
         break;
+      //0
+      case 48 :
+        socket.emit('reset');
     }
   }
 
@@ -83,22 +94,14 @@
     }
   }
 
-  function _isKeyPressAction(e){
-    var code = e.keyCode;
-    switch(code){
-      //Enter
-      case 13 :
-        return true;
-      //Right
-      case 39 :
-        return true;
-      //Left
-      case 37 :
-        return true;
-        break;
-      default :
-        return false;
-    }
+  function _sendKeyCode(code) {
+    socket.emit('page', {
+      pageNum: currentIndex()
+    , keyCode: code
+    });
+
+    // TODO: generize id
+    clearCanvas('canvas');
   }
 
   function _nextPage(showFlg){
@@ -189,7 +192,44 @@
     _elemIndex++;
   }
 
+  function countIndex(index) {
+    socket.emit('count', {
+      pageNum: index
+    , action: 'count'
+    });
+  }
+
+  function discountIndex(index) {
+    socket.emit('count', {
+      pageNum: index
+    , action: 'discount'
+    });
+  }
+
+  function currentIndex() {
+    var match = location.href.match(/#([0-9]+)$/);
+    return (match) ? parseInt(match[1], 10) - 1 : 0;
+  }
+
+  /**
+   * Receiving Events
+   */
+  socket.on('page', function (data) {
+    if (currentIndex() === data.pageNum) {
+      _keyPressActionByKeyCode(data.keyCode);
+    }
+  });
+
+  socket.on('showCount', function (count) {
+    console.log(count);
+  });
+
+  socket.on('reload', function () {
+    location.reload(true);
+  });
+
+  /**
+   * Initialize
+   */
   window.addEventListener('DOMContentLoaded', initialize, false);
-  window.isKeyPressAction = _isKeyPressAction;
-  window.keyPressActionByKeyCode = _keyPressActionByKeyCode;
-}());
+})();
