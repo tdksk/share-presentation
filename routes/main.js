@@ -11,11 +11,15 @@ var cookies = {};
 var _COOKIES_EXPIRES = 60 * 60 * 24;  // cookieの有効期限 (24時間)
 
 exports.index = function (req, res) {
-  // LoginUserは('/')でlistへリダイレクト
+  // ログイン済みユーザは('/')でlistへリダイレクト
   if (cookies.id) {
     Presentation.find({ user_id: cookies.id}, function (err, items) {
       if (items) {
-        res.render('list', { title: 'Presentation\'s list', items: items });
+        res.render('list', {
+          title: 'Presentation\'s list'
+        , presentations: items
+        , user_id: cookies.id
+        });
       } else {
         console.log(err);
         res.redirect('back');
@@ -27,8 +31,9 @@ exports.index = function (req, res) {
 };
 
 exports.list = function (req, res) {
-  Presentation.find({ user_id: req.body.user_id }, function (err, items) {
-    if (items) {
+  // Check login
+  User.findOne({ user_id: req.body.user_id, password: req.body.password }, function (err, user) {
+    if (user) {
       // cookie発行&保持
       res.cookie('id', req.body.user_id, { expires: new Date(Date.now() + _COOKIES_EXPIRES), httpOnly: true });
       req.headers.cookie && req.headers.cookie.split(';').forEach(function(cookie) {
@@ -36,7 +41,15 @@ exports.list = function (req, res) {
         cookies[ parts[ 0 ].trim() ] = ( parts[ 1 ] || '' ).trim();
       });
       cookies.id = req.body.user_id;
-      res.render('list', { title: 'Presentation\'s list', items: items });
+
+      // Find user's presentations
+      Presentation.find({ user_id: req.body.user_id }, function (err, items) {
+        res.render('list', {
+          title: 'Presentation\'s list'
+        , presentations: items
+        , user_id: req.body.user_id
+        });
+      });
     } else {
       console.log(err);
       res.redirect('back');
