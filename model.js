@@ -6,14 +6,24 @@ function validator(v) {
 }
 
 var User = new mongoose.Schema({
-  user_id: { type: String, required: true, index: { unique: true, sparse: true }, validate: [validator, 'Empty Error'] }
+  user_id: {
+    type: String
+  , required: true
+  , index: { unique: true, sparse: true }
+  , validate: [validator, 'Empty Error']
+  }
 , password: { type: String, required: true, validate: [validator, 'Empty Error'] }
 , created_at: { type: Date, default: Date.now }
 });
 
 
 var Presentation = new mongoose.Schema({
-  presentation_id: { type: String, required: true, index: { unique: true, sparse: true }, validate: [validator, 'Empty Error'] }
+  presentation_id: {
+    type: String
+  , required: true
+  , index: { unique: true, sparse: true }
+  , validate: [validator, 'Empty Error']
+  }
 , user_id: { type: String, required: true, validate: [validator, 'Empty Error'] }
 , created_at: { type: Date, default: Date.now }
 });

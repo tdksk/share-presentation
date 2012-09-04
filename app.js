@@ -38,10 +38,10 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
-app.get('/newuser', routes.newuser);
-app.post('/createuser', routes.createuser);
-app.get('/newpresentation', routes.newpresentation);
-app.post('/createpresentation', routes.createpresentation);
+app.get('/newUser', routes.newUser);
+app.post('/createUser', routes.createUser);
+app.get('/newPresentation', routes.newPresentation);
+app.post('/createPresentation', routes.createPresentation);
 app.post('/list', routes.list);
 app.get('/presentationTest', routes.presentationTest);
 
