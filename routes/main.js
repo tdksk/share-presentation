@@ -43,8 +43,8 @@ exports.list = function (req, res) {
         Presentation.findByUserId(req.body.user_id, function (err, items) {
           res.render('list', {
             title: 'Presentation\'s list'
-            , presentations: items
-            , user_id: req.body.user_id
+          , presentations: items
+          , user_id: req.body.user_id
           });
         });
       } else {
@@ -81,6 +81,15 @@ exports.newPresentation = function (req, res) {
 };
 
 exports.createPresentation = function (req, res) {
+  var cookies = {};
+  // Check cookie
+  req.headers.cookie && req.headers.cookie.split(';').forEach(function (cookie) {
+    var parts = cookie.split('=');
+    cookies[parts[0].trim()] = (parts[ 1 ] || '').trim();
+  });
+  // Get user_id from cookie
+  req.body.user_id = cookies.id;
+  // Create presentaion
   var newPresentation = new Presentation(req.body);
   newPresentation.save(function (err) {
     if (err) {
