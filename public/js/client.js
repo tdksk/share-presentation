@@ -22,16 +22,18 @@
     match = location.href.match(/#([0-9]+)$/);
     pageNum = (match) ? parseInt(match[1], 10) - 1 : 0;
     _pages = document.querySelectorAll('#container article');
-    canvas = document.getElementById(_CANVAS_ID);
 
-    container = document.getElementById('container');
-    width = container.offsetWidth;
-    height = container.offsetHeight;
+    if (container = document.getElementById('container')) {
+      width = container.offsetWidth;
+      height = container.offsetHeight;
+      window.addEventListener('keydown', _keyPressAction, false);
+    }
 
-    window.addEventListener('keydown', _keyPressAction, false);
-    canvas.addEventListener('mousedown', function (e) {_dragStart(e);}, false);
-    canvas.addEventListener('mousemove', function (e) {_dragging(e);}, false);
-    document.addEventListener('mouseup', function (e) {_dragEnd(e);}, false);
+    if (canvas = document.getElementById(_CANVAS_ID)) {
+      canvas.addEventListener('mousedown', function (e) {_dragStart(e);}, false);
+      canvas.addEventListener('mousemove', function (e) {_dragging(e);}, false);
+      document.addEventListener('mouseup', function (e) {_dragEnd(e);}, false);
+    }
 
     if(pageNum < 0 || pageNum >= _pages.length){
       pageNum = 0;
@@ -253,10 +255,6 @@
     if (currentIndex() === data.pageNum) {
       _keyPressActionByKeyCode(data.keyCode);
     }
-  });
-
-  socket.on('showCount', function (count) {
-    console.log(count);
   });
 
   socket.on('reset', function () {

@@ -88,6 +88,10 @@ exports.presentationTest = function (req, res) {
   res.render('presentationTest', { title: 'Share Presentation Test' });
 };
 
+exports.statistics = function (req, res) {
+  res.render('statistics', { title: 'Statistics' });
+};
+
 exports.logout = function (req, res) {
   res.clearCookie('id');
   // req.session.destroy();

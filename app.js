@@ -44,6 +44,7 @@ app.get('/newPresentation', routes.newPresentation);
 app.post('/createPresentation', routes.createPresentation);
 app.post('/list', routes.list);
 app.get('/presentationTest', routes.presentationTest);
+app.get('/statistics', routes.statistics);
 app.get('/logout', routes.logout);
 
 server.listen(app.get('port'), function(){
@@ -54,7 +55,7 @@ var count = []
   , currentIndex
   , isReset;
 io.sockets.on('connection', function (socket) {
-  io.sockets.emit('showCount', count);
+  io.sockets.emit('statistics', count);
   socket.on('page', function (data) {
     socket.broadcast.emit('page', data);
   });
@@ -76,7 +77,7 @@ io.sockets.on('connection', function (socket) {
         count[data.pageNum]--;
         break;
     }
-    io.sockets.emit('showCount', count);
+    io.sockets.emit('statistics', count);
     currentIndex = data.pageNum;
   });
   socket.on('reset', function () {
