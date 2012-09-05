@@ -36,7 +36,7 @@ var Presentation = new mongoose.Schema({
 , created_at: { type: Date, default: Date.now }
 });
 
-User.statics.findByUserId = function (user_id, callback) {
+Presentation.statics.findByUserId = function (user_id, callback) {
   this.find({ user_id: user_id }, callback);
 };
 

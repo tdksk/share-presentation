@@ -78,7 +78,7 @@ exports.createPresentation = function (req, res) {
     if (err) {
       console.log(err);
       res.redirect('back');
-    }else{
+    } else {
       res.redirect('/');
     }
   });
