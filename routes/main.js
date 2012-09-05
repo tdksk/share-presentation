@@ -18,7 +18,7 @@ exports.index = function (req, res) {
   });
   if (cookies.id) {
     // Find user's presentations
-    Presentation.find({ user_id: cookies.id }, function (err, items) {
+    Presentation.findByUserId(cookies.id, function (err, items) {
       res.render('list', {
         title: 'Presentation\'s list'
       , presentations: items
@@ -32,13 +32,13 @@ exports.index = function (req, res) {
 
 exports.list = function (req, res) {
   // Check login
-  User.findOne({ user_id: req.body.user_id, password: req.body.password }, function (err, user) {
+  User.findByUserIdAndPassword(req.body.user_id, req.body.password, function (err, user) {
     if (user) {
       // cookie生成
       res.cookie('id', req.body.user_id, { expires: new Date(Date.now() + _COOKIES_EXPIRES), httpOnly: true });
 
       // Find user's presentations
-      Presentation.find({ user_id: req.body.user_id }, function (err, items) {
+      Presentation.findByUserId(req.body.user_id, function (err, items) {
         res.render('list', {
           title: 'Presentation\'s list'
         , presentations: items
@@ -90,10 +90,10 @@ exports.presentationTest = function (req, res) {
   // Check cookie
   req.headers.cookie && req.headers.cookie.split(';').forEach(function(cookie) {
     var parts = cookie.split('=');
-    cookies[ parts[ 0 ].trim() ] = ( parts[ 1 ] || '' ).trim();
+    cookies[parts[0].trim()] = (parts[ 1 ] || '').trim();
   });
   // presenter or listener
-  user_type = cookies.id ? 'presenter' : 'listener';
+  user_type = (cookies.id) ? 'presenter' : 'listener';
   res.render('presentationTest', { title: 'Share Presentation Test', user_type: user_type });
 };
 
