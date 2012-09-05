@@ -9,7 +9,8 @@
       _scriptArr = [],
       _beforeX,
       _beforeY,
-      _isClicking;
+      _isClicking,
+      canvas;
 
   var socket = io.connect();
 
@@ -17,7 +18,7 @@
       _CANVAS_ID = 'canvas';
 
   function initialize() {
-    var match, pageNum, page, canvas, container, width, height;
+    var match, pageNum, page, container, width, height;
     match = location.href.match(/#([0-9]+)$/);
     pageNum = (match) ? parseInt(match[1], 10) - 1 : 0;
     _pages = document.querySelectorAll('#container article');
@@ -42,8 +43,6 @@
 
     _initCanvas(width, height);
     _initPage(_currentIndex);
-
-    window.canvas = canvas;
   }
 
   function _initCanvas(width, height) {
@@ -54,7 +53,6 @@
     canvas.style.top = '0';
     canvas.style.zIndex = '1000';
     canvas.style.float = 'left';
-
   }
 
   function _keyPressAction(e) {
