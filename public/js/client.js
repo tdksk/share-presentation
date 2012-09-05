@@ -241,11 +241,11 @@
   }
 
   function _dragging(e) {
-    if (!_isClicking) {
-      return;
-    }
+    if (!_isClicking) return;
+
     socket.emit('location', {
-      x: e.offsetX
+      pageNum: currentIndex()
+    , x: e.offsetX
     , y: e.offsetY
     });
   }
@@ -253,7 +253,8 @@
   function _dragEnd(e) {
     _isClicking = false;
     socket.emit('location', {
-      _beforeX: undefined
+      pageNum: currentIndex()
+    , _beforeX: undefined
     , _beforeY: undefined
     });
   }
@@ -318,20 +319,22 @@
   });
 
   socket.on('location', function (data) {
-    var ctx = canvas.getContext('2d'),
-        _currentX = data.x,
-        _currentY = data.y;
-    // Set styles
-    ctx.strokeStyle = getRandomColor();
-    ctx.lineWidth = 5;
-    // Draw line
-    ctx.beginPath();
-    ctx.moveTo(_beforeX, _beforeY);
-    ctx.lineTo(_currentX, _currentY);
-    ctx.stroke();
+    if (currentIndex() === data.pageNum) {
+      var ctx = canvas.getContext('2d'),
+          _currentX = data.x,
+          _currentY = data.y;
+      // Set styles
+      ctx.strokeStyle = getRandomColor();
+      ctx.lineWidth = 5;
+      // Draw line
+      ctx.beginPath();
+      ctx.moveTo(_beforeX, _beforeY);
+      ctx.lineTo(_currentX, _currentY);
+      ctx.stroke();
 
-    _beforeX = _currentX;
-    _beforeY = _currentY;
+      _beforeX = _currentX;
+      _beforeY = _currentY;
+    }
   });
 
   /**
