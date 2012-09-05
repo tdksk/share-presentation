@@ -87,3 +87,9 @@ exports.createPresentation = function (req, res) {
 exports.presentationTest = function (req, res) {
   res.render('presentationTest', { title: 'Share Presentation Test' });
 };
+
+exports.logout = function (req, res) {
+  res.clearCookie('id');
+  // req.session.destroy();
+  res.redirect('/');
+};

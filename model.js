@@ -5,6 +5,7 @@ function validator(v) {
   return v.length > 0;
 }
 
+// TODO: パスワードのハッシュ化 (sha1)
 var User = new mongoose.Schema({
   user_id: {
     type: String

@@ -22,12 +22,12 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  app.use(express.session({
-    secret: "keyboard cat"
-    /*foo: 'val',
-    secret: 'keyboard cat',
-    store: new MemoryStore({ reapInterval: 60000 * 10 })*/
-}));
+  // app.use(express.session({
+  //   secret: "keyboard cat"
+  //   /*foo: 'val',
+  //   secret: 'keyboard cat',
+  //   store: new MemoryStore({ reapInterval: 60000 * 10 })*/
+  // }));
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
@@ -44,6 +44,7 @@ app.get('/newPresentation', routes.newPresentation);
 app.post('/createPresentation', routes.createPresentation);
 app.post('/list', routes.list);
 app.get('/presentationTest', routes.presentationTest);
+app.get('/logout', routes.logout);
 
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
