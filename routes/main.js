@@ -85,7 +85,16 @@ exports.createPresentation = function (req, res) {
 };
 
 exports.presentationTest = function (req, res) {
-  res.render('presentationTest', { title: 'Share Presentation Test' });
+  var cookies = {},
+      user_type;
+  // Check cookie
+  req.headers.cookie && req.headers.cookie.split(';').forEach(function(cookie) {
+    var parts = cookie.split('=');
+    cookies[ parts[ 0 ].trim() ] = ( parts[ 1 ] || '' ).trim();
+  });
+  // presenter or listener
+  user_type = cookies.id ? 'presenter' : 'listener';
+  res.render('presentationTest', { title: 'Share Presentation Test', user_type: user_type });
 };
 
 exports.statistics = function (req, res) {

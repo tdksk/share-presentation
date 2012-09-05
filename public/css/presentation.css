@@ -261,3 +261,9 @@ to{
   visibility: hidden;
 }
 */
+
+/* For debug */
+#debug {
+  position: absolute;
+  z-index: 10000;
+}

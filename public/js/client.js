@@ -10,32 +10,46 @@
       _beforeX,
       _beforeY,
       _isClicking,
-      canvas;
+      canvas,
+      params = getJsParam(),  // Load at first
+      user_type = params.type;
 
   var socket = io.connect();
 
   var _ANIMATION_TIME = '1s',
+      _CONTAINER_ID = 'container',
       _CANVAS_ID = 'canvas';
 
   function initialize() {
-    var match, pageNum, page, container, width, height;
-    match = location.href.match(/#([0-9]+)$/);
-    pageNum = (match) ? parseInt(match[1], 10) - 1 : 0;
-    _pages = document.querySelectorAll('#container article');
+    var pageNum, page, container, width, height;
 
-    if (container = document.getElementById('container')) {
+    pageNum = currentIndex();
+    _pages = document.querySelectorAll('#' + _CONTAINER_ID + ' article');
+
+    container = document.getElementById(_CONTAINER_ID);
+    if (container) {
       width = container.offsetWidth;
       height = container.offsetHeight;
       window.addEventListener('keydown', _keyPressAction, false);
+      if ($$.isMobile() && user_type !== 'presenter') {
+        // Prevent default touch event
+        window.ontouchmove = function (e) {
+          e.preventDefault();
+        };
+        // Set touch events
+        _touchAction();
+      }
     }
 
-    if (canvas = document.getElementById(_CANVAS_ID)) {
+    canvas = document.getElementById(_CANVAS_ID);
+    console.log(user_type);
+    if (canvas && user_type === 'presenter') {
       canvas.addEventListener('mousedown', function (e) {_dragStart(e);}, false);
       canvas.addEventListener('mousemove', function (e) {_dragging(e);}, false);
       document.addEventListener('mouseup', function (e) {_dragEnd(e);}, false);
     }
 
-    if(pageNum < 0 || pageNum >= _pages.length){
+    if (pageNum < 0 || pageNum >= _pages.length) {
       pageNum = 0;
     }
 
@@ -45,6 +59,10 @@
 
     _initCanvas(width, height);
     _initPage(_currentIndex);
+
+    // For debug
+    debug.innerHTML = '<ul>';
+    debug.innerHTML += '<li>User type: ' + user_type;
   }
 
   function _initCanvas(width, height) {
@@ -59,30 +77,30 @@
 
   function _keyPressAction(e) {
     var code = e.keyCode;
-    switch(code){
+    switch (code) {
       //Enter
       case 13 :
-        _sendKeyCode(code);
+        if (user_type === 'presenter') _sendKeyCode(code);
         _progressPage();
         break;
       //Right
       case 39 :
-        _sendKeyCode(code);
+        if (user_type === 'presenter') _sendKeyCode(code);
         _nextPage();
         break;
       //Left
       case 37 :
-        _sendKeyCode(code);
+        if (user_type === 'presenter') _sendKeyCode(code);
         _prevPage();
         break;
       //0
       case 48 :
-        socket.emit('reset');
+        if (user_type === 'presenter') socket.emit('reset');
     }
   }
 
   function _keyPressActionByKeyCode(code) {
-    switch(code){
+    switch (code) {
       //Enter
       case 13 :
         _progressPage();
@@ -105,9 +123,26 @@
     });
   }
 
+  function _touchAction() {
+    $$('#' + _CONTAINER_ID).doubleTap(function () {
+      if (user_type === 'presenter') _sendKeyCode(13);  // Enter
+      _progressPage();
+    });
+
+    $$('#' + _CONTAINER_ID).swipeLeft(function () {
+      if (user_type === 'presenter') _sendKeyCode(39);  // Right
+      _nextPage();
+    });
+
+    $$('#' + _CONTAINER_ID).swipeRight(function () {
+      if (user_type === 'presenter') _sendKeyCode(37);  // Left
+      _prevPage();
+    });
+  }
+
   function _nextPage(showFlg) {
     var currentPage, nextPage;
-    if(_currentIndex === _pages.length - 1){
+    if (_currentIndex === _pages.length - 1) {
       return;
     }
 
@@ -130,9 +165,10 @@
 
   function _prevPage(){
     var currentPage, nextPage;
-    if(_currentIndex === 0){
+    if (_currentIndex === 0) {
       return;
     }
+
     currentPage = _pages[_currentIndex];
     nextPage = _pages[_currentIndex - 1];
 
@@ -248,6 +284,26 @@
     return 'rgb(' + r + ', ' + g + ', ' + b + ')';
   }
 
+  function getJsParam() {
+    var scripts = document.getElementsByTagName('script');
+    var src = scripts[scripts.length - 1].src;
+
+    var query = src.substring(src.indexOf('?') + 1);
+    var parameters = query.split('&');
+
+    var result = new Object();
+    for (var i = 0, length =  parameters.length; i < length; i++) {
+      var element = parameters[i].split('=');
+
+      var paramName = decodeURIComponent(element[0]);
+      var paramValue = decodeURIComponent(element[1]);
+
+      result[paramName] = decodeURIComponent(paramValue);
+    }
+
+    return result;
+  }
+
   /**
    * Receive events
    */
@@ -262,9 +318,9 @@
   });
 
   socket.on('location', function (data) {
-    var ctx = canvas.getContext('2d')
-      , _currentX = data.x
-      , _currentY = data.y;
+    var ctx = canvas.getContext('2d'),
+        _currentX = data.x,
+        _currentY = data.y;
     // Set styles
     ctx.strokeStyle = getRandomColor();
     ctx.lineWidth = 5;
