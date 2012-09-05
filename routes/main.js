@@ -4,17 +4,18 @@
  */
 
 var model = require('../model');
-var User = model.User;
-var Presentation = model.Presentation;
+
+var User = model.User,
+    Presentation = model.Presentation;
 
 var _COOKIES_EXPIRES = 60 * 60 * 24;  // cookieの有効期限 (24時間)
 
 exports.index = function (req, res) {
   // ログイン済みユーザは('/')でlistへリダイレクト
   var cookies = {};
-  req.headers.cookie && req.headers.cookie.split(';').forEach(function(cookie) {
+  req.headers.cookie && req.headers.cookie.split(';').forEach(function (cookie) {
     var parts = cookie.split('=');
-    cookies[ parts[ 0 ].trim() ] = ( parts[ 1 ] || '' ).trim();
+    cookies[parts[0].trim()] = (parts[1] || '').trim();
   });
   if (cookies.id) {
     // Find user's presentations
@@ -32,19 +33,24 @@ exports.index = function (req, res) {
 
 exports.list = function (req, res) {
   // Check login
-  User.findByUserIdAndPassword(req.body.user_id, req.body.password, function (err, user) {
+  User.findByUserId(req.body.user_id, function (err, user) {
     if (user) {
-      // cookie生成
-      res.cookie('id', req.body.user_id, { expires: new Date(Date.now() + _COOKIES_EXPIRES), httpOnly: true });
+      if (user.authenticate(req.body.password)) {
+        // cookie生成
+        res.cookie('id', req.body.user_id, { expires: new Date(Date.now() + _COOKIES_EXPIRES), httpOnly: true });
 
-      // Find user's presentations
-      Presentation.findByUserId(req.body.user_id, function (err, items) {
-        res.render('list', {
-          title: 'Presentation\'s list'
-        , presentations: items
-        , user_id: req.body.user_id
+        // Find user's presentations
+        Presentation.findByUserId(req.body.user_id, function (err, items) {
+          res.render('list', {
+            title: 'Presentation\'s list'
+            , presentations: items
+            , user_id: req.body.user_id
+          });
         });
-      });
+      } else {
+        console.log(err);
+        res.redirect('back');
+      }
     } else {
       console.log(err);
       res.redirect('back');
@@ -68,6 +74,8 @@ exports.createUser = function (req, res) {
   });
 };
 
+// TODO: deleteUser
+
 exports.newPresentation = function (req, res) {
   res.render('newPresentation', { title: 'Upload your presentation' });
 };
@@ -84,11 +92,13 @@ exports.createPresentation = function (req, res) {
   });
 };
 
+// TODO: deletePresentation
+
 exports.presentationTest = function (req, res) {
   var cookies = {},
       user_type;
   // Check cookie
-  req.headers.cookie && req.headers.cookie.split(';').forEach(function(cookie) {
+  req.headers.cookie && req.headers.cookie.split(';').forEach(function (cookie) {
     var parts = cookie.split('=');
     cookies[parts[0].trim()] = (parts[ 1 ] || '').trim();
   });
