@@ -31,7 +31,7 @@
       width = container.offsetWidth;
       height = container.offsetHeight;
       window.addEventListener('keydown', _keyPressAction, false);
-      if ($$.isMobile() && user_type !== 'presenter') {
+      if ($$.isMobile()) {
         // Prevent default touch event
         window.ontouchmove = function (e) {
           e.preventDefault();
@@ -42,7 +42,6 @@
     }
 
     canvas = document.getElementById(_CANVAS_ID);
-    console.log(user_type);
     if (canvas && user_type === 'presenter') {
       canvas.addEventListener('mousedown', function (e) {_dragStart(e);}, false);
       canvas.addEventListener('mousemove', function (e) {_dragging(e);}, false);
@@ -80,22 +79,30 @@
     switch (code) {
       //Enter
       case 13 :
-        if (user_type === 'presenter') _sendKeyCode(code);
+        if (user_type === 'presenter') {
+          _sendKeyCode(code);
+        }
         _progressPage();
         break;
       //Right
       case 39 :
-        if (user_type === 'presenter') _sendKeyCode(code);
+        if (user_type === 'presenter') {
+          _sendKeyCode(code);
+        }
         _nextPage();
         break;
       //Left
       case 37 :
-        if (user_type === 'presenter') _sendKeyCode(code);
+        if (user_type === 'presenter') {
+          _sendKeyCode(code);
+        }
         _prevPage();
         break;
       //0
       case 48 :
-        if (user_type === 'presenter') socket.emit('reset');
+        if (user_type === 'presenter') {
+          socket.emit('reset');
+        }
     }
   }
 
@@ -116,27 +123,33 @@
     }
   }
 
-  function _sendKeyCode(code) {
-    socket.emit('page', {
-      pageNum: currentIndex()
-    , keyCode: code
-    });
-  }
-
   function _touchAction() {
     $$('#' + _CONTAINER_ID).doubleTap(function () {
-      if (user_type === 'presenter') _sendKeyCode(13);  // Enter
+      if (user_type === 'presenter') {
+        _sendKeyCode(13);  // Enter
+      }
       _progressPage();
     });
 
     $$('#' + _CONTAINER_ID).swipeLeft(function () {
-      if (user_type === 'presenter') _sendKeyCode(39);  // Right
+      if (user_type === 'presenter') {
+        _sendKeyCode(39);  // Right
+      }
       _nextPage();
     });
 
     $$('#' + _CONTAINER_ID).swipeRight(function () {
-      if (user_type === 'presenter') _sendKeyCode(37);  // Left
+      if (user_type === 'presenter') {
+        _sendKeyCode(37);  // Left
+      }
       _prevPage();
+    });
+  }
+
+  function _sendKeyCode(code) {
+    socket.emit('page', {
+      pageNum: currentIndex()
+    , keyCode: code
     });
   }
 
@@ -273,6 +286,9 @@
     });
   }
 
+  /**
+   * Utils
+   */
   function currentIndex() {
     var match = location.href.match(/#([0-9]+)$/);
     return (match) ? parseInt(match[1], 10) - 1 : 0;
