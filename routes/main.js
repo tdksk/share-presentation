@@ -11,7 +11,7 @@ var User = model.User,
 var _COOKIES_EXPIRES = 60 * 60 * 24;  // cookieの有効期限 (24時間)
 
 exports.index = function (req, res) {
-  // ログイン済みユーザは('/')でlistへリダイレクト
+  // ログイン済みユーザはlistを表示
   var cookies = {};
   req.headers.cookie && req.headers.cookie.split(';').forEach(function (cookie) {
     var parts = cookie.split('=');
@@ -31,7 +31,7 @@ exports.index = function (req, res) {
   }
 };
 
-exports.list = function (req, res) {
+exports.login = function (req, res) {
   // Check login
   User.findByUserId(req.body.user_id, function (err, user) {
     if (user) {
@@ -43,8 +43,8 @@ exports.list = function (req, res) {
         Presentation.findByUserId(req.body.user_id, function (err, items) {
           res.render('list', {
             title: 'Presentation\'s list'
-          , presentations: items
-          , user_id: req.body.user_id
+            , presentations: items
+            , user_id: req.body.user_id
           });
         });
       } else {

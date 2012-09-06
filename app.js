@@ -38,11 +38,11 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
+app.post('/', routes.login);
 app.get('/newUser', routes.newUser);
 app.post('/createUser', routes.createUser);
 app.get('/newPresentation', routes.newPresentation);
 app.post('/createPresentation', routes.createPresentation);
-app.post('/list', routes.list);
 app.get('/presentationTest', routes.presentationTest);
 app.get('/statistics', routes.statistics);
 app.get('/logout', routes.logout);
