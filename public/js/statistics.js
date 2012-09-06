@@ -41,7 +41,7 @@
     for (user_type in count) {
       var data = [];
       arr = count[user_type];
-      if (!arr.length) return;
+      if (!arr.length) continue;
 
       for (var i = 0, length = arr.length; i < length; i++) {
         data[i] = [i + 1, arr[i]];
