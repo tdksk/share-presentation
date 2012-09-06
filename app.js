@@ -3,15 +3,15 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , socketio = require('socket.io')
-  , routes = require('./routes/main')
-  , http = require('http')
-  , path = require('path');
+var express = require('express'),
+    socketio = require('socket.io'),
+    routes = require('./routes/main'),
+    http = require('http'),
+    path = require('path');
 
-var app = express()
-  , server = http.createServer(app)
-  , io = socketio.listen(server);
+var app = express(),
+    server = http.createServer(app),
+    io = socketio.listen(server);
 
 
 app.configure(function(){
@@ -51,9 +51,13 @@ server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
-var count = []
-  , currentIndex
-  , isReset;
+// TODO: Optimize
+var currentIndex,
+    isReset,
+    count = {
+      presenter: []
+    , listener : []
+    };
 io.sockets.on('connection', function (socket) {
   io.sockets.emit('statistics', count);
   socket.on('page', function (data) {
@@ -66,28 +70,32 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('clear', data);
   });
   socket.on('count', function (data) {
-    if (count[data.pageNum] == null) {
-      count[data.pageNum] = 0;
+    var arr = count[data.userType];
+    if (arr[data.pageNum] == null) {
+      arr[data.pageNum] = 0;
     }
     switch (data.action) {
       case 'count':
-        count[data.pageNum]++;
+        arr[data.pageNum]++;
         break;
       case 'discount':
-        count[data.pageNum]--;
+        arr[data.pageNum]--;
         break;
     }
     io.sockets.emit('statistics', count);
     currentIndex = data.pageNum;
   });
   socket.on('reset', function () {
-    count = [];
+    count = {
+      presenter: []
+    , listener : []
+    };
     isReset = true;
     io.sockets.emit('reset');
   });
   socket.on('disconnect', function () {
     if (!isReset) {
-      count[currentIndex]--;
+      // decrement count
     }
   });
 });

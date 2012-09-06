@@ -7,10 +7,12 @@
 
   var socket = io.connect();
 
-  var _CANVAS_ID = 'canvas';
+  var _CANVAS_ID = 'canvas',
+      _CANVAS_WIDTH = 900,
+      _CANVAS_HEIGHT = 400;
 
   function initialize() {
-    _initCanvas(900, 400);
+    _initCanvas(_CANVAS_WIDTH, _CANVAS_HEIGHT);
   }
 
   function _initCanvas(width, height) {
@@ -30,17 +32,30 @@
    * Receive events
    */
   socket.on('statistics', function (count) {
+    var user_type,
+        arr,
+        data = [];
+
     // TODO: グラフの長さを動的に変える
-    console.log(count);  // for debug
-    var data = [];
-    for (var i = 0, length = count.length; i < length; i++) {
-      data[i] = [i + 1, count[i]];
-    }
+    // TODO: 凡例つける
     graph.clear();
-    graph.setData(data);
-    graph.setType('bar');
-    graph.setColor('#007aff');
-    graph.draw();
+    for (user_type in count) {
+      arr = count[user_type];
+      for (var i = 0, length = arr.length; i < length; i++) {
+        data[i] = [i + 1, arr[i]];
+      }
+      graph.setData(data);
+      if (user_type === 'presenter') {
+        graph.setColor('rgba(224, 74, 40, .5)');
+        // graph.setColor('rgba(244, 192, 4, .5)');
+        graph.setBarWidth(50);
+      } else if (user_type === 'listener') {
+        graph.setColor('rgba(0, 122, 255, .8)');
+        graph.setBarWidth(30);
+      }
+      graph.setType('bar');
+      graph.draw();
+    }
   });
 
   /**

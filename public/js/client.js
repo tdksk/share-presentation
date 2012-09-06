@@ -276,6 +276,7 @@
   function _countIndex(index) {
     socket.emit('count', {
       pageNum: index
+    , userType: user_type
     , action: 'count'
     });
   }
@@ -283,6 +284,7 @@
   function _discountIndex(index) {
     socket.emit('count', {
       pageNum: index
+    , userType: user_type
     , action: 'discount'
     });
   }
