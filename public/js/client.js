@@ -101,9 +101,7 @@
         break;
       //0
       case 48 :
-        if (user_type === 'presenter') {
-          socket.emit('reset');
-        }
+        socket.emit('reset');  // For debug
     }
   }
 
