@@ -41,10 +41,15 @@
     graph.clear();
     for (user_type in count) {
       arr = count[user_type];
+      if (!arr.length) return;
+
       for (var i = 0, length = arr.length; i < length; i++) {
         data[i] = [i + 1, arr[i]];
       }
+
+      // Set data
       graph.setData(data);
+      // Set styles
       if (user_type === 'presenter') {
         graph.setColor('rgba(224, 74, 40, .5)');
         // graph.setColor('rgba(244, 192, 4, .5)');
@@ -54,6 +59,7 @@
         graph.setBarWidth(30);
       }
       graph.setType('bar');
+      // Draw graph
       graph.draw();
     }
   });
