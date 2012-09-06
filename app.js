@@ -8,10 +8,25 @@ var express = require('express'),
     routes = require('./routes/main'),
     http = require('http'),
     path = require('path');
+    // FIXME: Error: Cannot find module 'connect'
+    // connect = require('connect');
 
 var app = express(),
     server = http.createServer(app),
     io = socketio.listen(server);
+
+var MemoryStore = express.session.MemoryStore,
+    sessionStore = new MemoryStore();
+
+// TODO: Any library?
+var parseCookie = function (cookie) {
+  var cookies = {};
+  cookie && cookie.split(';').forEach(function (c) {
+    var parts = c.split('=');
+    cookies[parts[0].trim()] = (parts[ 1 ] || '').trim();
+  });
+  return cookies;
+};
 
 
 app.configure(function(){
@@ -22,12 +37,10 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  // app.use(express.session({
-  //   secret: "keyboard cat"
-  //   /*foo: 'val',
-  //   secret: 'keyboard cat',
-  //   store: new MemoryStore({ reapInterval: 60000 * 10 })*/
-  // }));
+  app.use(express.session({
+    secret: "hogehoge"
+  , store: sessionStore
+  }));
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
@@ -51,6 +64,37 @@ server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
+// TODO: Use session storage
+// Configuration
+io.configure(function () {
+  io.set('authorization', function (handshakeData, callback) {
+    if (handshakeData.headers.cookie) {
+      // Get cookie from handshakeData
+      var cookie = handshakeData.headers.cookie;
+      // Get express.sid from cookie
+      var sessionID = parseCookie(cookie)['connect.sid'];
+      handshakeData.sessionID = sessionID;
+      // Authorized OK
+      callback(null, true);
+      // Get session from storage
+      /*
+      sessionStore.get(sessionID, function (err, session) {
+        if (err) {
+          callback(err.message, false);
+        } else {
+          // Save session data
+          handshakeData.session = session;
+          // Authorized OK
+          callback(null, true);
+        }
+      });
+      */
+    } else {
+      return callback('Cannot find cookie', false);
+    }
+  });
+});
+
 // TODO: Optimize
 var currentIndex,
     isReset,
@@ -59,6 +103,7 @@ var currentIndex,
     , listener : []
     };
 io.sockets.on('connection', function (socket) {
+  console.log('Session ID:', socket.handshake.sessionID);  // For debug
   io.sockets.emit('statistics', count);
   socket.on('page', function (data) {
     socket.broadcast.emit('page', data);
