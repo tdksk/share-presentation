@@ -33,13 +33,13 @@
    */
   socket.on('statistics', function (count) {
     var user_type,
-        arr,
-        data = [];
+        arr;
 
     // TODO: グラフの長さを動的に変える
     // TODO: 凡例つける
     graph.clear();
     for (user_type in count) {
+      var data = [];
       arr = count[user_type];
       if (!arr.length) return;
 
