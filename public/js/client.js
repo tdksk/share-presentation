@@ -33,7 +33,8 @@
       window.addEventListener('keydown', _keyPressAction, false);
       if ($$.isMobile()) {
         // Prevent default touch event
-        window.ontouchmove = function (e) {
+        // TODO: Optimize
+        window.ontouchstart = function (e) {
           e.preventDefault();
         };
         // Set touch events
@@ -287,7 +288,7 @@
   }
 
   /**
-   * Utils
+   * Utilities
    */
   function currentIndex() {
     var match = location.href.match(/#([0-9]+)$/);
