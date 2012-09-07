@@ -108,7 +108,8 @@ var presentation = io
     var sessionID = socket.handshake.sessionID;
     console.log('Connect:', sessionID);  // For debug
 
-    io.of('/statistics').emit('statistics', count);
+    // io.of('/statistics').emit('statistics', count);
+    console.log(count);
 
     socket.on('page', function (data) {
       socket.broadcast.emit('page', data);
@@ -130,19 +131,22 @@ var presentation = io
       switch (data.action) {
       case 'count':
         arr[data.pageNum]++;
+        // io.of('/statistics').emit('statistics', count);
+        console.log(count);
         break;
       case 'discount':
         arr[data.pageNum]--;
         break;
       }
-      io.of('/statistics').emit('statistics', count);
       userData[sessionID] = {
         userType: data.userType
       , pageNum : data.pageNum
       };
+      console.log(data.action, userData);  // For debug
     });
 
     socket.on('reset', function () {
+      console.log('Reset');  // For debug
       count = {
         presenter: []
       , listener : []
@@ -151,18 +155,32 @@ var presentation = io
     });
 
     socket.on('disconnect', function () {
-      console.log( 'Disconnect:', sessionID);  // For debug
+      console.log('Disconnect:', sessionID);  // For debug
       var data = userData[sessionID],
           arr = count[data.userType];
       if (arr[data.pageNum]) {
         arr[data.pageNum]--;
+        console.log('discount', userData);  // For debug
       }
-      io.of('/statistics').emit('statistics', count);
-  });
+      // io.of('/statistics').emit('statistics', count);
+      console.log(count);
+    });
 
 var statistics = io
   .of('/statistics')
   .on('connection', function (socket) {
-    statistics.emit('statistics', count);
+    var _SHOW_COUNT_INTERVAL = 3000;
+
+    // Show count when statistics page is loaded
+    socket.emit('statistics', count);
+
+    // Show count at regular intervals
+    var showCountTimerId = setInterval(function () {
+      socket.emit('statistics', count);
+    }, _SHOW_COUNT_INTERVAL);
+
+    socket.on('disconnect', function () {
+      clearInterval(showCountTimerId);
+    });
   });
 });
