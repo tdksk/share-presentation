@@ -12,20 +12,18 @@
       _beforeX,
       _beforeY,
       _isClicking,
-      canvas,
-      params = getJsParam(),  // Load at first
-      user_type = params.type;
+      _canvas,
+      _params = _getJsParam(),  // Load at first
+      _user_type = _params.type;
 
   var _ANIMATION_TIME = '1s',
       _CONTAINER_ID = 'container',
       _CANVAS_ID = 'canvas';
 
   function initialize() {
-    var pageNum, page, container, width, height;
+    var container, width, height, pageNum, page;
 
-    pageNum = currentIndex();
-    _pages = document.querySelectorAll('#' + _CONTAINER_ID + ' article');
-
+    // Initialize container
     container = document.getElementById(_CONTAINER_ID);
     if (container) {
       width = container.offsetWidth;
@@ -42,121 +40,112 @@
       }
     }
 
-    canvas = document.getElementById(_CANVAS_ID);
-    if (canvas && user_type === 'presenter') {
-      canvas.addEventListener('mousedown', function (e) {_dragStart(e);}, false);
-      canvas.addEventListener('mousemove', function (e) {_dragging(e);}, false);
+    // Initialize canvas
+    _canvas = document.getElementById(_CANVAS_ID);
+    if (_canvas && _user_type === 'presenter') {
+      _canvas.addEventListener('mousedown', function (e) {_dragStart(e);}, false);
+      _canvas.addEventListener('mousemove', function (e) {_dragging(e);}, false);
       document.addEventListener('mouseup', function (e) {_dragEnd(e);}, false);
     }
+    _initCanvas(width, height);
 
+    // Initialize page
+    pageNum = _getCurrentIndex();
+    _pages = document.querySelectorAll('#' + _CONTAINER_ID + ' article');
     if (pageNum < 0 || pageNum >= _pages.length) {
       pageNum = 0;
     }
-
     _currentIndex = pageNum;
     page = _pages[_currentIndex];
     page.style.display = 'block';
-
-    _initCanvas(width, height);
     _initPage(_currentIndex);
 
     // For debug
     debug.innerHTML = '<ul>';
-    debug.innerHTML += '<li>User type: ' + user_type;
+    debug.innerHTML += '<li>User type: ' + _user_type;
   }
 
-  function _initCanvas(width, height) {
-    canvas.width = width;
-    canvas.height = height;
-    canvas.style.position = 'relative';
-    canvas.style.left = '0';
-    canvas.style.top = '0';
-    canvas.style.zIndex = '1000';
-    canvas.style.float = 'left';
-  }
-
+  /**
+   * Page actions
+   */
   function _keyPressAction(e) {
     var code = e.keyCode;
     switch (code) {
-      //Enter
-      case 13 :
-        if (user_type === 'presenter') {
-          _sendKeyCode(code);
+      // Enter
+      case 13:
+        if (_user_type === 'presenter') {
+          _sendPageActionName('progress');
         }
         _progressPage();
         break;
-      //Right
-      case 39 :
-        if (user_type === 'presenter') {
-          _sendKeyCode(code);
+      // Right
+      case 39:
+        if (_user_type === 'presenter') {
+          _sendPageActionName('next');
         }
         _nextPage();
         break;
-      //Left
-      case 37 :
-        if (user_type === 'presenter') {
-          _sendKeyCode(code);
+      // Left
+      case 37:
+        if (_user_type === 'presenter') {
+          _sendPageActionName('prev');
         }
         _prevPage();
         break;
-      //0
-      case 48 :
+      // 0
+      case 48:
         socket.emit('reset');  // For debug
     }
   }
 
-  function _keyPressActionByKeyCode(code) {
-    switch (code) {
-      //Enter
-      case 13 :
-        _progressPage();
-        break;
-      //Right
-      case 39 :
-        _nextPage();
-        break;
-      //Left
-      case 37 :
-        _prevPage();
-        break;
-    }
-  }
-
   function _touchAction() {
+    // Double tap
     $$('#' + _CONTAINER_ID).doubleTap(function () {
-      if (user_type === 'presenter') {
-        _sendKeyCode(13);  // Enter
+      if (_user_type === 'presenter') {
+        _actionByName('progress');
       }
       _progressPage();
     });
-
+    // Swipe left
     $$('#' + _CONTAINER_ID).swipeLeft(function () {
-      if (user_type === 'presenter') {
-        _sendKeyCode(39);  // Right
+      if (_user_type === 'presenter') {
+        _actionByName('next');
       }
       _nextPage();
     });
-
+    // Swipe right
     $$('#' + _CONTAINER_ID).swipeRight(function () {
-      if (user_type === 'presenter') {
-        _sendKeyCode(37);  // Left
+      if (_user_type === 'presenter') {
+        _actionByName('prev');
       }
       _prevPage();
     });
   }
 
-  function _sendKeyCode(code) {
+  function _actionByName(actionName) {
+    switch (actionName) {
+      case 'progress':
+        _progressPage();
+        break;
+      case 'next':
+        _nextPage();
+        break;
+      case 'prev':
+        _prevPage();
+        break;
+    }
+  }
+
+  function _sendPageActionName(actionName) {
     socket.emit('page', {
-      pageNum: currentIndex()
-    , keyCode: code
+      pageNum: _currentIndex
+    , action: actionName
     });
   }
 
   function _nextPage(showFlg) {
     var currentPage, nextPage;
-    if (_currentIndex === _pages.length - 1) {
-      return;
-    }
+    if (_currentIndex === _pages.length - 1) return;
 
     currentPage = _pages[_currentIndex];
     nextPage = _pages[_currentIndex + 1];
@@ -177,9 +166,7 @@
 
   function _prevPage(){
     var currentPage, nextPage;
-    if (_currentIndex === 0) {
-      return;
-    }
+    if (_currentIndex === 0) return;
 
     currentPage = _pages[_currentIndex];
     nextPage = _pages[_currentIndex - 1];
@@ -207,16 +194,13 @@
     page = _pages[index];
     _hideElems = page.querySelectorAll('.wrapper > section > *, .wrapper > section li, .wrapper > section p.slide > *');
     _elemIndex = 0;
-    for(i = 0, len = _hideElems.length; i < len; i++){
+    for (i = 0, len = _hideElems.length; i < len; i++) {
       elem = _hideElems[i];
-      if(elem.tagName == 'UL'){
-        //console.log(elem.children);
-      }
       elem.style.opacity = (showFlg) ? 1 : 0;
       delete elem.style.webkitTransition;
     }
 
-    if(showFlg){
+    if (showFlg) {
       _hideElems = [];
     }
 
@@ -224,15 +208,15 @@
     _clearCanvas();
   }
 
-  function _movedPage(e){
+  function _movedPage(e) {
     var target = e.currentTarget;
     target.removeEventListener(e.type, arguments.callee);
     target.style.display = 'none';
   }
 
-  function _progressPage(){
+  function _progressPage() {
     var elem = _hideElems[_elemIndex];
-    if(!elem){
+    if (!elem) {
       _nextPage();
       return;
     }
@@ -243,12 +227,45 @@
     _elemIndex++;
   }
 
+  /**
+   * Page count
+   */
+  function _countIndex(index) {
+    socket.emit('count', {
+      pageNum: index
+    , userType: _user_type
+    , action: 'count'
+    });
+  }
+
+  function _discountIndex(index) {
+    socket.emit('count', {
+      pageNum: index
+    , userType: _user_type
+    , action: 'discount'
+    });
+  }
+
+  /**
+   * Canvas
+   */
+  function _initCanvas(width, height) {
+    _canvas.width = width;
+    _canvas.height = height;
+    _canvas.style.position = 'relative';
+    _canvas.style.left = '0';
+    _canvas.style.top = '0';
+    _canvas.style.zIndex = '1000';
+    _canvas.style.float = 'left';
+  }
+
   function _clearCanvas() {
-    var ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var ctx = _canvas.getContext('2d');
+    ctx.clearRect(0, 0, _canvas.width, _canvas.height);
   }
 
   function _dragStart(e) {
+    e.preventDefault();
     _isClicking = true;
   }
 
@@ -256,7 +273,7 @@
     if (!_isClicking) return;
 
     socket.emit('location', {
-      pageNum: currentIndex()
+      pageNum: _currentIndex
     , x: e.offsetX
     , y: e.offsetY
     });
@@ -265,44 +282,28 @@
   function _dragEnd(e) {
     _isClicking = false;
     socket.emit('location', {
-      pageNum: currentIndex()
+      pageNum: _currentIndex
     , _beforeX: undefined
     , _beforeY: undefined
-    });
-  }
-
-  function _countIndex(index) {
-    socket.emit('count', {
-      pageNum: index
-    , userType: user_type
-    , action: 'count'
-    });
-  }
-
-  function _discountIndex(index) {
-    socket.emit('count', {
-      pageNum: index
-    , userType: user_type
-    , action: 'discount'
     });
   }
 
   /**
    * Utilities
    */
-  function currentIndex() {
+  function _getCurrentIndex() {
     var match = location.href.match(/#([0-9]+)$/);
     return (match) ? parseInt(match[1], 10) - 1 : 0;
   }
 
-  function getRandomColor() {
+  function _getRandomColor() {
     var r = Math.floor(Math.random() * 255);
     var g = Math.floor(Math.random() * 255);
     var b = Math.floor(Math.random() * 255);
     return 'rgb(' + r + ', ' + g + ', ' + b + ')';
   }
 
-  function getJsParam() {
+  function _getJsParam() {
     var scripts = document.getElementsByTagName('script');
     var src = scripts[scripts.length - 1].src;
 
@@ -326,8 +327,8 @@
    * Receive events
    */
   socket.on('page', function (data) {
-    if (currentIndex() === data.pageNum) {
-      _keyPressActionByKeyCode(data.keyCode);
+    if (_currentIndex === data.pageNum) {
+      _actionByName(data.action);
     }
   });
 
@@ -336,21 +337,21 @@
   });
 
   socket.on('location', function (data) {
-    if (currentIndex() === data.pageNum) {
-      var ctx = canvas.getContext('2d'),
-          _currentX = data.x,
-          _currentY = data.y;
+    if (_currentIndex === data.pageNum) {
+      var ctx = _canvas.getContext('2d'),
+          currentX = data.x,
+          currentY = data.y;
       // Set styles
-      ctx.strokeStyle = getRandomColor();
+      ctx.strokeStyle = _getRandomColor();
       ctx.lineWidth = 5;
       // Draw line
       ctx.beginPath();
       ctx.moveTo(_beforeX, _beforeY);
-      ctx.lineTo(_currentX, _currentY);
+      ctx.lineTo(currentX, currentY);
       ctx.stroke();
 
-      _beforeX = _currentX;
-      _beforeY = _currentY;
+      _beforeX = currentX;
+      _beforeY = currentY;
     }
   });
 
