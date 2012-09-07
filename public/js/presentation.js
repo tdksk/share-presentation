@@ -2,6 +2,8 @@
   /**
    * Presentation
    */
+  var socket = io.connect('/presentation');
+
   var _pages,
       _currentIndex = 0,
       _elemIndex = 0,
@@ -13,8 +15,6 @@
       canvas,
       params = getJsParam(),  // Load at first
       user_type = params.type;
-
-  var socket = io.connect();
 
   var _ANIMATION_TIME = '1s',
       _CONTAINER_ID = 'container',

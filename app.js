@@ -102,45 +102,55 @@ var currentIndex,
       presenter: []
     , listener : []
     };
-io.sockets.on('connection', function (socket) {
-  console.log('Session ID:', socket.handshake.sessionID);  // For debug
-  io.sockets.emit('statistics', count);
-  socket.on('page', function (data) {
-    socket.broadcast.emit('page', data);
-  });
-  socket.on('location', function (data) {
-    io.sockets.emit('location', data);
-  });
-  socket.on('clear', function (data) {
-    io.sockets.emit('clear', data);
-  });
-  socket.on('count', function (data) {
-    var arr = count[data.userType];
-    if (arr[data.pageNum] == null) {
-      arr[data.pageNum] = 0;
-    }
-    switch (data.action) {
+
+var presentation = io
+  .of('/presentation')
+  .on('connection', function (socket) {
+    console.log('Session ID:', socket.handshake.sessionID);  // For debug
+    io.of('/statistics').emit('statistics', count);
+    socket.on('page', function (data) {
+      socket.broadcast.emit('page', data);
+    });
+    socket.on('location', function (data) {
+      presentation.emit('location', data);
+    });
+    socket.on('clear', function (data) {
+      presentation.emit('clear', data);
+    });
+    socket.on('count', function (data) {
+      var arr = count[data.userType];
+      if (arr[data.pageNum] == null) {
+        arr[data.pageNum] = 0;
+      }
+      switch (data.action) {
       case 'count':
         arr[data.pageNum]++;
         break;
       case 'discount':
         arr[data.pageNum]--;
         break;
-    }
-    io.sockets.emit('statistics', count);
-    currentIndex = data.pageNum;
+      }
+      io.of('/statistics').emit('statistics', count);
+      currentIndex = data.pageNum;
+    });
+    socket.on('reset', function () {
+      count = {
+        presenter: []
+      , listener : []
+      };
+      isReset = true;
+      presentation.emit('reset');
+    });
+    socket.on('disconnect', function () {
+      console.log( 'Disconnect:', socket.handshake.sessionID);
+      if (!isReset) {
+        // TODO: Decrement count
+      }
   });
-  socket.on('reset', function () {
-    count = {
-      presenter: []
-    , listener : []
-    };
-    isReset = true;
-    io.sockets.emit('reset');
-  });
-  socket.on('disconnect', function () {
-    if (!isReset) {
-      // decrement count
-    }
+
+var statistics = io
+  .of('/statistics')
+  .on('connection', function (socket) {
+    statistics.emit('statistics', count);
   });
 });

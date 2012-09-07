@@ -2,10 +2,10 @@
   /**
    * Statistics
    */
+  var socket = io.connect('/statistics');
+
   var canvas,
       graph;
-
-  var socket = io.connect();
 
   var _CANVAS_ID = 'canvas',
       _CANVAS_WIDTH = 900,
