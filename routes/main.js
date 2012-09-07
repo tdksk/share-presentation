@@ -42,15 +42,7 @@ exports.login = function (req, res) {
       if (user.authenticate(req.body.password)) {
         // cookie生成
         res.cookie('user_id', req.body.user_id, { expires: new Date(Date.now() + _COOKIES_EXPIRES), httpOnly: true });
-
-        // Find user's presentations
-        Presentation.findByUserId(req.body.user_id, function (err, items) {
-          res.render('list', {
-            title: 'Presentation\'s list'
-            , presentations: items
-            , user_id: req.body.user_id
-          });
-        });
+        res.redirect('/');
       } else {
         console.log(err);
         res.redirect('back');
@@ -73,7 +65,8 @@ exports.createUser = function (req, res) {
       console.log(err);
       res.redirect('back');
     } else {
-      // TODO: Login automatically
+      // cookie生成
+      res.cookie('user_id', req.body.user_id, { expires: new Date(Date.now() + _COOKIES_EXPIRES), httpOnly: true });
       res.redirect('/');
     }
   });
