@@ -96,8 +96,7 @@ io.configure(function () {
 });
 
 // TODO: Optimize
-var currentIndex,
-    isReset,
+var userData = {},
     count = {
       presenter: []
     , listener : []
@@ -106,17 +105,23 @@ var currentIndex,
 var presentation = io
   .of('/presentation')
   .on('connection', function (socket) {
-    console.log('Session ID:', socket.handshake.sessionID);  // For debug
+    var sessionID = socket.handshake.sessionID;
+    console.log('Connect:', sessionID);  // For debug
+
     io.of('/statistics').emit('statistics', count);
+
     socket.on('page', function (data) {
       socket.broadcast.emit('page', data);
     });
+
     socket.on('location', function (data) {
       presentation.emit('location', data);
     });
+
     socket.on('clear', function (data) {
       presentation.emit('clear', data);
     });
+
     socket.on('count', function (data) {
       var arr = count[data.userType];
       if (arr[data.pageNum] == null) {
@@ -131,21 +136,28 @@ var presentation = io
         break;
       }
       io.of('/statistics').emit('statistics', count);
-      currentIndex = data.pageNum;
+      userData[sessionID] = {
+        userType: data.userType
+      , pageNum : data.pageNum
+      };
     });
+
     socket.on('reset', function () {
       count = {
         presenter: []
       , listener : []
       };
-      isReset = true;
       presentation.emit('reset');
     });
+
     socket.on('disconnect', function () {
-      console.log( 'Disconnect:', socket.handshake.sessionID);
-      if (!isReset) {
-        // TODO: Decrement count
+      console.log( 'Disconnect:', sessionID);  // For debug
+      var data = userData[sessionID],
+          arr = count[data.userType];
+      if (arr[data.pageNum]) {
+        arr[data.pageNum]--;
       }
+      io.of('/statistics').emit('statistics', count);
   });
 
 var statistics = io
