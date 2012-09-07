@@ -105,9 +105,8 @@ var userData = {},
 var presentation = io
   .of('/presentation')
   .on('connection', function (socket) {
-    var sessionID = socket.handshake.sessionID;
+    var sessionID = socket.id;
     console.log('Connect:', sessionID);  // For debug
-
     // io.of('/statistics').emit('statistics', count);
     console.log(count);
 
@@ -129,14 +128,14 @@ var presentation = io
         arr[data.pageNum] = 0;
       }
       switch (data.action) {
-      case 'count':
-        arr[data.pageNum]++;
-        // io.of('/statistics').emit('statistics', count);
-        console.log(count);
-        break;
-      case 'discount':
-        arr[data.pageNum]--;
-        break;
+        case 'count':
+          arr[data.pageNum]++;
+          // io.of('/statistics').emit('statistics', count);
+          console.log(count);
+          break;
+        case 'discount':
+          arr[data.pageNum]--;
+          break;
       }
       userData[sessionID] = {
         userType: data.userType
@@ -151,16 +150,24 @@ var presentation = io
         presenter: []
       , listener : []
       };
+      for (var key in userData) {
+        delete userData[key];
+      }
       presentation.emit('reset');
     });
 
     socket.on('disconnect', function () {
       console.log('Disconnect:', sessionID);  // For debug
-      var data = userData[sessionID],
-          arr = count[data.userType];
-      if (arr[data.pageNum]) {
-        arr[data.pageNum]--;
-        console.log('discount', userData);  // For debug
+      var data, arr;
+      // If not after 'reset'
+      if (userData[sessionID]) {
+        data = userData[sessionID];
+        arr = count[data.userType];
+        if (arr[data.pageNum]) {
+          arr[data.pageNum]--;
+          console.log('discount', userData);  // For debug
+        }
+        delete userData[sessionID];
       }
       // io.of('/statistics').emit('statistics', count);
       console.log(count);
