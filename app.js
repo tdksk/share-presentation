@@ -96,10 +96,14 @@ io.configure(function () {
 });
 
 // TODO: Optimize
-var userData = {},
-    count = {
+var _userData = {},
+    _pageCount = {
       presenter: []
     , listener : []
+    },
+    _reactionCount = {
+      good: []
+    , bad : []
     };
 
 var presentation = io
@@ -107,8 +111,8 @@ var presentation = io
   .on('connection', function (socket) {
     var sessionID = socket.id;
     console.log('Connect:', sessionID);  // For debug
-    // io.of('/statistics').emit('statistics', count);
-    console.log(count);
+    // io.of('/statistics').emit('statistics', _pageCount);
+    console.log(_pageCount);
 
     socket.on('page', function (data) {
       socket.broadcast.emit('page', data);
@@ -123,35 +127,57 @@ var presentation = io
     });
 
     socket.on('count', function (data) {
-      var arr = count[data.userType];
-      if (arr[data.pageNum] == null) {
-        arr[data.pageNum] = 0;
-      }
+      var arr = _pageCount[data.userType];
+      arr[data.pageNum] = arr[data.pageNum] || 0;
       switch (data.action) {
         case 'count':
           arr[data.pageNum]++;
-          // io.of('/statistics').emit('statistics', count);
-          console.log(count);
+          // io.of('/statistics').emit('statistics', _pageCount);
+          console.log(_pageCount);
           break;
         case 'discount':
           arr[data.pageNum]--;
           break;
       }
-      userData[sessionID] = {
+      _userData[sessionID] = {
         userType: data.userType
       , pageNum : data.pageNum
       };
-      console.log(data.action, userData);  // For debug
+      console.log(data.action, _userData);  // For debug
+    });
+
+    socket.on('reaction', function (data) {
+      var arr = _reactionCount[data.type];
+      arr[data.pageNum] = arr[data.pageNum] || 0;
+      arr[data.pageNum]++;
+      presentation.emit('reaction count', _reactionCount);
+      console.log(_reactionCount);  // For debug
+    });
+
+    socket.on('get reaction', function () {
+      presentation.emit('reaction count', _reactionCount);
+    });
+
+    socket.on('reset reaction', function (data) {
+      _reactionCount = {
+        good: []
+      , bad : []
+      };
+      presentation.emit('reaction count', _reactionCount);
     });
 
     socket.on('reset', function () {
       console.log('Reset');  // For debug
-      count = {
+      _pageCount = {
         presenter: []
       , listener : []
       };
-      for (var key in userData) {
-        delete userData[key];
+      _reactionCount = {
+        good: []
+      , bad : []
+      };
+      for (var key in _userData) {
+        delete _userData[key];
       }
       presentation.emit('reset');
     });
@@ -160,17 +186,17 @@ var presentation = io
       console.log('Disconnect:', sessionID);  // For debug
       var data, arr;
       // If not after 'reset'
-      if (userData[sessionID]) {
-        data = userData[sessionID];
-        arr = count[data.userType];
+      if (_userData[sessionID]) {
+        data = _userData[sessionID];
+        arr = _pageCount[data.userType];
         if (arr[data.pageNum]) {
           arr[data.pageNum]--;
-          console.log('discount', userData);  // For debug
+          console.log('discount', _userData);  // For debug
         }
-        delete userData[sessionID];
+        delete _userData[sessionID];
       }
-      // io.of('/statistics').emit('statistics', count);
-      console.log(count);
+      // io.of('/statistics').emit('statistics', _pageCount);
+      console.log(_pageCount);
     });
 
 var statistics = io
@@ -179,11 +205,11 @@ var statistics = io
     var _SHOW_COUNT_INTERVAL = 3000;
 
     // Show count when statistics page is loaded
-    socket.emit('statistics', count);
+    socket.emit('statistics', _pageCount);
 
     // Show count at regular intervals
     var showCountTimerId = setInterval(function () {
-      socket.emit('statistics', count);
+      socket.emit('statistics', _pageCount);
     }, _SHOW_COUNT_INTERVAL);
 
     socket.on('disconnect', function () {

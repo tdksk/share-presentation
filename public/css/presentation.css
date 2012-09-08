@@ -263,7 +263,13 @@ to{
 */
 
 /* For debug */
-#debug {
+#user-type {
   position: absolute;
+  z-index: 10000;
+}
+
+#reaction-count {
+  position: absolute;
+  top: 30px;
   z-index: 10000;
 }

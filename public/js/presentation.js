@@ -61,8 +61,8 @@
     _initPage(_currentIndex);
 
     // For debug
-    debug.innerHTML = '<ul>';
-    debug.innerHTML += '<li>User type: ' + _user_type;
+    var debug = document.getElementById('user-type');
+    debug.innerHTML += '<p>User type: ' + _user_type + '</p>';
   }
 
   /**
@@ -91,6 +91,18 @@
           _sendPageActionName('prev');
         }
         _prevPage();
+        break;
+      // G
+      case 71:
+        if (_user_type === 'listener') {
+          _sendReactionName('good');
+        }
+        break;
+      // B
+      case 66:
+        if (_user_type === 'listener') {
+          _sendReactionName('bad');
+        }
         break;
       // 0
       case 48:
@@ -140,6 +152,13 @@
     socket.emit('page', {
       pageNum: _currentIndex
     , action: actionName
+    });
+  }
+
+  function _sendReactionName(reactionName) {
+    socket.emit('reaction', {
+      pageNum: _currentIndex
+    , type: reactionName
     });
   }
 
@@ -206,6 +225,7 @@
 
     _countIndex(index);
     _clearCanvas();
+    socket.emit('get reaction');
   }
 
   function _movedPage(e) {
@@ -332,8 +352,11 @@
     }
   });
 
-  socket.on('reset', function () {
-    location.reload(true);
+  socket.on('reaction count', function (data) {
+    // For debug
+    var debug = document.getElementById('reaction-count');
+    debug.innerHTML = '<p>Good: ' + data.good[_currentIndex] + '</p>'
+                      + '<p>Bad: ' + data.bad[_currentIndex] + '</p>';
   });
 
   socket.on('location', function (data) {
@@ -353,6 +376,10 @@
       _beforeX = currentX;
       _beforeY = currentY;
     }
+  });
+
+  socket.on('reset', function () {
+    location.reload(true);
   });
 
   /**
