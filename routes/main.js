@@ -8,25 +8,18 @@ var model = require('../model');
 var User = model.User,
     Presentation = model.Presentation;
 
-var _COOKIES_EXPIRES = 60 * 60 * 24;  // cookieの有効期限 (24時間)
-
 // TODO: Modify authorization
 
 exports.index = function (req, res) {
+  console.log('expresss session\'s user_id:', req.session.user_id); //debug
   // ログイン済みユーザはlistを表示
-  var cookies = {};
-  req.headers.cookie && req.headers.cookie.split(';').forEach(function (cookie) {
-    var parts = cookie.split('=');
-    cookies[parts[0].trim()] = (parts[1] || '').trim();
-  });
-  // console.log(cookies);  // For debug
-  if (cookies.user_id) {
+  if (req.session.user_id) {
     // Find user's presentations
-    Presentation.findByUserId(cookies.user_id, function (err, items) {
+    Presentation.findByUserId(req.session.user_id, function (err, items) {
       res.render('list', {
         title: 'Presentation\'s list'
       , presentations: items
-      , user_id: cookies.user_id
+      , user_id: req.session.user_id
       });
     });
   } else {
@@ -40,8 +33,7 @@ exports.login = function (req, res) {
   User.findByUserId(req.body.user_id, function (err, user) {
     if (user) {
       if (user.authenticate(req.body.password)) {
-        // cookie生成
-        res.cookie('user_id', req.body.user_id, { expires: new Date(Date.now() + _COOKIES_EXPIRES), httpOnly: true });
+        req.session.user_id = req.body.user_id;
         res.redirect('/');
       } else {
         console.log(err);
@@ -65,8 +57,7 @@ exports.createUser = function (req, res) {
       console.log(err);
       res.redirect('back');
     } else {
-      // cookie生成
-      res.cookie('user_id', req.body.user_id, { expires: new Date(Date.now() + _COOKIES_EXPIRES), httpOnly: true });
+      req.session.user_id = req.body.user_id;
       res.redirect('/');
     }
   });
@@ -79,14 +70,8 @@ exports.newPresentation = function (req, res) {
 };
 
 exports.createPresentation = function (req, res) {
-  var cookies = {};
-  // Check cookie
-  req.headers.cookie && req.headers.cookie.split(';').forEach(function (cookie) {
-    var parts = cookie.split('=');
-    cookies[parts[0].trim()] = (parts[ 1 ] || '').trim();
-  });
-  // Get user_id from cookie
-  req.body.user_id = cookies.user_id;
+  //Get user id from session
+  req.body.user_id = req.session.user_id;
   // Create presentaion
   var newPresentation = new Presentation(req.body);
   newPresentation.save(function (err) {
@@ -102,15 +87,9 @@ exports.createPresentation = function (req, res) {
 // TODO: deletePresentation
 
 exports.presentationTest = function (req, res) {
-  var cookies = {},
-      user_type;
-  // Check cookie
-  req.headers.cookie && req.headers.cookie.split(';').forEach(function (cookie) {
-    var parts = cookie.split('=');
-    cookies[parts[0].trim()] = (parts[ 1 ] || '').trim();
-  });
+  var user_type;
   // presenter or listener
-  user_type = (cookies.user_id) ? 'presenter' : 'listener';
+  user_type = (req.session.user_id) ? 'presenter' : 'listener';
   res.render('presentationTest', { title: 'Share Presentation Test', user_type: user_type });
 };
 
@@ -119,7 +98,6 @@ exports.statistics = function (req, res) {
 };
 
 exports.logout = function (req, res) {
-  res.clearCookie('user_id');
   req.session.destroy();
   res.redirect('/');
 };
