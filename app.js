@@ -15,18 +15,16 @@ var app = express(),
     server = http.createServer(app),
     io = socketio.listen(server);
 
-var MemoryStore = express.session.MemoryStore,
-    sessionStore = new MemoryStore();
+var// MemoryStore = express.session.MemoryStore,
+    MongoStore = require('connect-mongodb'),
+    sessionStore = new MongoStore({url: 'mongodb://localhost/project3'});
 
 // TODO: Any library?
-var parseCookie = function (cookie) {
-  var cookies = {};
-  cookie && cookie.split(';').forEach(function (c) {
-    var parts = c.split('=');
-    cookies[parts[0].trim()] = (parts[ 1 ] || '').trim();
-  });
-  return cookies;
+var parseCookie = function (cookies, key) {
+    var arr = require('cookie').parse(cookies)[key];
+    return arr.split(":")[1].split(".")[0];
 };
+var Session = connect.middleware.session.Session;
 
 
 app.configure(function(){
@@ -74,22 +72,19 @@ io.configure(function () {
       // Get express.sid from cookie
       var sessionID = parseCookie(cookie)['connect.sid'];
       handshakeData.sessionID = sessionID;
-      // Authorized OK
-      callback(null, true);
+      
       // Get session from storage
-      /*
-      sessionStore.get(sessionID, function (err, session) {
-        if (err) {
+      sessionStore.get(sessionID, function(err, session){
+        if(err){
           callback(err.message, false);
-        } else {
-          // Save session data
-          handshakeData.session = session;
-          // Authorized OK
+        }else{
+          //Save session data
+          handshakeData.session = new Session(handshakeData, session);
+          //Auehorized OK
           callback(null, true);
         }
       });
-      */
-    } else {
+   } else {
       return callback('Cannot find cookie', false);
     }
   });
