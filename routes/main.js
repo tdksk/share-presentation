@@ -8,16 +8,14 @@ var model = require('../model');
 var User = model.User,
     Presentation = model.Presentation;
 
-// TODO: Modify authorization
-
 exports.index = function (req, res) {
-  console.log('expresss session\'s user_id:', req.session.user_id); //debug
+  console.log('Express session\'s user_id:', req.session.user_id);  // For debug
   // ログイン済みユーザはlistを表示
   if (req.session.user_id) {
     // Find user's presentations
     Presentation.findByUserId(req.session.user_id, function (err, items) {
       res.render('list', {
-        title: 'Presentation\'s list'
+        title: 'Presentation list'
       , presentations: items
       , user_id: req.session.user_id
       });
@@ -33,6 +31,7 @@ exports.login = function (req, res) {
   User.findByUserId(req.body.user_id, function (err, user) {
     if (user) {
       if (user.authenticate(req.body.password)) {
+        // Save user id to session
         req.session.user_id = req.body.user_id;
         res.redirect('/');
       } else {
@@ -70,7 +69,7 @@ exports.newPresentation = function (req, res) {
 };
 
 exports.createPresentation = function (req, res) {
-  //Get user id from session
+  // Get user id from session
   req.body.user_id = req.session.user_id;
   // Create presentaion
   var newPresentation = new Presentation(req.body);
@@ -98,6 +97,7 @@ exports.statistics = function (req, res) {
 };
 
 exports.logout = function (req, res) {
+  // Destroy session
   req.session.destroy();
   res.redirect('/');
 };

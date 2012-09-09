@@ -7,25 +7,25 @@ var express = require('express'),
     socketio = require('socket.io'),
     routes = require('./routes/main'),
     http = require('http'),
-    path = require('path');
-    // FIXME: Error: Cannot find module 'connect'
-    // connect = require('connect');
+    path = require('path'),
+    connect = require('connect');
 
 var app = express(),
     server = http.createServer(app),
     io = socketio.listen(server);
 
-var// MemoryStore = express.session.MemoryStore,
-    MongoStore = require('connect-mongodb'),
-    sessionStore = new MongoStore({url: 'mongodb://localhost/project3'});
+var MongoStore = require('connect-mongodb'),
+    sessionStore = new MongoStore({ url: 'mongodb://localhost/project3' }),
+    Session = connect.middleware.session.Session;
 
-// TODO: Any library?
-var parseCookie = function (cookies, key) {
-    var arr = require('cookie').parse(cookies)[key];
-    return arr.split(":")[1].split(".")[0];
+// Override cookie.parse
+var parseCookie = function (cookies) {
+  var obj = require('cookie').parse(cookies);
+  for (var key in obj) {
+    obj[key] = obj[key].split(":")[1].split(".")[0];
+  }
+  return obj;
 };
-var Session = connect.middleware.session.Session;
-
 
 app.configure(function(){
   app.set('port', process.env.PORT || 8080);
@@ -38,6 +38,7 @@ app.configure(function(){
   app.use(express.session({
     secret: "hogehoge"
   , store: sessionStore
+  , cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }  // 1 week
   }));
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
@@ -62,8 +63,7 @@ server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
-// TODO: Use session storage
-// Configuration
+// Socket.IO Configuration
 io.configure(function () {
   io.set('authorization', function (handshakeData, callback) {
     if (handshakeData.headers.cookie) {
@@ -74,13 +74,13 @@ io.configure(function () {
       handshakeData.sessionID = sessionID;
       
       // Get session from storage
-      sessionStore.get(sessionID, function(err, session){
-        if(err){
+      sessionStore.get(sessionID, function (err, session) {
+        if (err) {
           callback(err.message, false);
-        }else{
-          //Save session data
+        } else {
+          // Save session data
           handshakeData.session = new Session(handshakeData, session);
-          //Auehorized OK
+          // Authorized OK
           callback(null, true);
         }
       });
