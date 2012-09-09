@@ -4,7 +4,7 @@ Project 3
 Required
 --------
 
-* node
+* node v0.8.8
 * npm
 * mongodb
 
@@ -25,6 +25,9 @@ How to use
 
 ### Listener
 * Click 'Show presentatn DEMO' from top page
+
+### Real time presentation view count
+* Click 'Show statistics DEMO' from top page
 
 プレゼンテーションスライドの操作方法
 ------------------------------------
