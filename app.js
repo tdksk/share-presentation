@@ -53,11 +53,15 @@ app.get('/', routes.index);
 app.post('/', routes.login);
 app.get('/newUser', routes.newUser);
 app.post('/createUser', routes.createUser);
+app.post('/deleteUser', routes.deleteUser);
 app.get('/newPresentation', routes.newPresentation);
 app.post('/createPresentation', routes.createPresentation);
+app.post('/deletePresentation', routes.deletePresentation);
 app.get('/presentationTest', routes.presentationTest);
 app.get('/statistics', routes.statistics);
 app.get('/logout', routes.logout);
+app.get('/admin', routes.adminUser);
+app.get('/admin_Presentation', routes.adminPresentation);
 
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

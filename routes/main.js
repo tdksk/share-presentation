@@ -10,7 +10,7 @@ var User = model.User,
 
 exports.index = function (req, res) {
   console.log('Express session\'s user_id:', req.session.user_id);  // For debug
-  // ログイン済みユーザはlistを表示
+  // render list if login
   if (req.session.user_id) {
     // Find user's presentations
     Presentation.findByUserId(req.session.user_id, function (err, items) {
@@ -21,7 +21,7 @@ exports.index = function (req, res) {
       });
     });
   } else {
-    // ログイン済みでなければトップページを表示
+    // else, render login page
     res.render('index', { title: 'Share Presentation' });
   }
 };
@@ -62,7 +62,19 @@ exports.createUser = function (req, res) {
   });
 };
 
-// TODO: deleteUser
+exports.deleteUser = function (req, res){
+  User.remove({ user_id: req.body.user_id }, function (err){
+      if(err){
+	  console.log(err);
+	  res.render('/');
+      }else{
+	  console.log('delete success', req.body.user_id);
+	  res.render('admin');
+      }
+  });
+};
+
+
 
 exports.newPresentation = function (req, res) {
   res.render('newPresentation', { title: 'Upload your presentation' });
@@ -84,6 +96,17 @@ exports.createPresentation = function (req, res) {
 };
 
 // TODO: deletePresentation
+exports.deletePresentation = function (req, res){
+  Presentation.remove({ user_id: req.body.user_id, presentation_id: req.body.presentation_id }, function (err){
+      if(err){
+	  console.log(err);
+	  res.render('/');
+      }else{
+	  console.log('delete success', req.body.presentation_id);
+	  res.render('/admin_Presentation');
+      }
+  });
+};
 
 exports.presentationTest = function (req, res) {
   var user_type;
@@ -94,6 +117,35 @@ exports.presentationTest = function (req, res) {
 
 exports.statistics = function (req, res) {
   res.render('statistics', { title: 'Statistics' });
+};
+
+//admin
+exports.adminUser = function (req, res) {
+    User.find({}, function (err, items){
+	if(err){
+	    console.log(err);
+	    res.render('/');
+	}else{
+	    res.render('admin', {
+		title: 'admin page(user)',
+                users: items
+	    });
+	}
+    });
+};
+
+exports.adminPresentation = function (req, res) {
+    Presentation.find({}, function (err, items){
+	if(err){
+	    console.log(err);
+	    res.render('/');
+	}else{
+	    res.render('admin_Presentation', {
+		title: 'admin page(presentation)',
+                presentations: items
+	    });
+	}
+    });
 };
 
 exports.logout = function (req, res) {

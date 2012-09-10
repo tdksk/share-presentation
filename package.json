@@ -12,6 +12,7 @@
     "socket.io": "~0.9.10",
     "cookie": "0.0.4",
     "connect-mongodb": "~1.1.5",
-    "connect": "~2.4.5"
+    "connect": "~2.4.5",
+    "mongoose-schema-extend": "~0.1.1"
   }
 }

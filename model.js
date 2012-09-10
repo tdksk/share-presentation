@@ -1,4 +1,5 @@
 var mongoose = require('mongoose'),
+    extend = require('mongoose-schema-extend'),
     crypto = require('crypto');
 
 var db = mongoose.connect('mongodb://localhost/project3');
@@ -68,6 +69,12 @@ var Presentation = new mongoose.Schema({
 Presentation.statics.findByUserId = function (user_id, callback) {
   this.find({ user_id: user_id }, callback);
 };
+
+/**
+ * Amiministrator model
+ */
+ //var Admin = User
+
 
 /**
  * Utilities
