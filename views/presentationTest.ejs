@@ -8,14 +8,24 @@
     <link rel='stylesheet' href='/css/presentation.css'>
   </head>
   <body>
+    <!-- Options -->
     <div id="options">
       <!-- For debug -->
       <div id="user-type"></div>
       <div id="user-count"></div>
       <div id="reaction-count"></div>
+
+      <!-- Buttons -->
+      <% if (user_type === 'listener') { %>
+      <div id="buttons">
+        <button class="sync" onclick="syncPage()">Sync</button>
+        <button class="good" onclick="sendReactionName('good')">Good</button>
+        <button class="bad" onclick="sendReactionName('bad')">Bad</button>
+      </div>
+      <% } %>
     </div>
 
-    <!-- Content -->
+    <!-- Contents -->
     <div id="container">
       <canvas id="canvas"></canvas>
       <article>

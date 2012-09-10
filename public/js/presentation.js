@@ -33,7 +33,7 @@
       if ($$.isMobile()) {
         // Prevent default touch event
         // TODO: Optimize
-        window.ontouchstart = function (e) {
+        container.ontouchstart = function (e) {
           e.preventDefault();
         };
         // Set touch events
@@ -115,14 +115,19 @@
         e.preventDefault();
         break;
 
-      case 68:  // D
+      case 79:  // O
         _toggleOptions();  // For debug
         e.preventDefault();
         break;
 
       case 48:  // 0
-        socket.emit('reset');  // For debug
+        if (_user_type === 'presenter') {
+          socket.emit('reset');  // For debug
+        } else if (_user_type === 'listener'){
+          _syncPage();
+        }
         e.preventDefault();
+        break;
     }
   }
 
@@ -178,33 +183,26 @@
     });
   }
 
-  function _nextPage(showFlg) {
-    var currentPage, nextPage;
-    if (_currentIndex === _pages.length - 1) return;
-
-    currentPage = _pages[_currentIndex];
-    nextPage = _pages[_currentIndex + 1];
-
-    currentPage.removeEventListener('webkitAnimationEnd', _movedPage);
-    nextPage.removeEventListener('webkitAnimationEnd', _movedPage);
-
-    currentPage.addEventListener('webkitAnimationEnd', _movedPage);
-    nextPage.style.display = 'block';
-
-    currentPage.className = 'move_to_left';
-    nextPage.className = 'move_from_right';
-
-    _discountIndex(_currentIndex);
-    _currentIndex++;
-    _initPage(_currentIndex);
+  function _nextPage() {
+    _movePage(_currentIndex + 1);
   }
 
   function _prevPage(){
+    _movePage(_currentIndex - 1, true);
+  }
+
+  function _movePage(toIndex, showFlg) {
     var currentPage, nextPage;
-    if (_currentIndex === 0) return;
+
+    if (_currentIndex === toIndex) return;
+    if (_currentIndex < toIndex) {
+      if (_currentIndex === _pages.length - 1) return;
+    } else {
+      if (_currentIndex === 0) return;
+    }
 
     currentPage = _pages[_currentIndex];
-    nextPage = _pages[_currentIndex - 1];
+    nextPage = _pages[toIndex];
 
     currentPage.removeEventListener('webkitAnimationEnd', _movedPage);
     nextPage.removeEventListener('webkitAnimationEnd', _movedPage);
@@ -212,12 +210,17 @@
     currentPage.addEventListener('webkitAnimationEnd', _movedPage);
     nextPage.style.display = 'block';
 
-    currentPage.className = 'move_to_right';
-    nextPage.className = 'move_from_left';
+    if (_currentIndex < toIndex) {
+      currentPage.className = 'move_to_left';
+      nextPage.className = 'move_from_right';
+    } else {
+      currentPage.className = 'move_to_right';
+      nextPage.className = 'move_from_left';
+    }
 
     _discountIndex(_currentIndex);
-    _currentIndex--;
-    _initPage(_currentIndex, true);
+    _currentIndex = toIndex;
+    _initPage(_currentIndex, showFlg);
   }
 
   function _initPage(index, showFlg){
@@ -261,6 +264,10 @@
     elem.style.opacity = 1;
 
     _elemIndex++;
+  }
+
+  function _syncPage() {
+    socket.emit('sync page', _currentIndex);
   }
 
   /**
@@ -382,6 +389,10 @@
     }
   });
 
+  socket.on('sync page', function (data) {
+    _movePage(data);
+  });
+
   socket.on('user count', function (data) {
     // For debug
     var debug = document.getElementById('user-count');
@@ -422,4 +433,10 @@
    * Initialize
    */
   window.addEventListener('DOMContentLoaded', initialize, false);
+
+  /**
+   * Export
+   */
+  window.sendReactionName = _sendReactionName;
+  window.syncPage = _syncPage;
 })();
