@@ -33,8 +33,13 @@
    */
   socket.on('statistics', function (count) {
     var user_type,
-        arr;
+        arr,
+        total_user_count = {
+          presenter: 0
+        , listener : 0
+        };
 
+    // Draw graph
     // TODO: グラフの長さを動的に変える
     // TODO: 凡例つける
     graph.clear();
@@ -44,7 +49,10 @@
       if (!arr.length) continue;
 
       for (var i = 0, length = arr.length; i < length; i++) {
+        // For graph
         data[i] = [i + 1, arr[i]];
+        // For total count
+        total_user_count[user_type] += arr[i];
       }
 
       // Set data
@@ -62,6 +70,10 @@
       // Draw graph
       graph.draw();
     }
+
+    // Show total count
+    var user_count = document.getElementById('user-count');
+    user_count.innerHTML = '<p>Listener: ' + total_user_count.listener + '</p>';
   });
 
   /**

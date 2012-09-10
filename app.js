@@ -130,8 +130,6 @@ var presentation = io
   .on('connection', function (socket) {
     var sessionID = socket.id;
     console.log('Presentation connect:', sessionID);  // For debug
-    // io.of('/statistics').emit('statistics', _pageCount);
-    console.log(_pageCount);
 
     socket.on('page', function (data) {
       socket.broadcast.emit('page', data);
@@ -152,6 +150,7 @@ var presentation = io
         case 'count':
           arr[data.pageNum]++;
           // io.of('/statistics').emit('statistics', _pageCount);
+          presentation.emit('user count', _pageCount);
           console.log(_pageCount);
           break;
         case 'discount':
@@ -215,6 +214,7 @@ var presentation = io
         delete _userData[sessionID];
       }
       // io.of('/statistics').emit('statistics', _pageCount);
+      presentation.emit('user count', _pageCount);
       console.log(_pageCount);
     });
 
