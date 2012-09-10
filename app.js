@@ -135,6 +135,20 @@ var presentation = io
       socket.broadcast.emit('page', data);
     });
 
+    socket.on('sync page', function (data) {
+      var arr,
+          presenterIndex;
+      arr = _pageCount.presenter;
+      for (var i = 0, length = arr.length; i < length; i++) {
+        arr[i] = arr[i] || 0;
+      }
+      presenterIndex = arr.indexOf(Math.max.apply(null, arr));
+      if (data !== presenterIndex) {
+        socket.emit('sync page', presenterIndex);
+        console.log('Sync page:', presenterIndex);  // For debug
+      }
+    });
+
     socket.on('location', function (data) {
       presentation.emit('location', data);
     });

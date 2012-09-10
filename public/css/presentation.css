@@ -265,5 +265,44 @@ to{
 /* Options */
 #options {
   position: absolute;
-  z-index: 1000;
+  z-index: 1001;
+  width: 100%;
+  height: 100%;
+}
+
+/* Buttons */
+#buttons {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 1001;
+}
+
+#buttons button {
+  border: 0 none;
+  margin: 0;
+  padding: 0;
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+  opacity: .8;
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#buttons button:hover {
+  opacity: .6;
+}
+
+#buttons button.sync {
+  background: url(../img/sync.png) no-repeat;
+}
+
+#buttons button.good {
+  background: url(../img/good.png) no-repeat;
+}
+
+#buttons button.bad {
+  background: url(../img/bad.png) no-repeat;
 }
