@@ -336,11 +336,18 @@
    */
   function _toggleOptions() {
     var options = document.getElementById('options');
+    var buttons = document.getElementById('buttons');
     if (_optionIsShown) {
       options.style.display = 'none';
+      if (_user_type === 'listener') {
+        buttons.style.display = 'none';
+      }
       _optionIsShown = false;
     } else {
       options.style.display = 'block';
+      if (_user_type === 'listener') {
+        buttons.style.display = 'block';
+      }
       _optionIsShown = true;
     }
   }
