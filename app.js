@@ -60,7 +60,11 @@ app.post('/deletePresentation', routes.deletePresentation);
 app.get('/presentationTest', routes.presentationTest);
 app.get('/statistics', routes.statistics);
 app.get('/logout', routes.logout);
-app.get('/admin', routes.adminUser);
+app.get('/newAdministrator', routes.newAdministrator);
+app.post('/createAdministrator', routes.createAdministrator);
+app.get('/admin', routes.Adminindex);
+app.post('/admin', routes.loginAdmin);
+app.get('/admin_User', routes.adminUser);
 app.get('/admin_Presentation', routes.adminPresentation);
 
 server.listen(app.get('port'), function(){
@@ -76,7 +80,7 @@ io.configure(function () {
       // Get express.sid from cookie
       var sessionID = parseCookie(cookie)['connect.sid'];
       handshakeData.sessionID = sessionID;
-
+      
       // Get session from storage
       sessionStore.get(sessionID, function (err, session) {
         if (err) {
@@ -105,35 +109,13 @@ var _userData = {},
     , bad : []
     };
 
-// FIXME: Cannot work handshake.session.reload
-/*
-io.sockets.on('connection', function (socket) {
-  var _SESSION_UPDATE_INTERVAL = 3 * 1000;  // 3 seconds
-
-  var handshake = socket.handshake;
-  console.log('Connect:', handshake.sessionID);  // For debug
-
-  var updateSessionTimerId = setInterval(function () {
-    // Reload session
-    handshake.session.reload(function () {
-      // Update lastAccess and maxAge
-      handshake.session.touch().save();
-      console.log('Update:', handshake.sessionID);  // For debug
-    });
-  }, _SESSION_UPDATE_INTERVAL);
-
-  socket.on('disconnect', function () {
-    console.log('Disconnect:', handshake.sessionID);  // For debug
-    clearInterval(updateSessionTimerId);
-  });
-});
-*/
-
 var presentation = io
   .of('/presentation')
   .on('connection', function (socket) {
     var sessionID = socket.id;
-    console.log('Presentation connect:', sessionID);  // For debug
+    console.log('Connect:', sessionID);  // For debug
+    // io.of('/statistics').emit('statistics', _pageCount);
+    console.log(_pageCount);
 
     socket.on('page', function (data) {
       socket.broadcast.emit('page', data);
@@ -168,7 +150,6 @@ var presentation = io
         case 'count':
           arr[data.pageNum]++;
           // io.of('/statistics').emit('statistics', _pageCount);
-          presentation.emit('user count', _pageCount);
           console.log(_pageCount);
           break;
         case 'discount':
@@ -222,7 +203,7 @@ var presentation = io
     });
 
     socket.on('disconnect', function () {
-      console.log('Presentation disconnect:', sessionID);  // For debug
+      console.log('Disconnect:', sessionID);  // For debug
       var data, arr;
       // If not after 'reset'
       if (_userData[sessionID]) {
@@ -235,7 +216,6 @@ var presentation = io
         delete _userData[sessionID];
       }
       // io.of('/statistics').emit('statistics', _pageCount);
-      presentation.emit('user count', _pageCount);
       console.log(_pageCount);
     });
 
