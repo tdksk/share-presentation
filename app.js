@@ -143,9 +143,6 @@ var presentation = io
       var arr,
           presenterIndex;
       arr = _pageCount.presenter;
-      for (var i = 0, length = arr.length; i < length; i++) {
-        arr[i] = arr[i] || 0;
-      }
       presenterIndex = arr.indexOf(Math.max.apply(null, arr));
       if (data !== presenterIndex) {
         socket.emit('sync page', presenterIndex);
@@ -163,7 +160,10 @@ var presentation = io
 
     socket.on('count', function (data) {
       var arr = _pageCount[data.userType];
-      arr[data.pageNum] = arr[data.pageNum] || 0;
+      for (var i = 0, length = data.pageNum + 1; i < length; i++) {
+        arr[i] = arr[i] || 0;
+      }
+      // arr[data.pageNum] = arr[data.pageNum] || 0;
       switch (data.action) {
         case 'count':
           arr[data.pageNum]++;
@@ -184,7 +184,10 @@ var presentation = io
 
     socket.on('reaction', function (data) {
       var arr = _reactionCount[data.type];
-      arr[data.pageNum] = arr[data.pageNum] || 0;
+      for (var i = 0, length = data.pageNum + 1; i < length; i++) {
+        arr[i] = arr[i] || 0;
+      }
+      // arr[data.pageNum] = arr[data.pageNum] || 0;
       arr[data.pageNum]++;
       presentation.emit('reaction count', _reactionCount);
       console.log(_reactionCount);  // For debug
