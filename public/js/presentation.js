@@ -121,8 +121,13 @@
         break;
 
       case 48:  // 0
-        socket.emit('reset');  // For debug
+        if (_user_type === 'presenter') {
+          socket.emit('reset');  // For debug
+        } else if (_user_type === 'listener'){
+          _syncPage();
+        }
         e.preventDefault();
+        break;
     }
   }
 

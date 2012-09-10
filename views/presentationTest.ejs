@@ -16,11 +16,13 @@
       <div id="reaction-count"></div>
 
       <!-- Buttons -->
+      <% if (user_type === 'listener') { %>
       <div id="buttons">
         <button class="sync" onclick="syncPage()">Sync</button>
         <button class="good" onclick="sendReactionName('good')">Good</button>
         <button class="bad" onclick="sendReactionName('bad')">Bad</button>
       </div>
+      <% } %>
     </div>
 
     <!-- Contents -->
