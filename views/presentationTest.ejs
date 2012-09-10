@@ -25,9 +25,14 @@
     </div>
     <% } %>
 
-    <!-- Contents -->
+    <!-- Graph -->
+    <canvas id="graph"></canvas>
+
+    <!-- Main -->
     <div id="container">
+      <!-- Canvas -->
       <canvas id="canvas"></canvas>
+      <!-- Contents -->
       <article>
         <div class="wrapper title">
           <h1>TechStuDIG2012</h1>
@@ -635,6 +640,7 @@
     </div>
 
     <script src='/socket.io/socket.io.js'></script>
+    <script src='/js/graph.js'></script>
     <script src='/js/quo.js'></script>
     <script src='/js/presentation.js?type=<%= user_type %>'></script>
   </body>
