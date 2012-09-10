@@ -62,7 +62,9 @@ app.get('/statistics', routes.statistics);
 app.get('/logout', routes.logout);
 app.get('/newAdministrator', routes.newAdministrator);
 app.post('/createAdministrator', routes.createAdministrator);
-app.get('/admin', routes.adminUser);
+app.get('/admin', routes.Adminindex);
+app.post('/admin', routes.loginAdmin);
+app.get('/admin_User', routes.adminUser);
 app.get('/admin_Presentation', routes.adminPresentation);
 
 server.listen(app.get('port'), function(){
@@ -117,20 +119,6 @@ var presentation = io
 
     socket.on('page', function (data) {
       socket.broadcast.emit('page', data);
-    });
-
-    socket.on('sync page', function (data) {
-      var arr,
-          presenterIndex;
-      arr = _pageCount.presenter;
-      for (var i = 0, length = arr.length; i < length; i++) {
-        arr[i] = arr[i] || 0;
-      }
-      presenterIndex = arr.indexOf(Math.max.apply(null, arr));
-      if (data !== presenterIndex) {
-        socket.emit('sync page', presenterIndex);
-        console.log('Sync page:', presenterIndex);  // For debug
-      }
     });
 
     socket.on('location', function (data) {

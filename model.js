@@ -75,7 +75,6 @@ Presentation.statics.findByUserId = function (user_id, callback) {
  */
 var Administrator = User.extend();
 
-
 /**
  * Utilities
  */
