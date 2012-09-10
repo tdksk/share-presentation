@@ -13,6 +13,7 @@
       _beforeY,
       _isClicking,
       _canvas,
+      _optionIsShown = true,
       _params = _getJsParam(),  // Load at first
       _user_type = _params.type;
 
@@ -71,42 +72,57 @@
   function _keyPressAction(e) {
     var code = e.keyCode;
     switch (code) {
-      // Enter
-      case 13:
+      case 13:  // Enter
+      case 32:  // Space
+      case 40:  // Down arrow
+      case 74:  // J
         if (_user_type === 'presenter') {
           _sendPageActionName('progress');
         }
         _progressPage();
+        e.preventDefault();
         break;
-      // Right
-      case 39:
+
+      case 39:  // Right arrow
+      case 76:  // L
         if (_user_type === 'presenter') {
           _sendPageActionName('next');
         }
         _nextPage();
+        e.preventDefault();
         break;
-      // Left
-      case 37:
+
+      case 37:  // Left arrow
+      case 72:  // H
         if (_user_type === 'presenter') {
           _sendPageActionName('prev');
         }
         _prevPage();
+        e.preventDefault();
         break;
-      // G
-      case 71:
+
+      case 71:  // G
         if (_user_type === 'listener') {
           _sendReactionName('good');
         }
+        e.preventDefault();
         break;
-      // B
-      case 66:
+
+      case 66:  // B
         if (_user_type === 'listener') {
           _sendReactionName('bad');
         }
+        e.preventDefault();
         break;
-      // 0
-      case 48:
+
+      case 68:  // D
+        _toggleOptions();  // For debug
+        e.preventDefault();
+        break;
+
+      case 48:  // 0
         socket.emit('reset');  // For debug
+        e.preventDefault();
     }
   }
 
@@ -309,6 +325,20 @@
   }
 
   /**
+   * Show options
+   */
+  function _toggleOptions() {
+    var options = document.getElementById('options');
+    if (_optionIsShown) {
+      options.style.display = 'none';
+      _optionIsShown = false;
+    } else {
+      options.style.display = 'block';
+      _optionIsShown = true;
+    }
+  }
+
+  /**
    * Utilities
    */
   function _getCurrentIndex() {
@@ -350,6 +380,12 @@
     if (_currentIndex === data.pageNum) {
       _actionByName(data.action);
     }
+  });
+
+  socket.on('user count', function (data) {
+    // For debug
+    var debug = document.getElementById('user-count');
+    debug.innerHTML = '<p>View this page (listener): ' + data.listener[_currentIndex] + '</p>';
   });
 
   socket.on('reaction count', function (data) {
