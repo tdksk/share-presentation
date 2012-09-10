@@ -73,7 +73,7 @@ Presentation.statics.findByUserId = function (user_id, callback) {
 /**
  * Amiministrator model
  */
- //var Admin = User
+var Administrator = User.extend();
 
 
 /**
@@ -93,3 +93,4 @@ function validatePassword(value) {
  */
 exports.User = db.model('User', User);
 exports.Presentation = db.model('Presentation', Presentation);
+exports.Administrator = db.model('Administrator', Administrator);

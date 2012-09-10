@@ -6,7 +6,8 @@
 var model = require('../model');
 
 var User = model.User,
-    Presentation = model.Presentation;
+    Presentation = model.Presentation,
+    Administrator = model.Administrator;
 
 exports.index = function (req, res) {
   console.log('Express session\'s user_id:', req.session.user_id);  // For debug
@@ -74,8 +75,6 @@ exports.deleteUser = function (req, res){
   });
 };
 
-
-
 exports.newPresentation = function (req, res) {
   res.render('newPresentation', { title: 'Upload your presentation' });
 };
@@ -120,6 +119,23 @@ exports.statistics = function (req, res) {
 };
 
 //admin
+exports.loginAdmin = function (req, res) {
+  // Check login
+  Administrator.findByUserId(req.body.user_id, function (err, user) {
+    if (user) {
+      if (user.authenticate(req.body.password)) {
+        res.redirect('/admin');
+      } else {
+        console.log(err);
+        res.redirect('back');
+      }
+    } else {
+      console.log(err);
+      res.redirect('back');
+    }
+  });
+};
+
 exports.adminUser = function (req, res) {
     User.find({}, function (err, items){
 	if(err){
@@ -147,6 +163,25 @@ exports.adminPresentation = function (req, res) {
 	}
     });
 };
+
+/*create Administrator(normally comment-out)*/
+exports.newAdministrator = function (req, res) {
+  res.render('newAdministrator', { title: 'Sign up' });
+};
+
+exports.createAdministrator = function (req, res) {
+  var newAdministrator = new Administrator(req.body);
+  newAdministrator.save(function (err) {
+    if (err) {
+      console.log(err);
+      res.redirect('back');
+    } else {
+      res.redirect('/admin');
+    }
+  });
+};
+
+/*end of create Administrator*/
 
 exports.logout = function (req, res) {
   // Destroy session
