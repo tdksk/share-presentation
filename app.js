@@ -58,7 +58,7 @@ app.post('/user/delete', routes.user.delete);
 app.get('/presentation/new', routes.presentation.new);
 app.post('/presentation/create', routes.presentation.create);
 app.post('/presentation/delete', routes.presentation.delete);
-app.get('/presentationTest', routes.presentationTest);
+app.get('/presentationTest/:uid?/:pid?', routes.presentationTest);
 app.get('/statistics', routes.statistics);
 app.get('/editor', routes.editor);
 app.get('/logout', routes.logout);

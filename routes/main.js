@@ -52,6 +52,8 @@ exports.login = function (req, res) {
 
 
 exports.presentationTest = function (req, res) {
+  var uid = req.params.uid;
+  var pid = req.params.pid;
   var user_type;
   // presenter or listener
   user_type = (req.session.user_id) ? 'presenter' : 'listener';
