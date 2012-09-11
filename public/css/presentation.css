@@ -31,7 +31,7 @@ body{
   height: 600px;
   overflow: hidden;
 }
-#container > article{
+#container > #contents > article{
   position: absolute;
   width: 860px;
   height: 560px;
@@ -43,28 +43,28 @@ body{
 }
 
 
-#container > article.move_from_right{
+#container > #contents > article.move_from_right{
   display: block;
   -webkit-animation-name: move_from_right;
   -webkit-animation-duration: 1s;
   -webkit-transform: translate(0px, 0px);
   opacity: 1;
 }
-#container > article.move_to_left{
+#container > #contents > article.move_to_left{
   display: block;
   -webkit-animation-name: move_to_left;
   -webkit-animation-duration: 1s;
   -webkit-transform: translate(-900px, 0px);
   opacity: 0;
 }
-#container > article.move_from_left{
+#container > #contents > article.move_from_left{
   display: block;
   -webkit-animation-name: move_from_left;
   -webkit-animation-duration: 1s;
   -webkit-transform: translate(0px, 0px);
   opacity: 1;
 }
-#container > article.move_to_right{
+#container > #contents > article.move_to_right{
   display: block;
   -webkit-animation-name: move_to_right;
   -webkit-animation-duration: 1s;
@@ -112,24 +112,24 @@ to{
 }
 }
 
-#container > article .wrapper{
+#container > #contents > article .wrapper{
 
 }
-#container > article .wrapper h1{
+#container > #contents > article .wrapper h1{
   font-size: 32px;
   font-weight: bold;
   color: #0046ba;
 }
-#container > article .wrapper h2{
+#container > #contents > article .wrapper h2{
   color: #000000;
 }
-#container > article .wrapper > section{
+#container > #contents > article .wrapper > section{
   margin: 20px;
 }
-#container > article .wrapper > section > *{
+#container > #contents > article .wrapper > section > *{
   margin: 20px 0px;
 }
-#container > article .wrapper > section pre{
+#container > #contents > article .wrapper > section pre{
   padding: 10px;
   font-size: 18px;
   line-height: 140%;
@@ -137,28 +137,28 @@ to{
   background: #fff9e2;
   -webkit-border-radius: 10px;
 }
-#container > article .wrapper > section pre: hover{
+#container > #contents > article .wrapper > section pre: hover{
   /*background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#cccccc));*/
   background: #eeeeee;
-}#container > article .wrapper > section h2{
+}#container > #contents > article .wrapper > section h2{
   font-weight: bold;
 }
 
-#container > article .wrapper > section ul{
+#container > #contents > article .wrapper > section ul{
   list-style-type: none;
 }
-#container > article .wrapper > section ul p{
+#container > #contents > article .wrapper > section ul p{
   font-size: 20px;
   margin: 10px;
 }
-#container > article .wrapper > section ul.list{
+#container > #contents > article .wrapper > section ul.list{
   list-style-type: disc;
   margin-left: 20px;
 }
-#container > article .wrapper > section ul.list li{
+#container > #contents > article .wrapper > section ul.list li{
   margin: 20px;
 }
-#container > article .wrapper > section figure{
+#container > #contents > article .wrapper > section figure{
   position: relative;
   display: block;
   padding: 10px;
@@ -166,27 +166,27 @@ to{
   border: 1px solid #666666;
   background-color: #ffffff;
 }
-#container > article .wrapper > section p.slide{
+#container > #contents > article .wrapper > section p.slide{
   position: relative;
 }
-#container > article .wrapper > section p.slide img{
+#container > #contents > article .wrapper > section p.slide img{
   top: 0px;
   left: 0px;
   position: absolute;
 }
-#container > article .wrapper > section p.slide img: first-child{
+#container > #contents > article .wrapper > section p.slide img: first-child{
   position: relative;
 }
 
 
-#container > article .title{
+#container > #contents > article .title{
   text-align: center;
 }
-#container > article .title h1{
+#container > #contents > article .title h1{
   margin-top: 200px;
   font-size: 48px;
 }
-#container > article .title h2{
+#container > #contents > article .title h2{
   font-size: 32px;
 }
 

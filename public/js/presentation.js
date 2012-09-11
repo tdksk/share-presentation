@@ -4,7 +4,8 @@
    */
   var socket = io.connect('/presentation');
 
-  var _pages,
+  var _xmlHttp,
+      _pages,
       _currentIndex = 0,
       _elemIndex = 0,
       _hideElems,
@@ -17,15 +18,19 @@
       _graph,
       _optionIsShown = true,
       _params = _getJsParam(),  // Load at first
-      _user_type = _params.type;
+      _user_type = _params.type,
+      _user_id = _params.user_id,
+      _presentation_id = _params.presentation_id;
 
   var _ANIMATION_TIME = '1s',
       _CONTAINER_ID = 'container',
+      _CONTENTS_ID = 'contents',
       _CANVAS_ID = 'canvas',
-      _GRAPH_ID = 'graph';
+      _GRAPH_ID = 'graph',
+      _PRESENTATION_DIR = '/data';
 
   function initialize() {
-    var container, width, height, pageNum, page;
+    var container, width, height;
 
     // Initialize container
     container = document.getElementById(_CONTAINER_ID);
@@ -58,9 +63,25 @@
     _graphElement = document.getElementById(_GRAPH_ID);
     _initGraph();
 
+    // Initialize contents
+    _initContents();
+
+    // For debug
+    var debug = document.getElementById('user-type');
+    debug.innerHTML += '<p>User type: ' + _user_type + '</p>';
+  }
+
+  /**
+   * Load contents
+   */
+  function _initContents() {
+    var pageNum, page;
+    // Load user file
+    _loadFile('/' + _user_id + '/' + _presentation_id + '.html');
+
     // Initialize page
     pageNum = _getCurrentIndex();
-    _pages = document.querySelectorAll('#' + _CONTAINER_ID + ' article');
+    _pages = document.querySelectorAll('#' + _CONTAINER_ID +' article');
     if (pageNum < 0 || pageNum >= _pages.length) {
       pageNum = 0;
     }
@@ -68,10 +89,25 @@
     page = _pages[_currentIndex];
     page.style.display = 'block';
     _initPage(_currentIndex);
+  }
 
-    // For debug
-    var debug = document.getElementById('user-type');
-    debug.innerHTML += '<p>User type: ' + _user_type + '</p>';
+  function _loadFile(fileName) {
+    if (window.XMLHttpRequest) {
+      _xmlHttp = new XMLHttpRequest();
+    } else {
+      _xmlHttp = null;
+    }
+
+    _xmlHttp.onreadystatechange = _checkStatus;
+    _xmlHttp.open('GET', _PRESENTATION_DIR + fileName, false);
+    _xmlHttp.send(null);
+  }
+
+  function _checkStatus() {
+    if (_xmlHttp.readyState == 4 && _xmlHttp.status == 200) {
+      var contents = document.getElementById(_CONTENTS_ID);
+      contents.innerHTML = _xmlHttp.responseText;
+    }
   }
 
   /**

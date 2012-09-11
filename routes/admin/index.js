@@ -19,7 +19,7 @@ exports.index = function (req, res) {
     });
   } else {
     // else, render login page
-    res.render('admin/index', { title: 'admin' });
+    res.render('admin/login', { title: 'admin' });
   }
 };
 
@@ -28,9 +28,9 @@ exports.login = function (req, res) {
   Administrator.findByUserId(req.body.user_id, function (err, administrator) {
     if (administrator) {
       if (administrator.authenticate(req.body.password)) {
-	//save admin id to session
-	req.session.admin_id = req.body.user_id;
-	res.redirect('/admin/user');
+        // Save admin id to session
+        req.session.admin_id = req.body.user_id;
+        res.redirect('/admin/user');
       } else {
         console.log(err);
         res.redirect('back');
@@ -43,34 +43,34 @@ exports.login = function (req, res) {
 };
 
 exports.user = function (req, res) {
-    User.find({}, function (err, items){
-	if(err){
-	    console.log(err);
-	    res.render('admin/index');
-	}else{
-	    res.render('admin/user', {
-		title: 'admin page(user)',
-                users: items
-	    });
-	}
-    });
+  User.find({}, function (err, items) {
+    if (err) {
+      console.log(err);
+      res.render('admin/login');
+    } else {
+      res.render('admin/user', {
+        title: 'admin page(user)',
+        users: items
+      });
+    }
+  });
 };
 
 exports.presentation = function (req, res) {
-    Presentation.find({}, function (err, items){
-	if(err){
-	    console.log(err);
-	    res.render('admin/index');
-	}else{
-	    res.render('admin/presentation', {
-		title: 'admin page(presentation)',
-                presentations: items
-	    });
-	}
-    });
+  Presentation.find({}, function (err, items){
+    if(err){
+      console.log(err);
+      res.render('admin/login');
+    }else{
+      res.render('admin/presentation', {
+        title: 'admin page(presentation)',
+        presentations: items
+      });
+    }
+  });
 };
 
-/*create Administrator(normally comment-out)*/
+/* Create Administrator(normally comment-out) */
 exports.new = function (req, res) {
   res.render('admin/new', { title: 'Sign up' });
 };
@@ -82,16 +82,15 @@ exports.create = function (req, res) {
       console.log(err);
       res.redirect('back');
     } else {
-      res.redirect('/admin/');
+      res.redirect('/admin');
     }
   });
 };
-
 /*end of create Administrator*/
 
-//TODO logout is needed to change remove of session document
+// TODO: logout is needed to change remove of session document
 exports.logout = function (req, res) {
   // Destroy session
   req.session.destroy();
-  res.redirect('/');
+  res.redirect('/admin');
 };

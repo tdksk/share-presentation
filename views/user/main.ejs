@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/style.css'>
+  </head>
+  <body>
+    <h1> <%= user_id %></h1>
+    <div id="presentationlist">
+      <ul>
+        <li><a href="/hoge/chikazawa/show">Presentation DEMO</a></li>
+        <li><a href="/hoge/chikazawa/edit">Editor DEMO</a></li>
+        <li><a href="/hoge/chikazawa/stat">Statistics DEMO</a></li>
+      </ul>
+      <% if (presentations.length) { %>
+      <ul>
+        <% presentations.forEach(function(presentation){ %>
+        <li><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/show"><%= presentation.presentation_id %></a></li>
+        <% }) %>
+      </ul>
+      <% } %>
+    </div>
+    <p><a href="/user/logout">Logout</a></p>
+    <a href="/presentation/new">create presentation</a>
+  </body>
+</html>

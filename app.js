@@ -5,7 +5,7 @@
 
 var express = require('express'),
     socketio = require('socket.io'),
-    routes = require('./routes/main'),
+    routes = require('./routes/root'),
     http = require('http'),
     path = require('path'),
     connect = require('connect');
@@ -50,24 +50,31 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+/**
+ * Routing
+ */
+// User
 app.get('/', routes.user.index);
 app.post('/', routes.user.login);
 app.get('/user/new', routes.user.new);
 app.post('/user/create', routes.user.create);
 app.post('/user/delete', routes.user.delete);
+app.get('/user/logout', routes.user.logout);
+// Presentation
 app.get('/presentation/new', routes.presentation.new);
 app.post('/presentation/create', routes.presentation.create);
 app.post('/presentation/delete', routes.presentation.delete);
-app.get('/show/:uid/:pid', routes.presentationTest);
-app.get('/statistics', routes.statistics);
-app.get('/editor', routes.editor);
-app.get('/logout', routes.logout);
-app.get('/admin/', routes.admin.index);
-app.post('/admin/', routes.admin.login);
+app.get('/:uid/:pid/show', routes.presentation.show);
+app.get('/:uid/:pid/edit', routes.presentation.edit);
+app.get('/:uid/:pid/stat', routes.presentation.stat);
+// Admin
+app.get('/admin', routes.admin.index);
+app.post('/admin', routes.admin.login);
 app.get('/admin/new', routes.admin.new);
 app.post('/admin/create', routes.admin.create);
 app.get('/admin/user', routes.admin.user);
 app.get('/admin/presentation', routes.admin.presentation);
+app.get('/admin/logout', routes.admin.logout);
 
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

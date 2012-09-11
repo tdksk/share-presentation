@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="utf-8">
     <title><%= title %></title>
@@ -11,17 +11,17 @@
       <% if(presentations.length){ %>
       <table>
         <% presentations.forEach(function(presentation){ %>
-      <form method="post" action="/admin/delete">
-        <tr><td>ユーザー名：</td>
-	    <td><%= presentation.user_id %></td>
-	    <td><%= presentation.presentation_id %></td>
-	    <td>
-	      <input type="hidden" name="user_id" value='<%= presentation.user_id %>'> 
-	      <input type="hidden" name="presentation_id" value='<%= presentation.presentation_id %>'> 
-	      <input type="submit" value="削除">
-	    </td>
-	</tr>
-      </form>
+        <form method="post" action="/admin/delete">
+          <tr><td>ユーザー名：</td>
+            <td><%= presentation.user_id %></td>
+            <td><%= presentation.presentation_id %></td>
+            <td>
+              <input type="hidden" name="user_id" value='<%= presentation.user_id %>'>
+              <input type="hidden" name="presentation_id" value='<%= presentation.presentation_id %>'>
+              <input type="submit" value="削除">
+            </td>
+          </tr>
+        </form>
         <% }) %>
       </table>
       <% } %>

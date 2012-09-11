@@ -8,22 +8,21 @@ var model = require('../../model');
 var User = model.User,
     Presentation = model.Presentation;
 
-
 exports.index = function (req, res) {
   console.log('Express session\'s user_id:', req.session.user_id);  // For debug
-  // render list if login
+  // Render list if login
   if (req.session.user_id) {
     // Find user's presentations
     Presentation.findByUserId(req.session.user_id, function (err, items) {
-      res.render('list', {
+      res.render('user/main', {
         title: 'Presentation list'
-      , presentations: items
-      , user_id: req.session.user_id
+        , presentations: items
+        , user_id: req.session.user_id
       });
     });
   } else {
     // else, render login page
-    res.render('index', { title: 'Share Presentation' });
+    res.render('user/login', { title: 'Share Presentation' });
   }
 };
 
@@ -63,14 +62,21 @@ exports.create = function (req, res) {
   });
 };
 
-exports.delete = function (req, res){
-  User.remove({ user_id: req.body.user_id }, function (err){
-      if(err){
-	  console.log(err);
-	  res.render('index');
-      }else{
-	  console.log('delete success', req.body.user_id);
-	  res.render('index');
-      }
+exports.delete = function (req, res) {
+  User.remove({ user_id: req.body.user_id }, function (err) {
+    if (err) {
+      console.log(err);
+      res.render('index');
+    } else {
+      console.log('delete success', req.body.user_id);
+      res.render('index');
+    }
   });
+};
+
+// TODO: logout is needed to change remove of session document
+exports.logout = function (req, res) {
+  // Destroy session
+  req.session.destroy();
+  res.redirect('/');
 };

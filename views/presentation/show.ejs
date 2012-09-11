@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <!-- TODO: 各デバイス毎に適切なサイズにする -->
+    <!-- <meta name="viewport" content="user-scalable=no"> -->
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/presentation.css'>
+  </head>
+  <body>
+    <!-- Options -->
+    <div id="options">
+      <!-- For debug -->
+      <div id="user-type"></div>
+      <div id="user-count"></div>
+      <div id="reaction-count"></div>
+    </div>
+
+    <!-- Buttons -->
+    <% if (user_type === 'listener') { %>
+    <div id="buttons">
+      <button class="sync" onclick="syncPage()">Sync</button>
+      <button class="good" onclick="sendReactionName('good')">Good</button>
+      <button class="bad" onclick="sendReactionName('bad')">Bad</button>
+    </div>
+    <% } %>
+
+    <!-- Graph -->
+    <canvas id="graph"></canvas>
+
+    <!-- Main -->
+    <div id="container">
+      <!-- Canvas -->
+      <canvas id="canvas"></canvas>
+      <!-- Contents -->
+      <div id="contents"></div>
+    </div>
+
+    <script src='/socket.io/socket.io.js'></script>
+    <script src='/js/quo.js'></script>
+    <script src='/js/graph.js'></script>
+    <script src='/js/presentation.js?type=<%= user_type %>&user_id=<%= user_id %>&presentation_id=<%= presentation_id %>'></script>
+  </body>
+</html>
