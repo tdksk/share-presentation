@@ -15,6 +15,7 @@
     this._leftOffset = 50;
     this._topOffset = 20;
     this._labelMargin = 10;
+    this._grids = true;
 
     this._containerWidth = this._container.width;
     this._containerHeight = this._container.height;
@@ -71,7 +72,7 @@
     var ctx = this._container.getContext('2d');
     var i;
 
-    if (!isGrids) {
+    if (this._grids && !isGrids) {
       this.drawAxes();
       this.drawGrids();
       isGrids = true;
@@ -117,9 +118,11 @@
   Graph.prototype.clear = function () {
     var ctx = this._container.getContext('2d');
     ctx.clearRect(0, 0, this._containerWidth, this._containerHeight);
-    this.drawAxes();
-    this.drawGrids();
-    isGrids = true;
+    if (this._grids) {
+      this.drawAxes();
+      this.drawGrids();
+      isGrids = true;
+    }
   };
 
   /* Setter */
@@ -143,6 +146,11 @@
   };
   Graph.prototype.setBarWidth = function (barWidth) {
     this._barWidth = barWidth;
+  };
+
+  /* Options */
+  Graph.prototype.hideGrids = function () {
+    this._grids = false;
   };
 
   var resizeCanvas = function (container, width, height) {

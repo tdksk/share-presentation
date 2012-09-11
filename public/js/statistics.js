@@ -4,8 +4,8 @@
    */
   var socket = io.connect('/statistics');
 
-  var canvas,
-      graph;
+  var _canvas,
+      _graph;
 
   var _CANVAS_ID = 'canvas',
       _CANVAS_WIDTH = 900,
@@ -16,16 +16,16 @@
   }
 
   function _initCanvas(width, height) {
-    canvas = document.getElementById(_CANVAS_ID);
-    canvas.width = width;
-    canvas.height = height;
-    canvas.style.position = 'relative';
-    canvas.style.left = '0';
-    canvas.style.top = '0';
-    canvas.style.zIndex = '1000';
-    canvas.style.float = 'left';
+    _canvas = document.getElementById(_CANVAS_ID);
+    _canvas.width = width;
+    _canvas.height = height;
+    _canvas.style.position = 'relative';
+    _canvas.style.left = '0';
+    _canvas.style.top = '0';
+    _canvas.style.zIndex = '1000';
+    _canvas.style.float = 'left';
 
-    graph = new Graph(canvas);
+    _graph = new Graph(_canvas);
   }
 
   /**
@@ -42,7 +42,7 @@
     // Draw graph
     // TODO: グラフの長さを動的に変える
     // TODO: 凡例つける
-    graph.clear();
+    _graph.clear();
     for (user_type in count) {
       var data = [];
       arr = count[user_type];
@@ -56,19 +56,19 @@
       }
 
       // Set data
-      graph.setData(data);
+      _graph.setData(data);
       // Set styles
       if (user_type === 'presenter') {
-        graph.setColor('rgba(224, 74, 40, .5)');
+        _graph.setColor('rgba(224, 74, 40, .5)');
         // graph.setColor('rgba(244, 192, 4, .5)');
-        graph.setBarWidth(50);
+        _graph.setBarWidth(50);
       } else if (user_type === 'listener') {
-        graph.setColor('rgba(0, 122, 255, .8)');
-        graph.setBarWidth(30);
+        _graph.setColor('rgba(0, 122, 255, .8)');
+        _graph.setBarWidth(30);
       }
-      graph.setType('bar');
+      _graph.setType('bar');
       // Draw graph
-      graph.draw();
+      _graph.draw();
     }
 
     // Show total count

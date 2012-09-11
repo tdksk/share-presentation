@@ -14,20 +14,25 @@
       <div id="user-type"></div>
       <div id="user-count"></div>
       <div id="reaction-count"></div>
-
-      <!-- Buttons -->
-      <% if (user_type === 'listener') { %>
-      <div id="buttons">
-        <button class="sync" onclick="syncPage()">Sync</button>
-        <button class="good" onclick="sendReactionName('good')">Good</button>
-        <button class="bad" onclick="sendReactionName('bad')">Bad</button>
-      </div>
-      <% } %>
     </div>
 
-    <!-- Contents -->
+    <!-- Buttons -->
+    <% if (user_type === 'listener') { %>
+    <div id="buttons">
+      <button class="sync" onclick="syncPage()">Sync</button>
+      <button class="good" onclick="sendReactionName('good')">Good</button>
+      <button class="bad" onclick="sendReactionName('bad')">Bad</button>
+    </div>
+    <% } %>
+
+    <!-- Graph -->
+    <canvas id="graph"></canvas>
+
+    <!-- Main -->
     <div id="container">
+      <!-- Canvas -->
       <canvas id="canvas"></canvas>
+      <!-- Contents -->
       <article>
         <div class="wrapper title">
           <h1>TechStuDIG2012</h1>
@@ -635,6 +640,7 @@
     </div>
 
     <script src='/socket.io/socket.io.js'></script>
+    <script src='/js/graph.js'></script>
     <script src='/js/quo.js'></script>
     <script src='/js/presentation.js?type=<%= user_type %>'></script>
   </body>

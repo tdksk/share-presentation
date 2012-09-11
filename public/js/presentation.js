@@ -13,13 +13,16 @@
       _beforeY,
       _isClicking,
       _canvas,
+      _graphElement,
+      _graph,
       _optionIsShown = true,
       _params = _getJsParam(),  // Load at first
       _user_type = _params.type;
 
   var _ANIMATION_TIME = '1s',
       _CONTAINER_ID = 'container',
-      _CANVAS_ID = 'canvas';
+      _CANVAS_ID = 'canvas',
+      _GRAPH_ID = 'graph';
 
   function initialize() {
     var container, width, height, pageNum, page;
@@ -33,6 +36,7 @@
       if ($$.isMobile()) {
         // Prevent default touch event
         // TODO: Optimize
+        // TODO: Prevent default double tap event in buttons
         container.ontouchstart = function (e) {
           e.preventDefault();
         };
@@ -49,6 +53,10 @@
       document.addEventListener('mouseup', function (e) {_dragEnd(e);}, false);
     }
     _initCanvas(width, height);
+
+    // Initialize graph
+    _graphElement = document.getElementById(_GRAPH_ID);
+    _initGraph();
 
     // Initialize page
     pageNum = _getCurrentIndex();
@@ -332,15 +340,75 @@
   }
 
   /**
+   * Graph
+   */
+  // TODO: Fix position and size
+  function _initGraph() {
+    _graphElement.width = 155;
+    _graphElement.height = 650;
+    _graphElement.style.position = 'absolute';
+    _graphElement.style.right = '0';
+    _graphElement.style.bottom = '0';
+    _graphElement.style.zIndex = '1001';
+
+    _graph = new Graph(_graphElement);
+  }
+
+  function _drawReactionGraph(count) {
+    var type,
+        arr;
+    _graph.hideGrids();
+    _graph.clear();
+    for (type in count) {
+      var data = [];
+      arr = count[type];
+      if (!arr.length) continue;
+
+      // For graph
+      if (type === 'good') {
+        data[0] = [0, arr[_currentIndex]];
+      } else if (type === 'bad') {
+        data[0] = [0, 0];
+        data[1] = [1, arr[_currentIndex]];
+      }
+
+      // Set data
+      _graph.setData(data);
+      // Set styles
+      if (type === 'good') {
+        _graph.setColor('');
+        _graph.setColor('rgba(108, 190, 110, .8)');
+        _graph.setBarWidth(30);
+      } else if (type === 'bad') {
+        _graph.setColor('rgba(224, 74, 40, .8)');
+        _graph.setBarWidth(30);
+      }
+      _graph.setType('bar');
+      // Draw graph
+      _graph.draw();
+    }
+  }
+
+  /**
    * Show options
    */
   function _toggleOptions() {
     var options = document.getElementById('options');
+    var buttons = document.getElementById('buttons');
+    var graph = document.getElementById(_GRAPH_ID);
     if (_optionIsShown) {
       options.style.display = 'none';
+      if (_user_type === 'listener') {
+        buttons.style.display = 'none';
+      }
+      graph.style.display = 'none';
       _optionIsShown = false;
     } else {
       options.style.display = 'block';
+      if (_user_type === 'listener') {
+        buttons.style.display = 'block';
+      }
+      graph.style.display = 'block';
       _optionIsShown = true;
     }
   }
@@ -400,6 +468,7 @@
   });
 
   socket.on('reaction count', function (data) {
+    _drawReactionGraph(data);
     // For debug
     var debug = document.getElementById('reaction-count');
     debug.innerHTML = '<p>Good: ' + data.good[_currentIndex] + '</p>'
@@ -412,7 +481,8 @@
           currentX = data.x,
           currentY = data.y;
       // Set styles
-      ctx.strokeStyle = _getRandomColor();
+      ctx.strokeStyle = 'rgba(209, 72, 54, .8)';
+      // ctx.strokeStyle = _getRandomColor();  // For debug
       ctx.lineWidth = 5;
       // Draw line
       ctx.beginPath();
