@@ -32,44 +32,52 @@
    * Receive events
    */
   socket.on('statistics', function (count) {
-    var user_type,
-        arr,
+    var data, arr, i, length,
+        presenterIndex,
         total_user_count = {
           presenter: 0
         , listener : 0
         };
 
-    // Draw graph
+    /* Draw graph */
     // TODO: グラフの長さを動的に変える
     // TODO: 凡例つける
     _graph.clear();
-    for (user_type in count) {
-      var data = [];
-      arr = count[user_type];
-      if (!arr.length) continue;
 
-      for (var i = 0, length = arr.length; i < length; i++) {
-        // For graph
-        data[i] = [i + 1, arr[i]];
-        // For total count
-        total_user_count[user_type] += arr[i];
-      }
-
-      // Set data
-      _graph.setData(data);
-      // Set styles
-      if (user_type === 'presenter') {
-        _graph.setColor('rgba(224, 74, 40, .5)');
-        // graph.setColor('rgba(244, 192, 4, .5)');
-        _graph.setBarWidth(50);
-      } else if (user_type === 'listener') {
-        _graph.setColor('rgba(0, 122, 255, .8)');
-        _graph.setBarWidth(30);
-      }
-      _graph.setType('bar');
-      // Draw graph
-      _graph.draw();
+    // Draw presenter page index
+    data = [];
+    arr = count.presenter;
+    presenterIndex = arr.indexOf(Math.max.apply(null, arr));
+    for (i = 0, length = arr.length; i < length; i++) {
+      data[i] = (arr[i]) ? [i + 1, 36] : [i + 1, 0];
     }
+    _graph.setData(data);
+    _graph.setColor('rgba(224, 74, 40, .5)');
+    _graph.setBarWidth(2);
+    _graph.hideValue();
+    _graph.draw();
+
+    // Draw listener page view count
+    data = [];
+    arr = count.listener;
+
+    for (i = 0, length = arr.length; i < length; i++) {
+      // For graph
+      data[i] = [i + 1, arr[i]];
+      // For total count
+      total_user_count.listener += arr[i];
+    }
+
+    // Set data
+    _graph.setData(data);
+    // Set styles
+    _graph.setColor('rgba(0, 122, 255, .8)');
+    _graph.setType('bar');
+    _graph.setBarWidth(10);
+    _graph.setScale(15, 10);
+    _graph.showValue();
+    // Draw graph
+    _graph.draw();
 
     // Show total count
     var user_count = document.getElementById('user-count');
