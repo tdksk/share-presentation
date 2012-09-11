@@ -32,9 +32,8 @@
    * Receive events
    */
   socket.on('statistics', function (count) {
-    var arr, i, length,
+    var data, arr, i, length,
         presenterIndex,
-        data = [],
         total_user_count = {
           presenter: 0
         , listener : 0
@@ -46,6 +45,7 @@
     _graph.clear();
 
     // Draw presenter page index
+    data = [];
     arr = count.presenter;
     presenterIndex = arr.indexOf(Math.max.apply(null, arr));
     for (i = 0, length = arr.length; i < length; i++) {
@@ -58,6 +58,7 @@
     _graph.draw();
 
     // Draw listener page view count
+    data = [];
     arr = count.listener;
 
     for (i = 0, length = arr.length; i < length; i++) {
