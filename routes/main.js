@@ -13,6 +13,44 @@ exports.user = require('./user/user');
 exports.presentation = require('./presentation/presentation');
 exports.admin = require('./admin/admin');
 
+exports.index = function (req, res) {
+  console.log('Express session\'s user_id:', req.session.user_id);  // For debug
+  // render list if login
+  if (req.session.user_id) {
+    // Find user's presentations
+    Presentation.findByUserId(req.session.user_id, function (err, items) {
+      res.render('list', {
+        title: 'Presentation list'
+      , presentations: items
+      , user_id: req.session.user_id
+      });
+    });
+  } else {
+    // else, render login page
+    res.render('index', { title: 'Share Presentation' });
+  }
+};
+
+exports.login = function (req, res) {
+  // Check login
+  User.findByUserId(req.body.user_id, function (err, user) {
+    if (user) {
+      if (user.authenticate(req.body.password)) {
+        // Save user id to session
+        req.session.user_id = req.body.user_id;
+        res.redirect('/');
+      } else {
+        console.log(err);
+        res.redirect('back');
+      }
+    } else {
+      console.log(err);
+      res.redirect('back');
+    }
+  });
+};
+
+
 exports.presentationTest = function (req, res) {
   var user_type;
   // presenter or listener
@@ -28,5 +66,5 @@ exports.statistics = function (req, res) {
 exports.logout = function (req, res) {
   // Destroy session
   req.session.destroy();
-  res.redirect('/user/');
+  res.redirect('/');
 };

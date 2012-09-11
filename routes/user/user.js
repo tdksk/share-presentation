@@ -15,7 +15,7 @@ exports.index = function (req, res) {
   if (req.session.user_id) {
     // Find user's presentations
     Presentation.findByUserId(req.session.user_id, function (err, items) {
-      res.render('list', {
+      res.render('/', {
         title: 'Presentation list'
       , presentations: items
       , user_id: req.session.user_id
@@ -23,7 +23,7 @@ exports.index = function (req, res) {
     });
   } else {
     // else, render login page
-    res.render('index', { title: 'Share Presentation' });
+    res.render('/', { title: 'Share Presentation' });
   }
 };
 
