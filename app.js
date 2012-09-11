@@ -59,6 +59,7 @@ app.post('/createPresentation', routes.createPresentation);
 app.post('/deletePresentation', routes.deletePresentation);
 app.get('/presentationTest', routes.presentationTest);
 app.get('/statistics', routes.statistics);
+app.get('/editor', routes.editor);
 app.get('/logout', routes.logout);
 app.get('/newAdministrator', routes.newAdministrator);
 app.post('/createAdministrator', routes.createAdministrator);

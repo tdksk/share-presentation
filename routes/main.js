@@ -117,6 +117,10 @@ exports.statistics = function (req, res) {
   res.render('statistics', { title: 'Statistics' });
 };
 
+exports.editor = function (req, res) {
+  res.render('editor', { title: 'Editor' });
+};
+
 //admin
 exports.Adminindex = function (req, res) {
   //console.log('Express session\'s user_id:', req.session.user_id);  // For debug
