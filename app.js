@@ -27,6 +27,7 @@ var parseCookie = function (cookies) {
   return obj;
 };
 
+
 app.configure(function(){
   app.set('port', process.env.PORT || 8080);
   app.set('views', __dirname + '/views');
@@ -49,23 +50,23 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
-app.post('/', routes.login);
-app.get('/newUser', routes.newUser);
-app.post('/createUser', routes.createUser);
-app.post('/deleteUser', routes.deleteUser);
-app.get('/newPresentation', routes.newPresentation);
-app.post('/createPresentation', routes.createPresentation);
-app.post('/deletePresentation', routes.deletePresentation);
+app.get('/user/', routes.user.index);
+app.post('/user/', routes.user.login);
+app.get('/user/new', routes.user.new);
+app.post('/user/create', routes.user.create);
+app.post('/user/delete', routes.user.delete);
+app.get('/presentation/new', routes.presentation.new);
+app.post('/presentation/create', routes.presentation.create);
+app.post('/presentation/delete', routes.presentation.delete);
 app.get('/presentationTest', routes.presentationTest);
 app.get('/statistics', routes.statistics);
 app.get('/logout', routes.logout);
-app.get('/newAdministrator', routes.newAdministrator);
-app.post('/createAdministrator', routes.createAdministrator);
-app.get('/admin', routes.Adminindex);
-app.post('/admin', routes.loginAdmin);
-app.get('/admin_User', routes.adminUser);
-app.get('/admin_Presentation', routes.adminPresentation);
+app.get('/admin/', routes.admin.index);
+app.get('/admin/', routes.admin.index);
+app.get('/admin/new', routes.admin.new);
+app.post('/admin/create', routes.admin.create);
+app.get('/admin/user', routes.admin.user);
+app.get('/admin/presentation', routes.admin.presentation);
 
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/style.css'>
+  </head>
+  <body>
+    <h1>ユーザー管理画面</h1>
+    <div id="presentationlist">
+      <% if(presentations.length){ %>
+      <table>
+        <% presentations.forEach(function(presentation){ %>
+      <form method="post" action="/admin/delete">
+        <tr><td>ユーザー名：</td>
+	    <td><%= presentation.user_id %></td>
+	    <td><%= presentation.presentation_id %></td>
+	    <td>
+	      <input type="hidden" name="user_id" value='<%= presentation.user_id %>'> 
+	      <input type="hidden" name="presentation_id" value='<%= presentation.presentation_id %>'> 
+	      <input type="submit" value="削除">
+	    </td>
+	</tr>
+      </form>
+        <% }) %>
+      </table>
+      <% } %>
+    </div>
+  </body>
+</html>

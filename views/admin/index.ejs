@@ -7,17 +7,13 @@
   </head>
   <body>
     <h1><%= title %></h1>
-    <form method="post" action="/user/">
+    <form method="post" action="/admin/admin">
       <fieldset>
         <p><label>User ID</label><input type="text" name="user_id"></p>
         <p><label>Password</label><input type="password" name="password"></p>
         <input type="submit" value="Login">
       </fieldset>
     </form>
-    <p><a href="/user/new">Sign up</a></p>
-    <ul>
-      <li><a href="/presentationTest">Show presentation DEMO</a></li>
-      <li><a href="/statistics">Show statistics DEMO</a></li>
-    </ul>
+    <p><a href="/admin/new">Sign up</a></p>
   </body>
 </html>
