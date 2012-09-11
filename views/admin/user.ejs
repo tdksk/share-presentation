@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/style.css'>
+  </head>
+  <body>
+    <h1><%= title  %></h1>
+    <div id="adminuserlist">
+      <% if(users.length){ %>
+      <table>
+        <% users.forEach(function(user){ %>
+      <form method="post" action="/user/delete">
+        <tr><td>ユーザー名：</td>
+	    <td><%= user.user_id %></td>
+	    <td>
+	      <input type="hidden" name="user_id" value='<%= user.user_id %>'> 
+	      <input type="submit" value="削除">
+	    </td>
+	</tr>
+      </form>
+        <% }) %>
+      </table>
+      <% } %>
+    </div>
+    <p><a href="/logout">Logout</a></p>
+  </body>
+</html>
