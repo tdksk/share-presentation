@@ -50,8 +50,8 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
-app.post('/', routes.login);
+app.get('/', routes.user.index);
+app.post('/', routes.user.login);
 app.get('/user/new', routes.user.new);
 app.post('/user/create', routes.user.create);
 app.post('/user/delete', routes.user.delete);

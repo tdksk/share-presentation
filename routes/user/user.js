@@ -15,7 +15,7 @@ exports.index = function (req, res) {
   if (req.session.user_id) {
     // Find user's presentations
     Presentation.findByUserId(req.session.user_id, function (err, items) {
-      res.render('/', {
+      res.render('list', {
         title: 'Presentation list'
       , presentations: items
       , user_id: req.session.user_id
@@ -23,7 +23,7 @@ exports.index = function (req, res) {
     });
   } else {
     // else, render login page
-    res.render('/', { title: 'Share Presentation' });
+    res.render('index', { title: 'Share Presentation' });
   }
 };
 
@@ -34,7 +34,7 @@ exports.login = function (req, res) {
       if (user.authenticate(req.body.password)) {
         // Save user id to session
         req.session.user_id = req.body.user_id;
-        res.redirect('/user/');
+        res.redirect('/');
       } else {
         console.log(err);
         res.redirect('back');
@@ -58,7 +58,7 @@ exports.create = function (req, res) {
       res.redirect('back');
     } else {
       req.session.user_id = req.body.user_id;
-      res.redirect('/user/');
+      res.redirect('/');
     }
   });
 };
@@ -73,11 +73,4 @@ exports.delete = function (req, res){
 	  res.render('index');
       }
   });
-};
-
-//TODO logout is needed to change remove of session document
-exports.logout = function (req, res) {
-  // Destroy session
-  req.session.destroy();
-  res.redirect('/user/');
 };
