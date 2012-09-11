@@ -344,16 +344,17 @@
    */
   // TODO: Fix position and size
   function _initGraph() {
-    _graphElement.width = 155;
-    _graphElement.height = 650;
+    _graphElement.width = 165;
+    _graphElement.height = 600;
     _graphElement.style.position = 'absolute';
     _graphElement.style.right = '0';
-    _graphElement.style.bottom = '0';
+    _graphElement.style.bottom = '50px';
     _graphElement.style.zIndex = '1001';
 
     _graph = new Graph(_graphElement);
   }
 
+  // TODO: グラフ長がウィンドウ超えた時も常に数値を表示
   function _drawReactionGraph(count) {
     var type,
         arr;
@@ -378,12 +379,13 @@
       if (type === 'good') {
         _graph.setColor('');
         _graph.setColor('rgba(108, 190, 110, .8)');
-        _graph.setBarWidth(30);
       } else if (type === 'bad') {
         _graph.setColor('rgba(224, 74, 40, .8)');
-        _graph.setBarWidth(30);
       }
       _graph.setType('bar');
+      _graph.setBarWidth(30);
+      _graph.setScale(70, 10);
+      _graph.showValue();
       // Draw graph
       _graph.draw();
     }
@@ -470,9 +472,9 @@
   socket.on('reaction count', function (data) {
     _drawReactionGraph(data);
     // For debug
-    var debug = document.getElementById('reaction-count');
-    debug.innerHTML = '<p>Good: ' + data.good[_currentIndex] + '</p>'
-                      + '<p>Bad: ' + data.bad[_currentIndex] + '</p>';
+    // var debug = document.getElementById('reaction-count');
+    // debug.innerHTML = '<p>Good: ' + data.good[_currentIndex] + '</p>'
+    //                   + '<p>Bad: ' + data.bad[_currentIndex] + '</p>';
   });
 
   socket.on('location', function (data) {

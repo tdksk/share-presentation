@@ -16,6 +16,7 @@
     this._topOffset = 20;
     this._labelMargin = 10;
     this._grids = true;
+    this._showValue = false;
 
     this._containerWidth = this._container.width;
     this._containerHeight = this._container.height;
@@ -67,10 +68,10 @@
     ctx.stroke();
   };
 
-  /* Draw graph*/
+  /* Draw graph */
   Graph.prototype.draw = function () {
     var ctx = this._container.getContext('2d');
-    var i;
+    var i, x, y;
 
     if (this._grids && !isGrids) {
       this.drawAxes();
@@ -83,9 +84,14 @@
       ctx.beginPath();
       ctx.fillStyle = this._color;
       for (i = 0; this._data[i]; ++i) {
-        ctx.arc(this._left + this._data[i][0] * this._xScale,
-                this._bottom - this._data[i][1] * this._yScale,
-                this._pointSize, 0, Math.PI*2, false);
+        x = this._left + this._data[i][0] * this._xScale;
+        y = this._bottom - this._data[i][1] * this._yScale;
+        ctx.arc(x, y, this._pointSize, 0, Math.PI*2, false);
+
+        /* Show value on graph */
+        if (this._showValue && this._data[i][1]) {
+          ctx.fillText(this._data[i][1], x, y);
+        }
       }
       ctx.fill();
     }
@@ -97,8 +103,14 @@
       ctx.moveTo(this._left + this._data[0][0] * this._xScale,
                  this._bottom - this._data[0][1] * this._yScale);
       for (i = 1; this._data[i]; ++i) {
-        ctx.lineTo(this._left + this._data[i][0] * this._xScale,
-                   this._bottom - this._data[i][1] * this._yScale);
+        x = this._left + this._data[i][0] * this._xScale;
+        y = this._bottom - this._data[i][1] * this._yScale;
+        ctx.lineTo(x, y);
+
+        /* Show value on graph */
+        if (this._showValue && this._data[i][1]) {
+          ctx.fillText(this._data[i][1], x, y);
+        }
       }
       ctx.stroke();
     }
@@ -106,10 +118,14 @@
     if (this._type.match(/bar/ig)) {
       ctx.fillStyle = this._color;
       for (i = 0; this._data[i]; ++i) {
-        ctx.fillRect((this._left + this._data[i][0] * this._xScale) - this._barWidth / 2,
-                     this._bottom - this._data[i][1] * this._yScale,
-                     this._barWidth,
-                     this._data[i][1] * this._yScale);
+        x = (this._left + this._data[i][0] * this._xScale) - this._barWidth / 2;
+        y = this._bottom - this._data[i][1] * this._yScale;
+        ctx.fillRect(x, y, this._barWidth, this._data[i][1] * this._yScale);
+
+        /* Show value on graph */
+        if (this._showValue && this._data[i][1]) {
+          ctx.fillText(this._data[i][1], x, y);
+        }
       }
     }
   };
@@ -135,6 +151,10 @@
   Graph.prototype.setColor = function (color) {
     this._color = color;
   };
+  Graph.prototype.setScale = function (xScale, yScale) {
+    this._xScale = xScale;
+    this._yScale = yScale;
+  };
   Graph.prototype.setXScale = function (xScale) {
     this._xScale = xScale;
   };
@@ -151,6 +171,12 @@
   /* Options */
   Graph.prototype.hideGrids = function () {
     this._grids = false;
+  };
+  Graph.prototype.showValue = function () {
+    this._showValue = true;
+  };
+  Graph.prototype.hideValue = function () {
+    this._showValue = false;
   };
 
   var resizeCanvas = function (container, width, height) {
