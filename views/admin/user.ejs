@@ -6,7 +6,7 @@
     <link rel='stylesheet' href='/css/style.css'>
   </head>
   <body>
-    <h1><%= title  %></h1>
+    <h1>ユーザー管理画面</h1>
     <div id="adminuserlist">
       <% if(users.length){ %>
       <table>
@@ -24,6 +24,7 @@
       </table>
       <% } %>
     </div>
+    <p><a href="/admin/presentation">プレゼンテーション管理画面へ</p>
     <p><a href="/logout">Logout</a></p>
   </body>
 </html>

@@ -55,6 +55,8 @@ exports.presentationTest = function (req, res) {;
   var user_id = req.params.uid;
   var presentation_id = req.params.pid;
   var rendering = 'data/' + user_id + '/presentationTest';
+  console.log('getting uid:', user_id);
+  console.log('getting pid:', presentation_id);
   var user_type;
   // presenter or listener
   user_type = (req.session.user_id) ? 'presenter' : 'listener';
