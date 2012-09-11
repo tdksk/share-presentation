@@ -51,13 +51,19 @@ exports.login = function (req, res) {
 };
 
 
-exports.presentationTest = function (req, res) {
-  var uid = req.params.uid;
-  var pid = req.params.pid;
+exports.presentationTest = function (req, res) {;
+  var user_id = req.params.uid;
+  var presentation_id = req.params.pid;
+  var rendering = 'data/' + user_id + '/presentationTest';
   var user_type;
   // presenter or listener
   user_type = (req.session.user_id) ? 'presenter' : 'listener';
-  res.render('presentationTest', { title: 'Share Presentation Test', user_type: user_type });
+  res.render( rendering, { 
+      title: 'Share Presentation Test', 
+      user_type: user_type,
+      user_id : user_id,
+      presentation_id : presentation_id
+      });
 };
 
 exports.statistics = function (req, res) {

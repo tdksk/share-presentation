@@ -22,7 +22,7 @@ exports.create = function (req, res) {
       console.log(err);
       res.redirect('back');
     } else {
-      res.redirect('/user/');
+      res.redirect('/');
     }
   });
 };
@@ -37,12 +37,4 @@ exports.delete = function (req, res){
 	  res.render('admin/presentation');
       }
   });
-};
-
-
-//TODO logout is needed to change remove of session document
-exports.logout = function (req, res) {
-  // Destroy session
-  req.session.destroy();
-  res.redirect('/user/');
 };

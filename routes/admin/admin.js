@@ -10,7 +10,7 @@ var User = model.User,
     Administrator = model.Administrator;
 
 exports.index = function (req, res) {
-  //console.log('Express session\'s user_id:', req.session.user_id);  // For debug
+  console.log('Express session\'s admin_id:', req.session.admin_id);  // For debug
   // render admin  if login
   if (req.session.admin_id) {
     // Find admin user
