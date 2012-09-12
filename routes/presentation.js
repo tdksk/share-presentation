@@ -27,13 +27,19 @@ exports.create = function (req, res) {
 };
 
 exports.delete = function (req, res) {
-  Presentation.remove({ user_id: req.body.user_id, presentation_id: req.body.presentation_id }, function (err) {
+  var user_id,
+      presentation_id;
+  // Get user id and presentation id
+  user_id = req.body.user_id;
+  presentation_id = req.body.presentation_id;
+  // Delete presentation
+  Presentation.deleteByUserIdAndPresentationId(user_id, presentation_id, function (err) {
     if (err) {
       console.log(err);
-      res.render('admin/index');
+      res.redirect('back');
     } else {
-      console.log('delete success', req.body.presentation_id);
-      res.render('admin/presentation');
+      console.log('Delete success:', presentation_id);
+      res.redirect('back');
     }
   });
 };
@@ -42,16 +48,16 @@ exports.show = function (req, res) {
   var user_id,
       presentation_id,
       user_type;
-  // Get user_id and presentation_id
+  // Get user id and presentation id
   user_id = req.params.uid;
   presentation_id = req.params.pid;
   // presenter or listener
   user_type = (req.session.user_id) ? 'presenter' : 'listener';
   res.render('presentation/show', {
-    title: presentation_id,
-    user_type: user_type,
-    user_id : user_id,
-    presentation_id : presentation_id
+    title: presentation_id
+  , user_type: user_type
+  , user_id : user_id
+  , presentation_id : presentation_id
   });
 };
 
@@ -62,9 +68,9 @@ exports.edit = function (req, res) {
   user_id = req.params.uid;
   presentation_id = req.params.pid;
   res.render('presentation/edit', {
-    title: 'Edit',
-    user_id : user_id,
-    presentation_id : presentation_id
+    title: 'Edit Presentation'
+  , user_id : user_id
+  , presentation_id : presentation_id
   });
 };
 
@@ -75,8 +81,8 @@ exports.stat = function (req, res) {
   user_id = req.params.uid;
   presentation_id = req.params.pid;
   res.render('presentation/stat', {
-    title: 'Statistics',
-    user_id : user_id,
-    presentation_id : presentation_id
+    title: 'Statistics'
+  , user_id : user_id
+  , presentation_id : presentation_id
   });
 };

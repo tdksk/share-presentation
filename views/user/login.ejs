@@ -6,7 +6,9 @@
     <link rel='stylesheet' href='/css/style.css'>
   </head>
   <body>
-    <h1><%= title %></h1>
+    <header><h1><%= title %></h1></header>
+    <h2><%= title %></h2>
+    <p class="button"><a href="/user/new">Sign up</a></p>
     <form method="post" action="/">
       <fieldset>
         <p><label>User ID</label><input type="text" name="user_id"></p>
@@ -14,7 +16,6 @@
         <input type="submit" value="Login">
       </fieldset>
     </form>
-    <p><a href="/user/new">Sign up</a></p>
     <ul>
       <li><a href="/hoge/chikazawa/show">Show presentation DEMO</a></li>
       <li><a href="/hoge/chikazawa/stat">Show statistics DEMO</a></li>

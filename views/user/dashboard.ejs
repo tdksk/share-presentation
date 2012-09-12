@@ -6,25 +6,51 @@
     <link rel='stylesheet' href='/css/style.css'>
   </head>
   <body>
-    <h1> <%= user_id %></h1>
-    <p><a href="/user/logout">Logout</a></p>
-    <div id="presentationlist">
-      <a href="/presentation/new">create presentation</a>
-      <ul>
-        <li><a href="/hoge/chikazawa/show">Presentation DEMO</a></li>
-        <li><a href="/hoge/chikazawa/edit">Editor DEMO</a></li>
-        <li><a href="/hoge/chikazawa/stat">Statistics DEMO</a></li>
-      </ul>
-      <% if (presentations.length) { %>
-      <dl>
-        <% presentations.forEach(function(presentation){ %>
-        <dt><%= presentation.presentation_id %></dt>
-        <dd><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/edit" target="_blank">Edit</a></dd>
-        <dd><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/show" target="_blank">Show</a></dd>
-        <dd><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/stat" target="_blank">Statistics</a></dd>
-        <% }) %>
-      </dl>
-      <% } %>
-    </div>
+    <header><h1><%= title %></h1></header>
+    <h2><%= user_id %></h2>
+    <p class="logout"><a href="/user/logout">Logout</a></p>
+    <p class="button"><a href="/presentation/new">create presentation</a></p>
+    <% if (presentations.length) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Presentation ID</th>
+          <th>Edit</th>
+          <th>Show</th>
+          <th>Statistics</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <td>&nbsp;</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
+      <% presentations.forEach(function (presentation) { %>
+      <tr>
+        <td><%= presentation.presentation_id %></td>
+        <td><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/edit" target="_blank">Edit</a></td>
+        <td><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/show" target="_blank">Show</a></td>
+        <td><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/stat" target="_blank">Statistics</a></td>
+        <td>
+          <form method="post" action="/presentation/delete">
+            <input type="hidden" name="user_id" value="<%= presentation.user_id %>">
+            <input type="hidden" name="presentation_id" value="<%= presentation.presentation_id %>">
+            <input type="submit" value="Delete">
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </table>
+    <% } %>
+    <ul>
+      <li><a href="/hoge/chikazawa/show">Presentation DEMO</a></li>
+      <li><a href="/hoge/chikazawa/edit">Editor DEMO</a></li>
+      <li><a href="/hoge/chikazawa/stat">Statistics DEMO</a></li>
+    </ul>
   </body>
 </html>

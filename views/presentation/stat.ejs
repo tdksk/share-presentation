@@ -4,13 +4,12 @@
     <meta charset="utf-8">
     <title><%= title %></title>
     <link rel='stylesheet' href='/css/style.css'>
-  </head>
+  </headi>
   <body>
-    <h1><%= title %></h1>
+    <header><h1><%= title %></h1></header>
+    <h2><%= title %></h2>
+    <p id="user-count"></p>
     <canvas id="canvas"></canvas>
-    <div id="statistics">
-      <div id="user-count"></div>
-    </div>
 
     <script src='/js/graph.js'></script>
     <script src='/socket.io/socket.io.js'></script>

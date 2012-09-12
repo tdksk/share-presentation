@@ -11,7 +11,7 @@
       _presentation_id = _params.presentation_id;
 
   var _CANVAS_ID = 'canvas',
-      _CANVAS_WIDTH = 900,
+      _CANVAS_WIDTH = 870,
       _CANVAS_HEIGHT = 400;
 
   function initialize() {

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/style.css'>
+  </head>
+  <body>
+    <header><h1><%= title %></h1></header>
+    <h2><%= admin_id %></h2>
+    <p class="logout"><a href="/admin/logout">Logout</a></p>
+    <% if (users.length) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Created at</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <td>&nbsp;</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
+      <% users.forEach(function (user) { %>
+      <tr>
+        <td><a href="/admin/<%= user.user_id %>/detail"><%= user.user_id %></a></td>
+        <td><%= user.created_at %></td>
+        <td>
+          <form method="post" action="/user/delete">
+            <input type="hidden" name="user_id" value="<%= user.user_id %>">
+            <input type="submit" value="Delete">
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </table>
+    <% } %>
+  </body>
+</html>

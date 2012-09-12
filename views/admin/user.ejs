@@ -6,25 +6,40 @@
     <link rel='stylesheet' href='/css/style.css'>
   </head>
   <body>
-    <h1>ユーザー管理画面</h1>
-    <div id="adminuserlist">
-      <% if(users.length){ %>
-      <table>
-        <% users.forEach(function(user){ %>
-        <form method="post" action="/user/delete">
-          <tr><td>ユーザー名：</td>
-            <td><%= user.user_id %></td>
-            <td>
-              <input type="hidden" name="user_id" value='<%= user.user_id %>'>
-              <input type="submit" value="削除">
-            </td>
-          </tr>
-        </form>
-        <% }) %>
-      </table>
-      <% } %>
-    </div>
-    <p><a href="/admin/presentation">プレゼンテーション管理画面へ</p>
-    <p><a href="/admin/logout">Logout</a></p>
+    <header><h1><%= title %></h1></header>
+    <h2><%= title %></h2>
+    <% if (presentations.length) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Presentation ID</th>
+          <th>Created at</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <td>&nbsp;</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
+      <% presentations.forEach(function (presentation) { %>
+      <tr>
+        <td><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/show" target="_blank"><%= presentation.presentation_id %></a></td>
+        <td><%= presentation.created_at %></td>
+        <td>
+          <form method="post" action="/presentation/delete">
+            <input type="hidden" name="user_id" value="<%= presentation.user_id %>">
+            <input type="hidden" name="presentation_id" value="<%= presentation.presentation_id %>">
+            <input type="submit" value="Delete">
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </table>
+    <% } %>
+    <p><a href="/admin">Back</a></p>
+    <p><a href="/logout">Logout</a></p>
   </body>
 </html>

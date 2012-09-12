@@ -6,7 +6,9 @@
     <link rel='stylesheet' href='/css/style.css'>
   </head>
   <body>
-    <h1><%= title %></h1>
+    <header><h1><%= title %></h1></header>
+    <h2><%= title %></h2>
+    <p class="button"><a href="/user/new">Sign up</a></p>
     <form method="post" action="/admin">
       <fieldset>
         <p><label>User ID</label><input type="text" name="user_id"></p>
@@ -14,6 +16,5 @@
         <input type="submit" value="Login">
       </fieldset>
     </form>
-    <p><a href="/admin/new">Sign up</a></p>
   </body>
 </html>

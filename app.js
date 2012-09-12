@@ -72,8 +72,7 @@ app.get('/admin', routes.admin.index);
 app.post('/admin', routes.admin.login);
 app.get('/admin/new', routes.admin.new);
 app.post('/admin/create', routes.admin.create);
-app.get('/admin/user', routes.admin.user);
-app.get('/admin/presentation', routes.admin.presentation);
+app.get('/admin/:uid/detail', routes.admin.user);
 app.get('/admin/logout', routes.admin.logout);
 // Utils
 app.post('/utils/write', routes.utils.write);

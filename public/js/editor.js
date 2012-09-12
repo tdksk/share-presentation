@@ -56,7 +56,7 @@
   // TODO: Optimize size
   function _onResize() {
     var editorElem = document.getElementById('editor');
-    var width = window.innerWidth - 150;
+    var width = 870;
     var height = window.innerHeight - 180;
 
     editorElem.style.width = width + 'px';

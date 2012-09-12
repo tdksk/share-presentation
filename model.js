@@ -38,11 +38,15 @@ User.methods.createSalt = function () {
 };
 
 User.methods.encryptPassword = function (str) {
-  return crypto.createHmac('sha1', this.salt).update(str).digest('hex');
+  return crypto.createHmac('sha256', this.salt).update(str).digest('hex');
 };
 
 User.statics.findByUserId = function (user_id, callback) {
   this.findOne({ user_id: user_id }, callback);
+};
+
+User.statics.deleteByUserId = function (user_id, callback) {
+  this.remove({ user_id: user_id }, callback);
 };
 
 User.pre('save', function (next) {
@@ -70,10 +74,17 @@ Presentation.statics.findByUserId = function (user_id, callback) {
   this.find({ user_id: user_id }, callback);
 };
 
+Presentation.statics.deleteByUserIdAndPresentationId = function (user_id, presentation_id, callback) {
+  this.remove({
+    user_id: user_id
+  , presentation_id: presentation_id
+  }, callback);
+};
+
 /**
  * Amiministrator model
  */
-var Administrator = User.extend();
+var Admin = User.extend();
 
 /**
  * Utilities
@@ -92,4 +103,4 @@ function validatePassword(value) {
  */
 exports.User = db.model('User', User);
 exports.Presentation = db.model('Presentation', Presentation);
-exports.Administrator = db.model('Administrator', Administrator);
+exports.Admin = db.model('Admin', Admin);
