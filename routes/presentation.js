@@ -3,7 +3,7 @@
  * GET home page.
  */
 
-var model = require('../../model');
+var model = require('../model');
 
 var Presentation = model.Presentation;
 

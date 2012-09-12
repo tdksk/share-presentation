@@ -3,7 +3,7 @@
  * GET home page.
  */
 
-var model = require('../../model');
+var model = require('../model');
 
 var User = model.User,
     Presentation = model.Presentation,
@@ -91,6 +91,7 @@ exports.create = function (req, res) {
 // TODO: logout is needed to change remove of session document
 exports.logout = function (req, res) {
   // Destroy session
-  req.session.destroy();
+  // req.session.destroy();
+  delete req.session.admin_id;
   res.redirect('/admin');
 };

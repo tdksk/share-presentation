@@ -3,7 +3,7 @@
  * GET home page.
  */
 
-var model = require('../../model');
+var model = require('../model');
 
 var User = model.User,
     Presentation = model.Presentation;
@@ -14,7 +14,7 @@ exports.index = function (req, res) {
   if (req.session.user_id) {
     // Find user's presentations
     Presentation.findByUserId(req.session.user_id, function (err, items) {
-      res.render('user/main', {
+      res.render('user/dashboard', {
         title: 'Presentation list'
         , presentations: items
         , user_id: req.session.user_id
