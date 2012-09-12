@@ -52,7 +52,7 @@ exports.show = function (req, res) {
   user_id = req.params.uid;
   presentation_id = req.params.pid;
   // presenter or listener
-  user_type = (req.session.user_id) ? 'presenter' : 'listener';
+  user_type = (user_id === req.session.user_id) ? 'presenter' : 'listener';
   res.render('presentation/show', {
     title: presentation_id
   , user_type: user_type
@@ -67,11 +67,15 @@ exports.edit = function (req, res) {
   // Get user_id and presentation_id
   user_id = req.params.uid;
   presentation_id = req.params.pid;
-  res.render('presentation/edit', {
-    title: 'Edit Presentation'
-  , user_id : user_id
-  , presentation_id : presentation_id
-  });
+  if (user_id === req.session.user_id) {
+    res.render('presentation/edit', {
+      title: 'Edit Presentation'
+    , user_id : user_id
+    , presentation_id : presentation_id
+    });
+  } else {
+    res.redirect('/');
+  }
 };
 
 exports.stat = function (req, res) {
