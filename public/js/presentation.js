@@ -20,7 +20,8 @@
       _params = _getJsParam(),  // Load at first
       _user_type = _params.type,
       _user_id = _params.user_id,
-      _presentation_id = _params.presentation_id;
+      _presentation_id = _params.presentation_id,
+      _filePath;
 
   var _ANIMATION_TIME = '1s',
       _CONTAINER_ID = 'container',
@@ -77,7 +78,8 @@
   function _initContents() {
     var pageNum, page;
     // Load user file
-    _loadFile('/' + _user_id + '/' + _presentation_id + '.html');
+    _filePath = _PRESENTATION_DIR + '/' + _user_id + '/' + _presentation_id + '.html';
+    _loadFile(_filePath);
 
     // Initialize page
     pageNum = _getCurrentIndex();
@@ -91,7 +93,7 @@
     _initPage(_currentIndex);
   }
 
-  function _loadFile(fileName) {
+  function _loadFile(filePath) {
     if (window.XMLHttpRequest) {
       _xmlHttp = new XMLHttpRequest();
     } else {
@@ -99,7 +101,7 @@
     }
 
     _xmlHttp.onreadystatechange = _checkStatus;
-    _xmlHttp.open('GET', _PRESENTATION_DIR + fileName, false);
+    _xmlHttp.open('GET', filePath, false);
     _xmlHttp.send(null);
   }
 
