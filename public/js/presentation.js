@@ -2,7 +2,6 @@
   /**
    * Presentation
    */
-  var socket = io.connect('/presentation');
 
   var _xmlHttp,
       _pages,
@@ -21,6 +20,19 @@
       _user_type = _params.type,
       _user_id = _params.user_id,
       _presentation_id = _params.presentation_id;
+
+  //var roomSocket = io.connect('/room');
+  var socket = io.connect('/presentation/');
+  (function createRoom(){
+      socket.emit('init', {user_id: _user_id, presentation_id: _presentation_id})
+      })();
+
+/*  (function room(){
+    roomSocket.emit('room', {
+	user_id: _user_id,
+	presentation_id: _presentation_id
+	});
+  })();*/
 
   var _ANIMATION_TIME = '1s',
       _CONTAINER_ID = 'container',
