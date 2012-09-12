@@ -11,12 +11,17 @@
 
   var _CONTENTS_ID = 'editor',
       _CHANGE_ID = 'change',
-      _PRESENTATION_DIR = '/data';
+      _PRESENTATION_DIR = '/data',
+      _TEMPLATE_FILE_PATH = _PRESENTATION_DIR + '/template.html';
 
   function initialize() {
     // Load file
     _filePath = _PRESENTATION_DIR + '/' + _user_id + '/' + _presentation_id + '.html';
     _loadFile(_filePath);
+    // Template file is loaded at first
+    if (!document.getElementById(_CONTENTS_ID).innerHTML) {
+      _loadFile(_TEMPLATE_FILE_PATH);
+    }
 
     /* Initialze editor */
     _editor = ace.edit('editor'),
