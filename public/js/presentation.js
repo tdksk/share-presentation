@@ -2,6 +2,7 @@
   /**
    * Presentation
    */
+  // TODO: Sync hide elements
 
   var _xmlHttp,
       _pages,
@@ -132,16 +133,18 @@
       case 13:  // Enter
       case 32:  // Space
       case 40:  // Down arrow
-      case 74:  // J
+      case 74:  // j
         if (_user_type === 'presenter') {
-          _sendPageActionName('progress');
+          // _sendPageActionName('progress');
+          _sendPageActionName('next');
         }
-        _progressPage();
+        // _progressPage();
+        _nextPage();
         e.preventDefault();
         break;
 
       case 39:  // Right arrow
-      case 76:  // L
+      case 76:  // l
         if (_user_type === 'presenter') {
           _sendPageActionName('next');
         }
@@ -150,7 +153,8 @@
         break;
 
       case 37:  // Left arrow
-      case 72:  // H
+      case 72:  // h
+      case 75:  // k
         if (_user_type === 'presenter') {
           _sendPageActionName('prev');
         }
@@ -158,21 +162,21 @@
         e.preventDefault();
         break;
 
-      case 71:  // G
+      case 71:  // g
         if (_user_type === 'listener') {
           _sendReactionName('good');
         }
         e.preventDefault();
         break;
 
-      case 66:  // B
+      case 66:  // b
         if (_user_type === 'listener') {
           _sendReactionName('bad');
         }
         e.preventDefault();
         break;
 
-      case 79:  // O
+      case 79:  // o
         _toggleOptions();  // For debug
         e.preventDefault();
         break;
@@ -190,12 +194,14 @@
 
   function _touchAction() {
     // Double tap
+    /*
     $$('#' + _CONTAINER_ID).doubleTap(function () {
       if (_user_type === 'presenter') {
         _actionByName('progress');
       }
       _progressPage();
     });
+    */
     // Swipe left
     $$('#' + _CONTAINER_ID).swipeLeft(function () {
       if (_user_type === 'presenter') {
@@ -287,6 +293,8 @@
     location.href = url + '#' + String(index + 1);
 
     page = _pages[index];
+
+    /*
     _hideElems = page.querySelectorAll('.wrapper > section > *, .wrapper > section li, .wrapper > section p.slide > *');
     _elemIndex = 0;
     for (i = 0, len = _hideElems.length; i < len; i++) {
@@ -294,6 +302,7 @@
       elem.style.opacity = (showFlg) ? 1 : 0;
       delete elem.style.webkitTransition;
     }
+    */
 
     if (showFlg) {
       _hideElems = [];
@@ -500,10 +509,6 @@
 
   socket.on('reaction count', function (data) {
     _drawReactionGraph(data);
-    // For debug
-    // var debug = document.getElementById('reaction-count');
-    // debug.innerHTML = '<p>Good: ' + data.good[_currentIndex] + '</p>'
-    //                   + '<p>Bad: ' + data.bad[_currentIndex] + '</p>';
   });
 
   socket.on('location', function (data) {
