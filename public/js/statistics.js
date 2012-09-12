@@ -3,6 +3,10 @@
    * Statistics
    */
   var socket = io.connect('/statistics');
+ /* (function createRoom(){
+      socket.emit('init', {user_id: _user_id, presentation_id: _presentation_id})
+      })();
+*/
 
   var _canvas,
       _graph;
