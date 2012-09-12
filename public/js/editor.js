@@ -1,7 +1,10 @@
 (function () {
+  /**
+   * Editor
+   */
   var _editor,
       _xmlHttp,
-      _params = _getJsParam(),  // Load at first
+      _params = getJsParam(),  // Load at first
       _user_id = _params.user_id,
       _presentation_id = _params.presentation_id,
       _filePath;
@@ -99,27 +102,6 @@
   /**
    * Utilities
    */
-  // TODO: Integrate
-  function _getJsParam() {
-    var scripts = document.getElementsByTagName('script');
-    var src = scripts[scripts.length - 1].src;
-
-    var query = src.substring(src.indexOf('?') + 1);
-    var parameters = query.split('&');
-
-    var result = new Object();
-    for (var i = 0, length =  parameters.length; i < length; i++) {
-      var element = parameters[i].split('=');
-
-      var paramName = decodeURIComponent(element[0]);
-      var paramValue = decodeURIComponent(element[1]);
-
-      result[paramName] = decodeURIComponent(paramValue);
-    }
-
-    return result;
-  }
-
   function _execPost(action, data) {
     // Create form
     var form = document.createElement('form');

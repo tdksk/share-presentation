@@ -136,57 +136,37 @@ io.sockets.on('connection', function (socket) {
 // TODO: Optimize
 var _userData = {},
     _pageCount = {},
-    _reactionCount = {
-      good: []
-    , bad : []
-    };
-/*    _room = {};
-
-
-var room = io
-  .of('/room')
-  .on('connection', function (socket) {
-  console.log('emitte');
-  //success connection
-  socket.emit('connected');
-  socket.on('room', function (data) {
-    _room.user_id = data.user_id ,
-    _room.presentation_id = data.presentation_id
-    console.log('emitted data is:', _room.user_id);
-  });
-});*/
+    _reactionCount = {};
 
 var presentation = io
-  .of('/presentation/')
+  .of('/presentation')
   .on('connection', function (socket) {
-    
-    socket.on('init', function(req){
-	var room = req.user_id + '/' + req.presentation_id;
-	socket.set('room', room);
-	socket.join(room);
-	_pageCount[room] = {presenter: [], listner: []};
-	console.log(_pageCount.room);
+    socket.on('init', function (req) {
+      var room = req.user_id + '/' + req.presentation_id;
+      socket.set('room', room);
+      socket.join(room);
+      console.log('Join:', room);  // For debug
     });
-    
 
     var sessionID = socket.id;
     console.log('Presentation connect:', sessionID);  // For debug
 
-
     socket.on('page', function (data) {
-    socket.get('room', function(err, _room){
-      room = _room;
-    });
+      var room;
+      socket.get('room', function (err, _room) {
+        room = _room;
+      });
       socket.broadcast.to(room).emit('page', data);
     });
 
     socket.on('sync page', function (data) {
-    socket.get('room', function(err, _room){
-      room = _room;
-    });
+      var room;
+      socket.get('room', function (err, _room) {
+        room = _room;
+      });
       var arr,
           presenterIndex;
-      arr = _pageCount.presenter;
+      arr = _pageCount[room].presenter;
       presenterIndex = arr.indexOf(Math.max.apply(null, arr));
       if (data !== presenterIndex) {
         socket.to(room).emit('sync page', presenterIndex);
@@ -195,23 +175,31 @@ var presentation = io
     });
 
     socket.on('location', function (data) {
-      socket.get('room', function(err, _room){
-	  room = _room;
-	});
+      var room;
+      socket.get('room', function (err, _room) {
+        room = _room;
+      });
       presentation.to(room).emit('location', data);
     });
 
     socket.on('clear', function (data) {
-      socket.get('room', function(err, _room){
-	  room = _room;
-	});
+      var room;
+      socket.get('room', function (err, _room) {
+        room = _room;
+      });
       presentation.to(room).emit('clear', data);
     });
 
     socket.on('count', function (data) {
-      socket.get('room', function(err, _room){
-	  room = _room;
-	});
+      var room;
+      socket.get('room', function (err, _room) {
+        room = _room;
+      });
+
+      _pageCount[room] = _pageCount[room] || {
+        presenter: []
+      , listener : []
+      };
       var arr = _pageCount[room][data.userType];
       for (var i = 0, length = data.pageNum + 1; i < length; i++) {
         arr[i] = arr[i] || 0;
@@ -220,9 +208,9 @@ var presentation = io
       switch (data.action) {
         case 'count':
           arr[data.pageNum]++;
-          // io.of('/statistics').emit('statistics', _pageCount);
+          // io.of('/statistics').emit('statistics', _pageCount[room]);
           presentation.to(room).emit('user count', _pageCount[room]);
-          console.log(_pageCount[room]);
+          console.log(_pageCount[room]);  // For debug
           break;
         case 'discount':
           arr[data.pageNum]--;
@@ -236,28 +224,36 @@ var presentation = io
     });
 
     socket.on('reaction', function (data) {
-      socket.get('room', function(err, _room){
+      var room;
+      socket.get('room', function (err, _room) {
         room = _room;
       });
-      var arr = _reactionCount[data.type];
+
+      _reactionCount[room] = _reactionCount[room] || {
+        good: []
+      , bad : []
+      };
+      var arr = _reactionCount[room][data.type];
       for (var i = 0, length = data.pageNum + 1; i < length; i++) {
         arr[i] = arr[i] || 0;
       }
       // arr[data.pageNum] = arr[data.pageNum] || 0;
       arr[data.pageNum]++;
-      presentation.to(room).emit('reaction count', _reactionCount);
-      console.log(_reactionCount);  // For debug
+      presentation.to(room).emit('reaction count', _reactionCount[room]);
+      console.log(_reactionCount[room]);  // For debug
     });
 
     socket.on('get reaction', function () {
-      socket.get('room', function(err, _room){
+      var room;
+      socket.get('room', function (err, _room) {
         room = _room;
       });
-      presentation.to(room).emit('reaction count', _reactionCount);
+      presentation.to(room).emit('reaction count', _reactionCount[room]);
     });
 
     socket.on('reset reaction', function (data) {
-      socket.get('room', function(err, _room){
+      var room;
+      socket.get('room', function (err, _room) {
         room = _room;
       });
       _reactionCount = {
@@ -268,7 +264,8 @@ var presentation = io
     });
 
     socket.on('reset', function () {
-      socket.get('room', function(err, _room){
+      var room;
+      socket.get('room', function (err, _room) {
         room = _room;
       });
       console.log('Reset');  // For debug
@@ -284,7 +281,8 @@ var presentation = io
     });
 
     socket.on('disconnect', function () {
-      socket.get('room', function(err, _room){
+      var room;
+      socket.get('room', function (err, _room) {
         room = _room;
       });
       console.log('Presentation disconnect:', sessionID);  // For debug
@@ -302,29 +300,27 @@ var presentation = io
       // io.of('/statistics').emit('statistics', _pageCount);
       socket.leave(room);
       presentation.to(room).emit('user count', _pageCount[room]);
-      console.log(_pageCount);
+      console.log(_pageCount);  // For debug
     });
 
 var statistics = io
   .of('/statistics')
   .on('connection', function (socket) {
-    socket.on('init', function(req){
-	var room = req.user_id + '/' + req.presentation_id;
-	socket.set('room', room);
-	socket.join(room);
+    var _room;
+    socket.on('init', function (req) {
+      _room = req.user_id + '/' + req.presentation_id;
+      socket.join(_room);
     });
 
     var _SHOW_COUNT_INTERVAL = 3000;
 
-    // Show count when statistics page is loaded
-    socket.emit('statistics', _pageCount);
-
     // Show count at regular intervals
     var showCountTimerId = setInterval(function () {
-      socket.emit('statistics', _pageCount);
+      socket.emit('statistics', _pageCount[_room]);
     }, _SHOW_COUNT_INTERVAL);
 
     socket.on('disconnect', function () {
+      socket.leave(_room);
       clearInterval(showCountTimerId);
     });
   });

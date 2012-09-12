@@ -16,24 +16,13 @@
       _graphElement,
       _graph,
       _optionIsShown = true,
-      _params = _getJsParam(),  // Load at first
+      _params = getJsParam(),  // Load at first
       _user_type = _params.type,
       _user_id = _params.user_id,
       _presentation_id = _params.presentation_id,
       _filePath;
 
-  //var roomSocket = io.connect('/room');
-  var socket = io.connect('/presentation/');
-  (function createRoom(){
-      socket.emit('init', {user_id: _user_id, presentation_id: _presentation_id})
-      })();
-
-/*  (function room(){
-    roomSocket.emit('room', {
-	user_id: _user_id,
-	presentation_id: _presentation_id
-	});
-  })();*/
+  var socket = io.connect('/presentation');
 
   var _ANIMATION_TIME = '1s',
       _CONTAINER_ID = 'container',
@@ -82,6 +71,16 @@
     // For debug
     var debug = document.getElementById('user-type');
     debug.innerHTML += '<p>User type: ' + _user_type + '</p>';
+  }
+
+  /**
+   * Room
+   */
+  function initRoom() {
+    socket.emit('init', {
+      user_id: _user_id
+    , presentation_id: _presentation_id
+    });
   }
 
   /**
@@ -480,26 +479,6 @@
     return 'rgb(' + r + ', ' + g + ', ' + b + ')';
   }
 
-  function _getJsParam() {
-    var scripts = document.getElementsByTagName('script');
-    var src = scripts[scripts.length - 1].src;
-
-    var query = src.substring(src.indexOf('?') + 1);
-    var parameters = query.split('&');
-
-    var result = new Object();
-    for (var i = 0, length =  parameters.length; i < length; i++) {
-      var element = parameters[i].split('=');
-
-      var paramName = decodeURIComponent(element[0]);
-      var paramValue = decodeURIComponent(element[1]);
-
-      result[paramName] = decodeURIComponent(paramValue);
-    }
-
-    return result;
-  }
-
   /**
    * Receive events
    */
@@ -554,6 +533,9 @@
   /**
    * Initialize
    */
+  // Initialize room before loading DOM content
+  initRoom();
+  // Initialize after loading DOM content
   window.addEventListener('DOMContentLoaded', initialize, false);
 
   /**

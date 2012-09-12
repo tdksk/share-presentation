@@ -3,13 +3,12 @@
    * Statistics
    */
   var socket = io.connect('/statistics');
- /* (function createRoom(){
-      socket.emit('init', {user_id: _user_id, presentation_id: _presentation_id})
-      })();
-*/
 
   var _canvas,
-      _graph;
+      _graph,
+      _params = getJsParam(),  // Load at first
+      _user_id = _params.user_id,
+      _presentation_id = _params.presentation_id;
 
   var _CANVAS_ID = 'canvas',
       _CANVAS_WIDTH = 900,
@@ -19,6 +18,19 @@
     _initCanvas(_CANVAS_WIDTH, _CANVAS_HEIGHT);
   }
 
+  /**
+   * Room
+   */
+  function initRoom() {
+    socket.emit('init', {
+      user_id: _user_id
+    , presentation_id: _presentation_id
+    });
+  }
+
+  /**
+   * Canvas
+   */
   function _initCanvas(width, height) {
     _canvas = document.getElementById(_CANVAS_ID);
     _canvas.width = width;
@@ -28,6 +40,11 @@
     _canvas.style.top = '0';
     _canvas.style.zIndex = '1000';
     _canvas.style.float = 'left';
+
+    // Before loaded
+    var ctx = _canvas.getContext('2d');
+    ctx.fillText('Now Loading...', width / 2, height / 2);
+    ctx.fill();
 
     _graph = new Graph(_canvas);
   }
@@ -91,5 +108,8 @@
   /**
    * Initialize
    */
+  // Initialize room before loading DOM content
+  initRoom();
+  // Initialize after loading DOM content
   window.addEventListener('DOMContentLoaded', initialize, false);
 })();

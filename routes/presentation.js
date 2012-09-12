@@ -69,5 +69,14 @@ exports.edit = function (req, res) {
 };
 
 exports.stat = function (req, res) {
-  res.render('presentation/stat', { title: 'Statistics' });
+  var user_id,
+      presentation_id;
+  // Get user_id and presentation_id
+  user_id = req.params.uid;
+  presentation_id = req.params.pid;
+  res.render('presentation/stat', {
+    title: 'Statistics',
+    user_id : user_id,
+    presentation_id : presentation_id
+  });
 };
