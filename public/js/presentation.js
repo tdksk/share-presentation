@@ -1,5 +1,4 @@
 (function () {
-  'use strict';
   /**
    * Presentation
    */
@@ -15,8 +14,10 @@
       _beforeY,
       _isClicking,
       _canvas,
-      _graphElement,
-      _graph,
+      _graphLeft,
+      _graphRight,
+      _graphL,
+      _graphR,
       _optionIsShown = true,
       _params = getJsParam(),  // Load at first
       _user_type = _params.type,
@@ -30,7 +31,8 @@
       _CONTAINER_ID = 'container',
       _CONTENTS_ID = 'contents',
       _CANVAS_ID = 'canvas',
-      _GRAPH_ID = 'graph',
+      _GRAPH_LEFT_ID = 'graph-left',
+      _GRAPH_RIGHT_ID = 'graph-right',
       _PRESENTATION_DIR = '/data';
 
   function initialize() {
@@ -64,7 +66,8 @@
     _initCanvas(width, height);
 
     // Initialize graph
-    _graphElement = document.getElementById(_GRAPH_ID);
+    _graphLeft = document.getElementById(_GRAPH_LEFT_ID);
+    _graphRight = document.getElementById(_GRAPH_RIGHT_ID);
     _initGraph();
 
     // Initialize contents
@@ -402,22 +405,49 @@
    */
   // TODO: Fix position and size
   function _initGraph() {
-    _graphElement.width = 165;
-    _graphElement.height = 600;
-    _graphElement.style.position = 'absolute';
-    _graphElement.style.right = '0';
-    _graphElement.style.bottom = '50px';
-    _graphElement.style.zIndex = '1001';
+    _graphLeft.width = 100;
+    _graphLeft.height = 600;
+    _graphLeft.style.position = 'absolute';
+    _graphLeft.style.left = '0';
+    _graphLeft.style.bottom = '50px';
+    _graphLeft.style.zIndex = '1001';
 
-    _graph = new Graph(_graphElement);
+    _graphRight.width = 165;
+    _graphRight.height = 600;
+    _graphRight.style.position = 'absolute';
+    _graphRight.style.right = '0';
+    _graphRight.style.bottom = '50px';
+    _graphRight.style.zIndex = '1001';
+
+    _graphL = new Graph(_graphLeft);
+    _graphR = new Graph(_graphRight);
   }
 
   // TODO: グラフ長がウィンドウ超えた時も常に数値を表示
+  function _drawUserGraph(count) {
+    var arr,
+        data = [];
+    _graphL.hideGrids();
+    _graphL.clear();
+    arr = count.listener;
+    // Set data
+    data[0] = [0, arr[_currentIndex]];
+    _graphL.setData(data);
+    // Set styles
+    _graphL.setColor('rgba(0, 122, 255, .8)');
+    _graphL.setType('bar');
+    _graphL.setBarWidth(30);
+    _graphL.setScale(70, 10);
+    _graphL.showValue();
+    // Draw graph
+    _graphL.draw();
+  }
+
   function _drawReactionGraph(count) {
     var type,
         arr;
-    _graph.hideGrids();
-    _graph.clear();
+    _graphR.hideGrids();
+    _graphR.clear();
     for (type in count) {
       var data = [];
       arr = count[type];
@@ -432,20 +462,19 @@
       }
 
       // Set data
-      _graph.setData(data);
+      _graphR.setData(data);
       // Set styles
       if (type === 'good') {
-        _graph.setColor('');
-        _graph.setColor('rgba(108, 190, 110, .8)');
+        _graphR.setColor('rgba(108, 190, 110, .8)');
       } else if (type === 'bad') {
-        _graph.setColor('rgba(224, 74, 40, .8)');
+        _graphR.setColor('rgba(224, 74, 40, .8)');
       }
-      _graph.setType('bar');
-      _graph.setBarWidth(30);
-      _graph.setScale(70, 10);
-      _graph.showValue();
+      _graphR.setType('bar');
+      _graphR.setBarWidth(30);
+      _graphR.setScale(70, 10);
+      _graphR.showValue();
       // Draw graph
-      _graph.draw();
+      _graphR.draw();
     }
   }
 
@@ -454,21 +483,23 @@
    */
   function _toggleOptions() {
     var options = document.getElementById('options');
-    var buttons = document.getElementById('buttons');
-    var graph = document.getElementById(_GRAPH_ID);
+    var buttonsLeft = document.getElementById('buttons-left');
+    var buttonsRight = document.getElementById('buttons-right');
+    var graphLeft = document.getElementById(_GRAPH_LEFT_ID);
+    var graphRight = document.getElementById(_GRAPH_RIGHT_ID);
     if (_optionIsShown) {
       options.style.display = 'none';
-      if (_user_type === 'listener') {
-        buttons.style.display = 'none';
-      }
-      graph.style.display = 'none';
+      buttonsLeft.style.display = 'none';
+      buttonsRight.style.display = 'none';
+      graphLeft.style.display = 'none';
+      graphRight.style.display = 'none';
       _optionIsShown = false;
     } else {
       options.style.display = 'block';
-      if (_user_type === 'listener') {
-        buttons.style.display = 'block';
-      }
-      graph.style.display = 'block';
+      buttonsLeft.style.display = 'block';
+      buttonsRight.style.display = 'block';
+      graphLeft.style.display = 'block';
+      graphRight.style.display = 'block';
       _optionIsShown = true;
     }
   }
@@ -502,6 +533,7 @@
   });
 
   socket.on('user count', function (data) {
+    _drawUserGraph(data);
     // For debug
     var debug = document.getElementById('user-count');
     debug.innerHTML = '<p>View this page (listener): ' + data.listener[_currentIndex] + '</p>';
