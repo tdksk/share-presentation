@@ -128,11 +128,11 @@ var presentation = io
       socket.get('room', function (err, _room) {
         room = _room;
       });
-      _reactionCount = {
+      _reactionCount[room] = {
         good: []
       , bad : []
       };
-      presentation.to(room).emit('reaction count', _reactionCount);
+      presentation.to(room).emit('reaction count', _reactionCount[room]);
     });
 
     socket.on('reset', function () {
@@ -141,8 +141,11 @@ var presentation = io
         room = _room;
       });
       console.log('Reset');  // For debug
-      _pageCount = {};
-      _reactionCount = {
+      _pageCount[room] = {
+        presenter: []
+      , listener : []
+      };
+      _reactionCount[room] = {
         good: []
       , bad : []
       };
@@ -172,7 +175,7 @@ var presentation = io
       // io.of('/statistics').emit('statistics', _pageCount[room]);
       socket.leave(room);
       presentation.to(room).emit('user count', _pageCount[room]);
-      console.log(_pageCount);  // For debug
+      console.log(_pageCount[room]);  // For debug
     });
 
 var statistics = io
