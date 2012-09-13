@@ -25,6 +25,7 @@ How to use
 ----------
 
 ### プレゼンテーションファイルを準備する
+* Access to http://localhost:8080
 * Sign up from signup page
 * Login from top page
 * Create presentation
