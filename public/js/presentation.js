@@ -72,10 +72,6 @@
 
     // Initialize contents
     _initContents();
-
-    // For debug
-    var debug = document.getElementById('user-type');
-    debug.innerHTML += '<p>User type: ' + _user_type + '</p>';
   }
 
   /**
@@ -482,20 +478,17 @@
    * Show options
    */
   function _toggleOptions() {
-    var options = document.getElementById('options');
     var buttonsLeft = document.getElementById('buttons-left');
     var buttonsRight = document.getElementById('buttons-right');
     var graphLeft = document.getElementById(_GRAPH_LEFT_ID);
     var graphRight = document.getElementById(_GRAPH_RIGHT_ID);
     if (_optionIsShown) {
-      options.style.display = 'none';
       buttonsLeft.style.display = 'none';
       buttonsRight.style.display = 'none';
       graphLeft.style.display = 'none';
       graphRight.style.display = 'none';
       _optionIsShown = false;
     } else {
-      options.style.display = 'block';
       buttonsLeft.style.display = 'block';
       buttonsRight.style.display = 'block';
       graphLeft.style.display = 'block';
@@ -534,9 +527,6 @@
 
   socket.on('user count', function (data) {
     _drawUserGraph(data);
-    // For debug
-    var debug = document.getElementById('user-count');
-    debug.innerHTML = '<p>View this page (listener): ' + data.listener[_currentIndex] + '</p>';
   });
 
   socket.on('reaction count', function (data) {
