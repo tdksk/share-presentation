@@ -77,7 +77,8 @@
   function _onSaveFile() {
     var contents = _editor.session.getValue();
     _execPost('/utils/write', {
-      filePath: _filePath
+      user_id: _user_id
+    , filePath: _filePath
     , contents: contents
     });
   }
@@ -138,7 +139,8 @@
    * Initialize
    */
   window.addEventListener('DOMContentLoaded', initialize, false);
-  window.addEventListener('beforeunload', confirm, false);
+  // TODO: Disable confirm when saving
+  // window.addEventListener('beforeunload', confirm, false);
 
   /**
    * Export
