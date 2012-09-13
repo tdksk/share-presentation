@@ -1,6 +1,12 @@
 Project 3
 =========
 
+Support
+-------
+
+* Google Chrome
+* Safari
+
 Required
 --------
 
@@ -18,24 +24,43 @@ How to run
 How to use
 ----------
 
-### Presenter
+### プレゼンテーションファイルを準備する
 * Sign up from signup page
 * Login from top page
-* Click 'Presentatio DEMO'
+* Create presentation
+* Edit presentation (write in HTML5) and save (Ctrl-S, Cmd-S)
 
-### Listener
-* Click 'Show presentatn DEMO' from top page
+### プレゼンテーションを行う (Presenter)
+* Login from top page
+* Click 'Show' from dashboard
 
-### Real time presentation view count
-* Click 'Show statistics DEMO' from top page
+### プレゼンテーションを見る (Listener)
+* Access the same URL as presenter's
+
+### プレゼンテーション中に統計情報を見る (Presenter)
+* Login from top page
+* Click 'Show' from dashboard
+
+### 管理者用
+* Login from '/admin'
 
 プレゼンテーションスライドの操作方法
 ------------------------------------
 
-* 'Right' => Next page
-* 'Left' => Previous page
-* 'Enter' => Progress page
-* '0' => Reset view count (Statistics がおかしくなったらこれを実行)
+### PC
+
+* 'Enter', 'Space', 'Right', 'j', 'l'  => Next page
+* 'Left', 'k', 'h'  => Previous page
+* 'o' => Toggle options
+* 'g' (Listener) => Good button
+* 'b' (Listener)=> Bad button
+* '0' (Listener) => Presenter の現在のページと同期
+* '0' (Presenter) => Reset view count (Statistics がおかしくなったら実行する)
+
+### Smartphone, Tablet
+
+* Swipe Left => Next page
+* Swipe Right => Previous page
 
 Presenter のみの機能
 --------------------
@@ -45,5 +70,5 @@ Presenter のみの機能
 
 Statistics の見方
 -----------------
-* Red => Presenter
+* Red => Presenter の現在のページ
 * Blue => Listener

@@ -133,7 +133,6 @@
     switch (code) {
       case 13:  // Enter
       case 32:  // Space
-      case 40:  // Down arrow
       case 74:  // j
         if (_user_type === 'presenter') {
           // _sendPageActionName('progress');
