@@ -1,10 +1,13 @@
 Project 3
 =========
 
+Demo
+----
+
 <http://ec2-54-248-22-190.ap-northeast-1.compute.amazonaws.com:8080/>
 
-Support
--------
+Supported browsers
+------------------
 
 * Google Chrome
 * Safari
@@ -42,7 +45,7 @@ How to use
 
 ### プレゼンテーション中に統計情報を見る (Presenter)
 * Login from top page
-* Click 'Show' from dashboard
+* Click 'Statistics' from dashboard
 
 ### 管理者用
 * Login from '/admin'
