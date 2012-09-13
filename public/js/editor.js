@@ -15,6 +15,11 @@
       _PRESENTATION_DIR = '/data',
       _TEMPLATE_FILE_PATH = _PRESENTATION_DIR + '/template.html';
 
+  function confirm(event) {
+    event = event || window.event;
+    return event.returnValue = '保存していない場合、変更が破棄されます';
+  }
+
   function initialize() {
     // Load file
     _filePath = _PRESENTATION_DIR + '/' + _user_id + '/' + _presentation_id + '.html';
@@ -133,6 +138,7 @@
    * Initialize
    */
   window.addEventListener('DOMContentLoaded', initialize, false);
+  window.addEventListener('beforeunload', confirm, false);
 
   /**
    * Export

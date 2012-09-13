@@ -8,20 +8,25 @@ var model = require('../model');
 var Presentation = model.Presentation;
 
 exports.new = function (req, res) {
-  res.render('presentation/new', { title: 'Upload your presentation' });
+  res.render('presentation/new', { title: 'Create your presentation' });
 };
 
 exports.create = function (req, res) {
+  var user_id,
+      presentation_id;
   // Get user id from session
   req.body.user_id = req.session.user_id;
   // Create presentaion
   var newPresentation = new Presentation(req.body);
+  user_id = req.body.user_id;
+  presentation_id = req.body.presentation_id;
   newPresentation.save(function (err) {
     if (err) {
       console.log(err);
-      res.redirect('back');
+      res.reqirect('back');
     } else {
-      res.redirect('/');
+      // Edit page
+      res.redirect(user_id + '/' + presentation_id + '/edit');
     }
   });
 };
