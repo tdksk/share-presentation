@@ -47,20 +47,22 @@
   Graph.prototype.drawGrids = function () {
     var ctx = this._container.getContext('2d');
     var i;
+    var _FONT_SIZE = 12;
 
     ctx.beginPath();
     ctx.fillStyle = '#444';  // for Scales
     ctx.strokeStyle = '#bbb';  // for Grids
     ctx.lineWidth = .5;
+    ctx.font = _FONT_SIZE + 'px Arial';
     for (i = 0; i < (this._right - this._left) / this._xScale; i++) {
-      ctx.fillText(i, this._left + i * this._xScale, this._bottom + this._labelMargin);
+      ctx.fillText(i, this._left + i * this._xScale - _FONT_SIZE / 2, this._bottom + this._labelMargin + 2);
       ctx.moveTo(this._left + i * this._xScale,
                  this._top);
       ctx.lineTo(this._left + i * this._xScale,
                  this._bottom);
     }
     for (i = 0; i < (this._bottom - this._top) / this._yScale; i++) {
-      ctx.fillText(i, this._left - this._labelMargin, this._bottom - i * this._yScale);
+      // ctx.fillText(i, this._left - this._labelMargin, this._bottom - i * this._yScale);
       ctx.moveTo(this._left,
                  this._bottom - i * this._yScale);
       ctx.lineTo(this._right,
@@ -73,6 +75,7 @@
   Graph.prototype.draw = function () {
     var ctx = this._container.getContext('2d');
     var i, x, y;
+    var _FONT_SIZE = 20;
 
     if (this._grids && !isGrids) {
       this.drawAxes();
@@ -91,6 +94,7 @@
 
         /* Show value on graph */
         if (this._showValue && this._data[i][1]) {
+          ctx.font = _FONT_SIZE +  'px Arial';
           ctx.fillText(this._data[i][1], x, y);
         }
       }
@@ -110,6 +114,7 @@
 
         /* Show value on graph */
         if (this._showValue && this._data[i][1]) {
+          ctx.font = _FONT_SIZE +  'px Arial';
           ctx.fillText(this._data[i][1], x, y);
         }
       }
@@ -125,6 +130,7 @@
 
         /* Show value on graph */
         if (this._showValue && this._data[i][1]) {
+          ctx.font = _FONT_SIZE +  'px Arial';
           ctx.fillText(this._data[i][1], x, y);
         }
       }
