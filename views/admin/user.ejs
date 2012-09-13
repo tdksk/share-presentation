@@ -33,7 +33,7 @@
           <form method="post" action="/presentation/delete">
             <input type="hidden" name="user_id" value="<%= presentation.user_id %>">
             <input type="hidden" name="presentation_id" value="<%= presentation.presentation_id %>">
-            <input type="submit" value="Delete">
+            <input type="submit" value="Delete" onclick="return confirm('<%= presentation.presentation_id %> を削除しますか？');">
           </form>
         </td>
       </tr>

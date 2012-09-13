@@ -64,7 +64,7 @@ exports.user = function (req, res) {
       res.render('back');
     } else {
       res.render('admin/user', {
-        title: user_id
+        title: 'User Details'
       , presentations: items
       , user_id: user_id
       });
