@@ -1,8 +1,10 @@
 'use strict';
-
+/**
+ * Models
+ */
 var mongoose = require('mongoose'),
     extend = require('mongoose-schema-extend'),
-    crypto = require('crypto');
+    hash = require('mongoose-hashed-password');
 
 var db = mongoose.connect('mongodb://localhost/project3');
 
@@ -18,30 +20,10 @@ var User = new mongoose.Schema({
   , index: { unique: true, sparse: true }
   , validate: [validatePresenceOf, 'Empty Error']
   }
-, hashed_password: String
-, salt: String
 , created_at: { type: Date, default: Date.now }
 });
 
-User.virtual('password').set(function (pw) {
-  this._password = pw;
-  this.salt = this.createSalt();
-  this.hashed_password = this.encryptPassword(pw);
-}).get(function () {
-  return this._password;
-});
-
-User.methods.authenticate = function (plain) {
-  return this.encryptPassword(plain) === this.hashed_password;
-};
-
-User.methods.createSalt = function () {
-  return Math.round(new Date().valueOf() * Math.random()) + '';
-};
-
-User.methods.encryptPassword = function (str) {
-  return crypto.createHmac('sha256', this.salt).update(str).digest('hex');
-};
+User.setHashedPassword('sha256', validatePassword);
 
 User.statics.findByUserId = function (user_id, callback) {
   this.findOne({ user_id: user_id }, callback);
@@ -50,11 +32,6 @@ User.statics.findByUserId = function (user_id, callback) {
 User.statics.deleteByUserId = function (user_id, callback) {
   this.remove({ user_id: user_id }, callback);
 };
-
-User.pre('save', function (next) {
-  if (!validatePassword(this.password)) return next(new Error('Invalid password'));
-  next();
-});
 
 // TODO: LoginToken model
 
