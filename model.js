@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require('mongoose'),
     extend = require('mongoose-schema-extend'),
     crypto = require('crypto');

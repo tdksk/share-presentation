@@ -1,4 +1,5 @@
 (function (global) {
+  'use strict';
   var isGrids = false;
 
   function Graph(container) {
