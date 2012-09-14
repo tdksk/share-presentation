@@ -23,7 +23,8 @@
       _user_type = _params.type,
       _user_id = _params.user_id,
       _presentation_id = _params.presentation_id,
-      _filePath;
+      _filePath,
+      _presenterIndex = 0;
 
   var socket = io.connect('/presentation');
 
@@ -33,6 +34,7 @@
       _CANVAS_ID = 'canvas',
       _GRAPH_LEFT_ID = 'graph-left',
       _GRAPH_RIGHT_ID = 'graph-right',
+      _PAGE_INDEX_ID = 'page-index',
       _PRESENTATION_DIR = '/data';
 
   function initialize() {
@@ -307,6 +309,7 @@
       _hideElems = [];
     }
 
+    _showIndex(index);
     _countIndex(index);
     _clearCanvas();
     socket.emit('get reaction');
@@ -333,6 +336,14 @@
 
   function _syncPage() {
     socket.emit('sync page', _currentIndex);
+  }
+
+  function _showIndex(index) {
+    console.log(_presenterIndex);
+    var color;
+    var pageIndex = document.getElementById(_PAGE_INDEX_ID);
+    color = (_user_type === 'listener' && index === _presenterIndex) ? '#007aff' : '#666';
+    pageIndex.innerHTML = '<p style="color:' + color +'">' + index + '</p>';
   }
 
   /**
@@ -461,9 +472,11 @@
       _graphR.setData(data);
       // Set styles
       if (type === 'good') {
-        _graphR.setColor('rgba(108, 190, 110, .8)');
+        // _graphR.setColor('rgba(108, 190, 110, .8)');
+        _graphR.setColor('rgba(0, 102, 0, .5)');
       } else if (type === 'bad') {
-        _graphR.setColor('rgba(224, 74, 40, .8)');
+        // _graphR.setColor('rgba(224, 74, 40, .8)');
+        _graphR.setColor('rgba(204, 0, 0, .5)');
       }
       _graphR.setType('bar');
       _graphR.setBarWidth(30);
@@ -482,17 +495,20 @@
     var buttonsRight = document.getElementById('buttons-right');
     var graphLeft = document.getElementById(_GRAPH_LEFT_ID);
     var graphRight = document.getElementById(_GRAPH_RIGHT_ID);
+    var pageIndex = document.getElementById(_PAGE_INDEX_ID);
     if (_optionIsShown) {
       buttonsLeft.style.display = 'none';
       buttonsRight.style.display = 'none';
       graphLeft.style.display = 'none';
       graphRight.style.display = 'none';
+      pageIndex.style.display = 'none';
       _optionIsShown = false;
     } else {
       buttonsLeft.style.display = 'block';
       buttonsRight.style.display = 'block';
       graphLeft.style.display = 'block';
       graphRight.style.display = 'block';
+      pageIndex.style.display = 'block';
       _optionIsShown = true;
     }
   }
@@ -516,6 +532,12 @@
    * Receive events
    */
   socket.on('page', function (data) {
+    if (data.action === 'next') {
+      _presenterIndex = data.pageNum + 1;
+    } else if (data.action === 'prev') {
+      _presenterIndex = data.pageNum - 1;
+    }
+
     if (_currentIndex === data.pageNum) {
       _actionByName(data.action);
     }

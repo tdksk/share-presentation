@@ -298,3 +298,12 @@ button.good {
 button.bad {
   background: url(../img/bad.png) no-repeat;
 }
+
+#page-index {
+  font-family: Arial;
+  font-size: 18px;
+  position: absolute;
+  bottom: 16px;
+  left: 98px;
+  z-index: 1002;
+}
