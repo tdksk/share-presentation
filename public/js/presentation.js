@@ -24,7 +24,7 @@
       _user_id = _params.user_id,
       _presentation_id = _params.presentation_id,
       _filePath,
-      _presenterIndex = 0;
+      _presenterIndex;
 
   var socket = io.connect('/presentation');
 
@@ -32,10 +32,17 @@
       _CONTAINER_ID = 'container',
       _CONTENTS_ID = 'contents',
       _CANVAS_ID = 'canvas',
+      _BUTTONS_LEFT_ID = 'buttons-left',
+      _BUTTONS_RIGHT_ID = 'buttons-right',
       _GRAPH_LEFT_ID = 'graph-left',
       _GRAPH_RIGHT_ID = 'graph-right',
       _PAGE_INDEX_ID = 'page-index',
       _PRESENTATION_DIR = '/data';
+
+  var _BLUE = 'rgba(0, 122, 255, .8)',
+      _GREEN = 'rgba(0, 102, 0, .5)',
+      _RED = 'rgba(204, 0, 0, .5)',
+      _SALMON = 'rgba(209, 72, 54, .8)';
 
   function initialize() {
     var container, width, height;
@@ -339,11 +346,10 @@
   }
 
   function _showIndex(index) {
-    console.log(_presenterIndex);
     var color;
     var pageIndex = document.getElementById(_PAGE_INDEX_ID);
-    color = (_user_type === 'listener' && index === _presenterIndex) ? '#007aff' : '#666';
-    pageIndex.innerHTML = '<p style="color:' + color +'">' + index + '</p>';
+    color = (index === _presenterIndex) ? '#007aff' : '#666';
+    pageIndex.innerHTML = '<p style="color:' + color +'">' + (index + 1) + '</p>';
   }
 
   /**
@@ -430,7 +436,6 @@
     _graphR = new Graph(_graphRight);
   }
 
-  // TODO: グラフ長がウィンドウ超えた時も常に数値を表示
   function _drawUserGraph(count) {
     var arr,
         data = [];
@@ -441,7 +446,7 @@
     data[0] = [0, arr[_currentIndex]];
     _graphL.setData(data);
     // Set styles
-    _graphL.setColor('rgba(0, 122, 255, .8)');
+    _graphL.setColor(_BLUE);
     _graphL.setType('bar');
     _graphL.setBarWidth(30);
     _graphL.setScale(70, 10);
@@ -472,11 +477,9 @@
       _graphR.setData(data);
       // Set styles
       if (type === 'good') {
-        // _graphR.setColor('rgba(108, 190, 110, .8)');
-        _graphR.setColor('rgba(0, 102, 0, .5)');
+        _graphR.setColor(_GREEN);
       } else if (type === 'bad') {
-        // _graphR.setColor('rgba(224, 74, 40, .8)');
-        _graphR.setColor('rgba(204, 0, 0, .5)');
+        _graphR.setColor(_RED);
       }
       _graphR.setType('bar');
       _graphR.setBarWidth(30);
@@ -491,8 +494,8 @@
    * Show options
    */
   function _toggleOptions() {
-    var buttonsLeft = document.getElementById('buttons-left');
-    var buttonsRight = document.getElementById('buttons-right');
+    var buttonsLeft = document.getElementById(_BUTTONS_LEFT_ID);
+    var buttonsRight = document.getElementById(_BUTTONS_RIGHT_ID);
     var graphLeft = document.getElementById(_GRAPH_LEFT_ID);
     var graphRight = document.getElementById(_GRAPH_RIGHT_ID);
     var pageIndex = document.getElementById(_PAGE_INDEX_ID);
@@ -561,7 +564,7 @@
           currentX = data.x,
           currentY = data.y;
       // Set styles
-      ctx.strokeStyle = 'rgba(209, 72, 54, .8)';
+      ctx.strokeStyle = _SALMON;
       // ctx.strokeStyle = _getRandomColor();  // For debug
       ctx.lineWidth = 5;
       // Draw line
