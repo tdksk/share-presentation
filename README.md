@@ -57,9 +57,9 @@ How to use
 
 * 'Enter', 'Space', 'Right', 'j', 'l'  => Next page
 * 'Left', 'k', 'h'  => Previous page
-* 'o' => Toggle options
-* 'g' (Listener) => Good button
-* 'b' (Listener)=> Bad button
+* 'o' => ボタンの表示/非表示切り替え
+* 'g' (Listener) => Good!
+* 'b' (Listener)=> Bad...
 * '0' (Listener) => Presenter の現在のページと同期
 * '0' (Presenter) => Reset view count (Statistics がおかしくなったら実行する)
 
@@ -76,5 +76,5 @@ Presenter のみの機能
 
 Statistics の見方
 -----------------
-* Red => Presenter の現在のページ
-* Blue => Listener
+* Red line=> Presenter の現在のページ
+* Blue bar => Listener view count

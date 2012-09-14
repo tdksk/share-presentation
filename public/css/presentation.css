@@ -123,6 +123,11 @@ to{
 #container > #contents > article .wrapper h2{
   color: #000000;
 }
+#container > #contents > article .wrapper strong{
+  font-size: 30px;
+  font-weight: bold;
+  color: #e04a28;
+}
 #container > #contents > article .wrapper > section{
   margin: 20px;
 }
@@ -132,6 +137,7 @@ to{
 #container > #contents > article .wrapper > section pre{
   padding: 10px;
   font-size: 18px;
+  font-family: Consolas, "Liberatn Mono", Courier, monospace;
   line-height: 140%;
   border: 2px solid #ffefb0;
   background: #fff9e2;
@@ -143,7 +149,6 @@ to{
 }#container > #contents > article .wrapper > section h2{
   font-weight: bold;
 }
-
 #container > #contents > article .wrapper > section ul{
   list-style-type: none;
 }
@@ -245,27 +250,6 @@ to{
   background-color: #CCCCCC;
   margin: 5px;
   padding: 10px;
-}
-/*
-.table dl dt, .table dl dd{
-  float: left;
-  margin: 5px;
-}
-.table dl: after{
-  clear: both;
-  content: ".";
-  display: block;
-  font-size: 0;
-  height: 0;
-  line-height: 0;
-  visibility: hidden;
-}
-*/
-
-/* Options */
-#options {
-  position: absolute;
-  z-index: 1001;
 }
 
 /* Buttons */
