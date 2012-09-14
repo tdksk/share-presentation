@@ -13,7 +13,8 @@
 
   var _CANVAS_ID = 'canvas',
       _CANVAS_WIDTH = 870,
-      _CANVAS_HEIGHT = 400;
+      _CANVAS_HEIGHT = 400,
+      _MAX_VALUE = 36;
 
   function initialize() {
     _initCanvas(_CANVAS_WIDTH, _CANVAS_HEIGHT);
@@ -75,7 +76,7 @@
       arr = count.presenter;
       presenterIndex = arr.indexOf(Math.max.apply(null, arr));
       for (i = 0, length = arr.length; i < length; i++) {
-        data[i] = (arr[i]) ? [i + 1, 36] : [i + 1, 0];
+        data[i] = (arr[i]) ? [i + 1, _MAX_VALUE] : [i + 1, 0];
       }
       // Set data
       _graph.setData(data);
@@ -102,6 +103,7 @@
       // Set styles
       _graph.setColor('rgba(0, 122, 255, .8)');
       _graph.setBarWidth(10);
+      _graph.setMaxValue(_MAX_VALUE);
       _graph.showValue();
       // Draw graph
       _graph.draw();

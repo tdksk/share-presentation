@@ -16,6 +16,7 @@
     this._leftOffset = 50;
     this._topOffset = 20;
     this._labelMargin = 10;
+    this._maxValue = 50;
     this._grids = true;
     this._showValue = false;
 
@@ -95,7 +96,7 @@
         /* Show value on graph */
         if (this._showValue && this._data[i][1]) {
           ctx.font = _FONT_SIZE +  'px Arial';
-          ctx.fillText(this._data[i][1], x, y);
+          ctx.fillText(this._data[i][1], x, y - 5);
         }
       }
       ctx.fill();
@@ -115,7 +116,7 @@
         /* Show value on graph */
         if (this._showValue && this._data[i][1]) {
           ctx.font = _FONT_SIZE +  'px Arial';
-          ctx.fillText(this._data[i][1], x, y);
+          ctx.fillText(this._data[i][1], x, y - 5);
         }
       }
       ctx.stroke();
@@ -125,13 +126,15 @@
       ctx.fillStyle = this._color;
       for (i = 0; this._data[i]; ++i) {
         x = (this._left + this._data[i][0] * this._xScale) - this._barWidth / 2;
-        y = this._bottom - this._data[i][1] * this._yScale;
-        ctx.fillRect(x, y, this._barWidth, this._data[i][1] * this._yScale);
+        y = (this._data[i][1] > this._maxValue) ?
+          this._bottom - this._maxValue * this._yScale :
+          this._bottom - this._data[i][1] * this._yScale;
+        ctx.fillRect(x, y, this._barWidth, this._bottom - y);
 
         /* Show value on graph */
         if (this._showValue && this._data[i][1]) {
           ctx.font = _FONT_SIZE +  'px Arial';
-          ctx.fillText(this._data[i][1], x, y);
+          ctx.fillText(this._data[i][1], x, y - 5);
         }
       }
     }
@@ -173,6 +176,9 @@
   };
   Graph.prototype.setBarWidth = function (barWidth) {
     this._barWidth = barWidth;
+  };
+  Graph.prototype.setMaxValue = function (maxValue) {
+    this._maxValue = maxValue;
   };
 
   /* Options */
