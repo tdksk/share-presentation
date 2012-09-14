@@ -210,3 +210,12 @@ button#change:hover {
 button#change.disabled {
   background: #ccc;
 }
+
+/**
+ * Statistics
+ */
+#user-count {
+  position: relative;
+  top: 7px;
+  left: 20px;
+}

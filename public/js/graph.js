@@ -63,7 +63,7 @@
                  this._bottom);
     }
     for (i = 0; i < (this._bottom - this._top) / this._yScale; i++) {
-      // ctx.fillText(i, this._left - this._labelMargin, this._bottom - i * this._yScale);
+      ctx.fillText(i, this._left - this._labelMargin - _FONT_SIZE / 2, this._bottom - i * this._yScale + _FONT_SIZE / 2);
       ctx.moveTo(this._left,
                  this._bottom - i * this._yScale);
       ctx.lineTo(this._right,
