@@ -21,6 +21,7 @@ var User = new mongoose.Schema({
   , validate: [validatePresenceOf, 'Empty Error']
   }
 , created_at: { type: Date, default: Date.now }
+  // TODO: Add modified_at
 });
 
 User.setHashedPassword('sha256', validatePassword);
@@ -47,6 +48,7 @@ var Presentation = new mongoose.Schema({
   }
 , user_id: { type: String, required: true, validate: [validatePresenceOf, 'Empty Error'] }
 , created_at: { type: Date, default: Date.now }
+  // TODO: Add modified_at
 });
 
 Presentation.statics.findByUserId = function (user_id, callback) {
