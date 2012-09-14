@@ -177,26 +177,34 @@ var presentation = io
       presentation.to(room).emit('user count', _pageCount[room]);
       console.log(_pageCount[room]);  // For debug
     });
+  });
 
 var statistics = io
   .of('/statistics')
   .on('connection', function (socket) {
-    var _room;
     socket.on('init', function (req) {
-      _room = req.user_id + '/' + req.presentation_id;
-      socket.join(_room);
+      var room = req.user_id + '/' + req.presentation_id;
+      socket.set('room', room);
+      socket.join(room);
     });
 
     var _SHOW_COUNT_INTERVAL = 3000;
 
     // Show count at regular intervals
     var showCountTimerId = setInterval(function () {
-      socket.emit('statistics', _pageCount[_room]);
+      var room;
+      socket.get('room', function (err, _room) {
+        room = _room;
+      });
+      socket.emit('statistics', _pageCount[room]);
     }, _SHOW_COUNT_INTERVAL);
 
     socket.on('disconnect', function () {
-      socket.leave(_room);
+      var room;
+      socket.get('room', function (err, _room) {
+        room = _room;
+      });
+      socket.leave(room);
       clearInterval(showCountTimerId);
     });
   });
-});
