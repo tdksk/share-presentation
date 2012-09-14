@@ -196,7 +196,7 @@
     /*
     $$('#' + _CONTAINER_ID).doubleTap(function () {
       if (_user_type === 'presenter') {
-        _actionByName('progress');
+        _sendPageActionName('progress');
       }
       _progressPage();
     });
@@ -204,14 +204,14 @@
     // Swipe left
     $$('#' + _CONTAINER_ID).swipeLeft(function () {
       if (_user_type === 'presenter') {
-        _actionByName('next');
+        _sendPageActionName('next');
       }
       _nextPage();
     });
     // Swipe right
     $$('#' + _CONTAINER_ID).swipeRight(function () {
       if (_user_type === 'presenter') {
-        _actionByName('prev');
+        _sendPageActionName('prev');
       }
       _prevPage();
     });
