@@ -16,10 +16,10 @@
       <thead>
         <tr>
           <th>Presentation ID</th>
-          <th>Edit</th>
-          <th>Show</th>
-          <th>Statistics</th>
-          <th>Delete</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tfoot>
@@ -35,9 +35,9 @@
       <% presentations.forEach(function (presentation) { %>
       <tr>
         <td><%= presentation.presentation_id %></td>
-        <td><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/edit" target="_blank">Edit</a></td>
-        <td><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/show" target="_blank">Show</a></td>
-        <td><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/stat" target="_blank">Statistics</a></td>
+        <td><p class="button"><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/edit" target="_blank">Edit</a></p></td>
+        <td><p class="button"><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/show" target="_blank">Show</a></p></td>
+        <td><p class="button"><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/stat" target="_blank">Statistics</a></p></td>
         <td>
           <form method="post" action="/presentation/delete">
             <input type="hidden" name="user_id" value="<%= presentation.user_id %>">

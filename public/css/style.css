@@ -119,6 +119,10 @@ table td, table th {
   border-bottom: 1px solid #f2f2f2;
 }
 
+table td {
+  padding: 0 10px;
+}
+
 table tbody tr:nth-child(even) {
   background: #f5f5f5;
   webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
@@ -161,6 +165,7 @@ table tfoot td {
   border-bottom: 0;
   border-top: 1px solid #fff;
   background-color: #f1f1f1;
+  padding: 10px;
 }
 
 table tfoot td:first-child {
@@ -183,6 +188,16 @@ table tfoot td:only-child {
 
 table form {
   padding: 0;
+}
+
+table td p.button {
+  position: relative;
+  top: 11px;
+  margin: 0 0 0 0;
+}
+
+table td input[type="submit"] {
+  margin: 10px 0;
 }
 
 /**
