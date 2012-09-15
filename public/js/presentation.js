@@ -348,7 +348,7 @@
   function _showIndex(index) {
     var color;
     var pageIndex = document.getElementById(_PAGE_INDEX_ID);
-    color = (index === _presenterIndex) ? '#007aff' : '#666';
+    color = (_user_type === 'listener' && index === _presenterIndex) ? '#007aff' : '#666';
     pageIndex.innerHTML = '<p style="color:' + color +'">' + (index + 1) + '</p>';
   }
 
