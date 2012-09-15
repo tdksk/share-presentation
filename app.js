@@ -53,6 +53,7 @@ app.get('/user/logout', routes.user.logout);
 app.get('/presentation/new', routes.presentation.new);
 app.post('/presentation/create', routes.presentation.create);
 app.post('/presentation/delete', routes.presentation.delete);
+app.post('/presentation/view', routes.presentation.view);
 app.get('/:uid/:pid/show', routes.presentation.show);
 app.get('/:uid/:pid/edit', routes.presentation.edit);
 app.get('/:uid/:pid/stat', routes.presentation.stat);

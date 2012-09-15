@@ -49,6 +49,16 @@ exports.delete = function (req, res) {
   });
 };
 
+exports.view = function (req, res) {
+  var user_id,
+      presentation_id;
+  // Get user id and presentation id
+  user_id = req.body.user_id_p;
+  presentation_id = req.body.presentation_id_p;
+  // Show presentation
+  res.redirect(user_id + '/' + presentation_id + '/show');
+};
+
 exports.show = function (req, res) {
   var user_id,
       presentation_id,
