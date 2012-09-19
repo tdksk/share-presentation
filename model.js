@@ -24,7 +24,7 @@ var User = new mongoose.Schema({
   // TODO: Add modified_at
 });
 
-User.setHashedPassword('sha256', validatePassword);
+User.defineHashedPassword('sha256', validatePassword);
 
 User.statics.findByUserId = function (user_id, callback) {
   this.findOne({ user_id: user_id }, callback);
