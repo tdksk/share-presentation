@@ -37,7 +37,8 @@
       _GRAPH_LEFT_ID = 'graph-left',
       _GRAPH_RIGHT_ID = 'graph-right',
       _PAGE_INDEX_ID = 'page-index',
-      _PRESENTATION_DIR = '/data';
+      _PRESENTATION_DIR = '/data',
+      _MAX_VALUE = 50;
 
   var _BLUE = 'rgba(0, 122, 255, .8)',
       _GREEN = 'rgba(0, 102, 0, .5)',
@@ -450,6 +451,7 @@
     _graphL.setType('bar');
     _graphL.setBarWidth(30);
     _graphL.setScale(70, 10);
+    _graphL.setMaxValue(_MAX_VALUE);
     _graphL.showValue();
     // Draw graph
     _graphL.draw();
@@ -484,6 +486,7 @@
       _graphR.setType('bar');
       _graphR.setBarWidth(30);
       _graphR.setScale(70, 10);
+      _graphR.setMaxValue(_MAX_VALUE);
       _graphR.showValue();
       // Draw graph
       _graphR.draw();

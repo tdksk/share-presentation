@@ -16,7 +16,7 @@
     this._leftOffset = 50;
     this._topOffset = 20;
     this._labelMargin = 10;
-    this._maxValue = 50;
+    this._maxValue = 100;
     this._grids = true;
     this._showValue = false;
 
@@ -54,20 +54,37 @@
     ctx.fillStyle = '#444';  // for Scales
     ctx.strokeStyle = '#bbb';  // for Grids
     ctx.lineWidth = .5;
+    /* Show value on grids */
     ctx.font = _FONT_SIZE + 'px Arial';
     for (i = 0; i < (this._right - this._left) / this._xScale; i++) {
-      ctx.fillText(i, this._left + i * this._xScale - _FONT_SIZE / 2, this._bottom + this._labelMargin + 2);
-      ctx.moveTo(this._left + i * this._xScale,
-                 this._top);
-      ctx.lineTo(this._left + i * this._xScale,
-                 this._bottom);
+      ctx.fillText(
+        i,
+        this._left + i * this._xScale - _FONT_SIZE / 2,
+        this._bottom + this._labelMargin + 2
+      );
+      ctx.moveTo(
+        this._left + i * this._xScale,
+        this._top
+      );
+      ctx.lineTo(
+        this._left + i * this._xScale,
+        this._bottom
+      );
     }
     for (i = 0; i < (this._bottom - this._top) / this._yScale; i++) {
-      ctx.fillText(i, this._left - this._labelMargin - _FONT_SIZE / 2, this._bottom - i * this._yScale + _FONT_SIZE / 2);
-      ctx.moveTo(this._left,
-                 this._bottom - i * this._yScale);
-      ctx.lineTo(this._right,
-                 this._bottom - i * this._yScale);
+      ctx.fillText(
+        i,
+        this._left - this._labelMargin - _FONT_SIZE / 2,
+        this._bottom - i * this._yScale + _FONT_SIZE / 2
+      );
+      ctx.moveTo(
+        this._left,
+        this._bottom - i * this._yScale
+      );
+      ctx.lineTo(
+        this._right,
+        this._bottom - i * this._yScale
+      );
     }
     ctx.stroke();
   };
@@ -126,9 +143,9 @@
       ctx.fillStyle = this._color;
       for (i = 0; this._data[i]; ++i) {
         x = (this._left + this._data[i][0] * this._xScale) - this._barWidth / 2;
-        y = (this._data[i][1] > this._maxValue) ?
-          this._bottom - this._maxValue * this._yScale :
-          this._bottom - this._data[i][1] * this._yScale;
+        y = this._maxValue && (this._data[i][1] > this._maxValue)
+          ? this._bottom - this._maxValue * this._yScale
+          : this._bottom - this._data[i][1] * this._yScale;
         ctx.fillRect(x, y, this._barWidth, this._bottom - y);
 
         /* Show value on graph */
