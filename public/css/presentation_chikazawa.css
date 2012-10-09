@@ -22,7 +22,6 @@ body{
   font-size: 24px;
   background: #cccccc;
   color: #333333;
-  /* font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro W3", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", "Helvetica Neue", Helvetica, Arial, sans-serif; */
   font-family: 'ヒラギノ角ゴ Pro W6', "ＭＳ ゴシック", sans-serif;
   overflow: hidden;
 }
@@ -119,10 +118,7 @@ to{
 #container > #contents > article .wrapper h1{
   font-size: 32px;
   font-weight: bold;
-  /* color: #0046ba; */
-  border-left: 8px solid #e65138;
-  padding: 0 0 0 .5em;
-  margin: 0 0 0 10px;
+  color: #0046ba;
 }
 #container > #contents > article .wrapper h2{
   color: #000000;
@@ -186,12 +182,6 @@ to{
 #container > #contents > article .wrapper > section p.slide img: first-child{
   position: relative;
 }
-#container > #contents > article .wrapper > section .bluebox{
-  border: 3px solid #599eff;
-  border-radius: 10px;
-  padding: 5px 25px;
-  width: 80px;
-}
 
 
 #container > #contents > article .title{
@@ -200,20 +190,11 @@ to{
 #container > #contents > article .title h1{
   margin-top: 200px;
   font-size: 48px;
-  border-left: 0;
-  padding: 0;
 }
 #container > #contents > article .title h2{
   font-size: 32px;
 }
 
-#container > #contents > article .subtitle h1{
-  font-size: 32px;
-  font-weight: bold;
-  border-left: 8px solid #599eff;
-  padding: 0 0 0 .5em;
-  margin: 220px 0 0 50px;
-}
 
 #console{
   width: 100%;
