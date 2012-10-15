@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
     extend = require('mongoose-schema-extend'),
     hash = require('mongoose-hashed-password');
 
+// TODO: Change DB name
 var db = mongoose.connect('mongodb://localhost/project3');
 
 var _MIN_PASSWORD_LENGTH = 4;
