@@ -1,10 +1,10 @@
-Project 3
-=========
+Share Presentation
+==================
 
 Demo
 ----
 
-<http://ec2-54-248-22-190.ap-northeast-1.compute.amazonaws.com:8080/>
+<http://tdksk.com/s/>
 
 Supported browsers
 ------------------
@@ -22,7 +22,7 @@ Required
 How to run
 ----------
 
-    $ cd project3
+    $ cd share-presentation
     $ npm install
     $ node app
 
