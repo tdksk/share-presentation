@@ -9,11 +9,12 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pr
   vertical-align: baseline;
 }
 
-html, body{
+html, body {
   width: 100%;
   height: 100%;
 }
-body{
+
+body {
   margin: 0;
   padding: 0;
   display: -webkit-box;
@@ -27,12 +28,14 @@ body{
   overflow: hidden;
 }
 
-#container{
+#container {
   width: 900px;
   height: 600px;
   overflow: hidden;
 }
-#container > #contents > article{
+
+/* Contents */
+#container > #contents > article {
   position: absolute;
   width: 860px;
   height: 560px;
@@ -43,35 +46,38 @@ body{
   display: none;
 }
 
-
-#container > #contents > article.move_from_right{
+#container > #contents > article.move_from_right {
   display: block;
   -webkit-animation-name: move_from_right;
   -webkit-animation-duration: 1s;
   -webkit-transform: translate(0px, 0px);
   opacity: 1;
 }
-#container > #contents > article.move_to_left{
+
+#container > #contents > article.move_to_left {
   display: block;
   -webkit-animation-name: move_to_left;
   -webkit-animation-duration: 1s;
   -webkit-transform: translate(-900px, 0px);
   opacity: 0;
 }
-#container > #contents > article.move_from_left{
+
+#container > #contents > article.move_from_left {
   display: block;
   -webkit-animation-name: move_from_left;
   -webkit-animation-duration: 1s;
   -webkit-transform: translate(0px, 0px);
   opacity: 1;
 }
-#container > #contents > article.move_to_right{
+
+#container > #contents > article.move_to_right {
   display: block;
   -webkit-animation-name: move_to_right;
   -webkit-animation-duration: 1s;
   -webkit-transform: translate(900px, 0px);
   opacity: 0;
 }
+
 @-webkit-keyframes move_from_right{
 from{
   opacity: 0;
@@ -113,10 +119,7 @@ to{
 }
 }
 
-#container > #contents > article .wrapper{
-
-}
-#container > #contents > article .wrapper h1{
+#container > #contents > article .wrapper h1 {
   font-size: 32px;
   font-weight: bold;
   /* color: #0046ba; */
@@ -124,21 +127,26 @@ to{
   padding: 0 0 0 .5em;
   margin: 0 0 0 10px;
 }
-#container > #contents > article .wrapper h2{
+
+#container > #contents > article .wrapper h2 {
   color: #000000;
 }
-#container > #contents > article .wrapper strong{
+
+#container > #contents > article .wrapper strong {
   font-size: 30px;
   font-weight: bold;
   color: #e65138;
 }
-#container > #contents > article .wrapper > section{
+
+#container > #contents > article .wrapper > section {
   margin: 20px;
 }
-#container > #contents > article .wrapper > section > *{
+
+#container > #contents > article .wrapper > section > * {
   margin: 20px 0px;
 }
-#container > #contents > article .wrapper > section pre{
+
+#container > #contents > article .wrapper > section pre {
   padding: 10px;
   font-size: 18px;
   font-family: Consolas, "Liberatn Mono", Courier, monospace;
@@ -147,27 +155,34 @@ to{
   background: #fff9e2;
   -webkit-border-radius: 10px;
 }
-#container > #contents > article .wrapper > section pre: hover{
-  /*background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#cccccc));*/
+
+#container > #contents > article .wrapper > section pre: hover {
   background: #eeeeee;
-}#container > #contents > article .wrapper > section h2{
+}
+
+#container > #contents > article .wrapper > section h2 {
   font-weight: bold;
 }
-#container > #contents > article .wrapper > section ul{
+
+#container > #contents > article .wrapper > section ul {
   list-style-type: none;
 }
-#container > #contents > article .wrapper > section ul p{
+
+#container > #contents > article .wrapper > section ul p {
   font-size: 20px;
   margin: 10px;
 }
-#container > #contents > article .wrapper > section ul.list{
+
+#container > #contents > article .wrapper > section ul.list {
   list-style-type: disc;
   margin-left: 20px;
 }
-#container > #contents > article .wrapper > section ul.list li{
+
+#container > #contents > article .wrapper > section ul.list li {
   margin: 20px;
 }
-#container > #contents > article .wrapper > section figure{
+
+#container > #contents > article .wrapper > section figure {
   position: relative;
   display: block;
   padding: 10px;
@@ -175,39 +190,44 @@ to{
   border: 1px solid #666666;
   background-color: #ffffff;
 }
-#container > #contents > article .wrapper > section p.slide{
+
+#container > #contents > article .wrapper > section p.slide {
   position: relative;
 }
-#container > #contents > article .wrapper > section p.slide img{
+
+#container > #contents > article .wrapper > section p.slide img {
   top: 0px;
   left: 0px;
   position: absolute;
 }
-#container > #contents > article .wrapper > section p.slide img: first-child{
+
+#container > #contents > article .wrapper > section p.slide img: first-child {
   position: relative;
 }
-#container > #contents > article .wrapper > section .bluebox{
+
+#container > #contents > article .wrapper > section .bluebox {
   border: 3px solid #599eff;
   border-radius: 10px;
   padding: 5px 25px;
   width: 80px;
 }
 
-
-#container > #contents > article .title{
+#container > #contents > article .title {
   text-align: center;
 }
-#container > #contents > article .title h1{
+
+#container > #contents > article .title h1 {
   margin-top: 200px;
   font-size: 48px;
   border-left: 0;
   padding: 0;
 }
-#container > #contents > article .title h2{
+
+#container > #contents > article .title h2 {
   font-size: 32px;
 }
 
-#container > #contents > article .subtitle h1{
+#container > #contents > article .subtitle h1 {
   font-size: 32px;
   font-weight: bold;
   border-left: 8px solid #599eff;
@@ -215,7 +235,8 @@ to{
   margin: 220px 0 0 50px;
 }
 
-#console{
+/* Console */
+#console {
   width: 100%;
   height: 200px;
   position: absolute;
@@ -226,7 +247,8 @@ to{
   background-color: #ffffff;
   -webkit-box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.4);
 }
-#console .header{
+
+#console .header {
   width: 100%;
   height: 20px;
   padding: 5px;
@@ -237,15 +259,16 @@ to{
   font-size: 14px;
 }
 
-
-.table{
+/* Table */
+.table {
   width: auto;
   height: auto;
   border-top: 1px solid #000000;
   border-right: 1px solid #000000;
   font-size: 16px;
 }
-.table h3{
+
+.table h3 {
   width: auto;
   text-align: center;
   background-color: #666666;
@@ -253,10 +276,12 @@ to{
   border-bottom: 1px solid #000000;
   color: #ffffff;
 }
-.table dl{
+
+.table dl {
   display: table-row;
 }
-.table dl dt, .table dl dd{
+
+.table dl dt, .table dl dd {
   width: 100%;
   border-left: 1px solid #000000;
   border-bottom: 1px solid #000000;
@@ -264,7 +289,8 @@ to{
   padding: 5px;
   background-color: #ffffff;
 }
-.box div{
+
+.box div {
   border: 2px solid #666666;
   background-color: #CCCCCC;
   margin: 5px;
