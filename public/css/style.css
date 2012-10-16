@@ -230,6 +230,10 @@ button#change.disabled {
   background: #ccc;
 }
 
+button#change.saved {
+  background: #05c65f;
+}
+
 /**
  * Statistics
  */
