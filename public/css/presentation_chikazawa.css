@@ -195,6 +195,11 @@ to{
   font-size: 32px;
 }
 
+#container > #contents > article .subtitle h1{
+  text-align: center;
+  font-size: 32px;
+  margin-top: 220px;
+}
 
 #console{
   width: 100%;

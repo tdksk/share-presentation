@@ -122,7 +122,6 @@ to{
 #container > #contents > article .wrapper h1 {
   font-size: 32px;
   font-weight: bold;
-  /* color: #0046ba; */
   border-left: 8px solid #e65138;
   padding: 0 0 0 .5em;
   margin: 0 0 0 10px;
@@ -229,7 +228,6 @@ to{
 
 #container > #contents > article .subtitle h1 {
   font-size: 32px;
-  font-weight: bold;
   border-left: 8px solid #599eff;
   padding: 0 0 0 .5em;
   margin: 220px 0 0 50px;
