@@ -14,14 +14,14 @@ exports.index = function (req, res) {
   // Render dashboard if login
   if (user_id) {
     // Find user's presentations
-    Presentation.findByUserId(user_id, function (err, items) {
+    Presentation.findByUserId(user_id, function (err, presentations) {
       if (err) {
         console.log(err);
         res.render('back');
       } else {
         res.render('user/dashboard', {
           title: 'Dashboard'
-        , presentations: items
+        , presentations: presentations
         , user_id: user_id
         });
       }

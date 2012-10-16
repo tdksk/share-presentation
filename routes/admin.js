@@ -15,7 +15,7 @@ exports.index = function (req, res) {
   // Render dashboard if login
   if (admin_id) {
     // Find all users
-    User.find({}, function (err, items) {
+    User.find({}, function (err, users) {
       if (err) {
         console.log(err);
         res.render('back');
@@ -23,7 +23,7 @@ exports.index = function (req, res) {
         res.render('admin/dashboard', {
           title: 'Admin'
         , admin_id: admin_id
-        , users: items
+        , users: users
         });
       }
     });
@@ -58,14 +58,14 @@ exports.user = function (req, res) {
   // Get user id
   user_id = req.params.uid;
   // Find user's presentations
-  Presentation.findByUserId(user_id, function (err, items) {
+  Presentation.findByUserId(user_id, function (err, presentations) {
     if (err) {
       console.log(err);
       res.render('back');
     } else {
       res.render('admin/user', {
         title: 'User Details'
-      , presentations: items
+      , presentations: presentations
       , user_id: user_id
       });
     }
