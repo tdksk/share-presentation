@@ -5,6 +5,8 @@
    */
   var _editor,
       _xmlHttp,
+      _contentsElem,
+      _changeElem,
       _params = getJsParam(),  // Load at first
       _user_id = _params.user_id,
       _presentation_id = _params.presentation_id,
@@ -22,11 +24,15 @@
   }
 
   function initialize() {
-    // Load file
+    // Get DOM element
+    _contentsElem = document.getElementById(_CONTENTS_ID);
+    _changeElem = document.getElementById(_CHANGE_ID);
+
+    /* Load file */
     _filePath = _PRESENTATION_DIR + '/' + _user_id + '/' + _presentation_id + '.html';
     _loadFile(_filePath);
     // Template file is loaded at first
-    if (!document.getElementById(_CONTENTS_ID).innerHTML) {
+    if (!_contentsElem.innerHTML) {
       _loadFile(_TEMPLATE_FILE_PATH);
     }
 
@@ -67,15 +73,18 @@
 
   // TODO: Optimize size
   function _onResize() {
-    var editorElem = document.getElementById('editor');
     var width = 870;
     var height = window.innerHeight - 180;
 
-    editorElem.style.width = width + 'px';
-    editorElem.style.height = height + 'px';
+    _contentsElem.style.width = width + 'px';
+    _contentsElem.style.height = height + 'px';
   }
 
   function _onSaveFile() {
+    // Display informations while saving file
+    _changeElem.disabled = true;
+    _changeElem.innerText = 'Saving...';
+    // Save contents
     var contents = _editor.session.getValue();
     _executeAjax('POST', '/utils/write', {
       user_id: _user_id
@@ -87,26 +96,23 @@
   }
 
   function _afterSaveFile() {
-    var change = document.getElementById(_CHANGE_ID);
-    change.disabled = true;
-    change.className = 'disabled';
-    change.innerText = 'Saved!';
+    _changeElem.disabled = true;
+    _changeElem.className = 'disabled';
+    _changeElem.innerText = 'Saved!';
     _isSaved = true;
   }
 
   function _onChange() {
-    var change = document.getElementById(_CHANGE_ID);
-    change.innerText = 'Save';
-    change.disabled = false;
-    change.className = null;
+    _changeElem.innerText = 'Save';
+    _changeElem.disabled = false;
+    _changeElem.className = null;
     _isSaved = false;
-    console.log('onChange');
   }
 
   function _loadFile(filePath) {
     _executeAjax('GET', filePath, null, function () {
       var contents = document.createTextNode(_xmlHttp.responseText);
-      document.getElementById(_CONTENTS_ID).appendChild(contents);
+      _contentsElem.appendChild(contents);
     });
   }
 
