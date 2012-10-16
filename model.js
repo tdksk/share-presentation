@@ -9,7 +9,8 @@ var mongoose = require('mongoose'),
 // TODO: Change DB name
 var db = mongoose.connect('mongodb://localhost/project3');
 
-var _MIN_PASSWORD_LENGTH = 4;
+var _MIN_PASSWORD_LENGTH = 4,
+    _STYLE_DEFAULT = 'default';
 
 /**
  * User model
@@ -48,12 +49,20 @@ var Presentation = new mongoose.Schema({
   , validate: [validatePresenceOf, 'Empty Error']
   }
 , user_id: { type: String, required: true, validate: [validatePresenceOf, 'Empty Error'] }
+, style: { type: String, default: _STYLE_DEFAULT }
 , created_at: { type: Date, default: Date.now }
   // TODO: Add modified_at
 });
 
 Presentation.statics.findByUserId = function (user_id, callback) {
   this.find({ user_id: user_id }, callback);
+};
+
+Presentation.statics.findByUserIdAndPresentationId = function (user_id, presentation_id, callback) {
+  this.findOne({
+    user_id: user_id
+  , presentation_id: presentation_id
+  }, callback);
 };
 
 Presentation.statics.deleteByUserIdAndPresentationId = function (user_id, presentation_id, callback) {

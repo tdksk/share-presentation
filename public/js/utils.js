@@ -2,6 +2,7 @@
 /**
  * Utilities
  */
+/* Get parameters for JS */
 var getJsParam = function () {
   var scripts = document.getElementsByTagName('script');
   var src = scripts[scripts.length - 1].src;
@@ -20,4 +21,13 @@ var getJsParam = function () {
   }
 
   return result;
+};
+
+/* Load CSS */
+var loadCss = function (href) {
+  var head = document.getElementsByTagName('head')[0];
+  var css = document.createElement('link');
+  css.setAttribute('rel', 'stylesheet');
+  css.setAttribute('href', href);
+  head.appendChild(css);
 };

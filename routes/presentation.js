@@ -62,17 +62,29 @@ exports.view = function (req, res) {
 exports.show = function (req, res) {
   var user_id,
       presentation_id,
+      style,
       user_type;
   // Get user id and presentation id
   user_id = req.params.uid;
   presentation_id = req.params.pid;
-  // presenter or listener
-  user_type = (user_id === req.session.user_id) ? 'presenter' : 'listener';
-  res.render('presentation/show', {
-    title: presentation_id
-  , user_type: user_type
-  , user_id: user_id
-  , presentation_id: presentation_id
+  // Find presentation
+  Presentation.findByUserIdAndPresentationId(user_id, presentation_id, function (err, presentation) {
+    if (err) {
+      console.log(err);
+      res.render('back');
+    } else {
+      // Get presentation style
+      style = presentation.get('style');
+      // presenter or listener
+      user_type = (user_id === req.session.user_id) ? 'presenter' : 'listener';
+      res.render('presentation/show', {
+        title: presentation_id
+      , user_type: user_type
+      , user_id: user_id
+      , presentation_id: presentation_id
+      , style: style
+      });
+    }
   });
 };
 
