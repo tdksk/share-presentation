@@ -120,26 +120,20 @@
    * Utilities
    */
   function _executeAjax(type, url, data, callback) {
-    var async = true,
+    var async = (type === 'GET') ? false : true,
         sendContent = null;
 
-    if (window.XMLHttpRequest) {
-      _xmlHttp = new XMLHttpRequest();
-    } else {
-      _xmlHttp = null;
-    }
+    _xmlHttp = _createHttpRequest();
 
     _xmlHttp.onreadystatechange = function () {
       var READYSTATE_COMPLETED = 4,
           HTTP_STATUS_OK = 200;
-
       if (_xmlHttp.readyState == READYSTATE_COMPLETED
           && _xmlHttp.status == HTTP_STATUS_OK) {
         if (callback) callback();
       }
     };
 
-    if (type === 'GET') async = false;
     _xmlHttp.open(type, url, async);
 
     if (type === 'POST') {
@@ -148,6 +142,21 @@
     }
 
     _xmlHttp.send(sendContent);
+  }
+
+  function _createHttpRequest() {
+    var x = null;
+    if (window.XMLHttpRequest) return new XMLHttpRequest();
+    try {
+      return new ActiveXObject("Msxml2.XMLHTTP");
+    } catch (e) {
+      try {
+        return new ActiveXObject("Microsoft.XMLHTTP");
+      } catch (e) {
+        x = null;
+      }
+    }
+    return x;
   }
 
   function _encodeHTMLForm(data) {
