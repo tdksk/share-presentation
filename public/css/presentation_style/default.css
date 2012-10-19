@@ -21,9 +21,8 @@ body {
   -webkit-box-align: center;
   -webkit-box-pack: center;
   font-size: 24px;
-  background: #cccccc;
-  color: #333333;
-  /* font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro W3", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", "Helvetica Neue", Helvetica, Arial, sans-serif; */
+  background: #ccc;
+  color: #333;
   font-family: 'ヒラギノ角ゴ Pro W6', "ＭＳ ゴシック", sans-serif;
   overflow: hidden;
 }
@@ -40,7 +39,7 @@ body {
   width: 860px;
   height: 560px;
   padding: 20px;
-  background: #ffffff;
+  background: #fff;
   -webkit-border-radius: 10px;
   -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
   display: none;
@@ -128,7 +127,7 @@ to{
 }
 
 #container > #contents > article .wrapper h2 {
-  color: #000000;
+  color: #000;
 }
 
 #container > #contents > article .wrapper strong {
@@ -156,7 +155,7 @@ to{
 }
 
 #container > #contents > article .wrapper > section pre: hover {
-  background: #eeeeee;
+  background: #eee;
 }
 
 #container > #contents > article .wrapper > section h2 {
@@ -186,8 +185,8 @@ to{
   display: block;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #666666;
-  background-color: #ffffff;
+  border: 1px solid #666;
+  background-color: #fff;
 }
 
 #container > #contents > article .wrapper > section p.slide {
@@ -242,7 +241,7 @@ to{
   left: 0px;
   overflow: hidden;
   margin-top: -200px;
-  background-color: #ffffff;
+  background-color: #fff;
   -webkit-box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.4);
 }
 
@@ -250,9 +249,10 @@ to{
   width: 100%;
   height: 20px;
   padding: 5px;
-  border-top: 1px solid #999999;
-  border-bottom: 1px solid #999999;
-  background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#cccccc));
+  border-top: 1px solid #999;
+  border-bottom: 1px solid #999;
+  background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ccc));
+  background: -webkit-linear-gradient(top, #eee, #ccc);
   color: #666666;
   font-size: 14px;
 }
@@ -261,18 +261,18 @@ to{
 .table {
   width: auto;
   height: auto;
-  border-top: 1px solid #000000;
-  border-right: 1px solid #000000;
+  border-top: 1px solid #000;
+  border-right: 1px solid #000;
   font-size: 16px;
 }
 
 .table h3 {
   width: auto;
   text-align: center;
-  background-color: #666666;
-  border-left: 1px solid #000000;
-  border-bottom: 1px solid #000000;
-  color: #ffffff;
+  background-color: #666;
+  border-left: 1px solid #000;
+  border-bottom: 1px solid #000;
+  color: #fff;
 }
 
 .table dl {
@@ -281,16 +281,16 @@ to{
 
 .table dl dt, .table dl dd {
   width: 100%;
-  border-left: 1px solid #000000;
-  border-bottom: 1px solid #000000;
+  border-left: 1px solid #000;
+  border-bottom: 1px solid #000;
   display: table-cell;
   padding: 5px;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 
 .box div {
-  border: 2px solid #666666;
-  background-color: #CCCCCC;
+  border: 2px solid #666;
+  background-color: #ccc;
   margin: 5px;
   padding: 10px;
 }
