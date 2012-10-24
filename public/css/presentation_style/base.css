@@ -1,0 +1,115 @@
+/* Base Modifications */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, section, article {
+  border: 0 none;
+  font-family: inherit;
+  font-size: 100%;
+  font-style: inherit;
+  font-weight: inherit;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+body {
+  margin: 0;
+  padding: 0;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+  font-size: 24px;
+  background: #ccc;
+  color: #333;
+  font-family: 'ヒラギノ角ゴ Pro W6', "ＭＳ ゴシック", sans-serif;
+  overflow: hidden;
+}
+
+/* Container */
+#container {
+  width: 900px;
+  height: 600px;
+  overflow: hidden;
+}
+#container > #contents > article {
+  position: absolute;
+  width: 860px;
+  height: 560px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  -moz-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+  -o-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+  -ms-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+  display: none;
+}
+
+/* Animations */
+#container > #contents > article.move_from_right {
+  display: block;
+  -webkit-animation-name: move_from_right;
+  -webkit-animation-duration: 1s;
+  opacity: 1;
+}
+#container > #contents > article.move_to_left {
+  display: block;
+  -webkit-animation-name: move_to_left;
+  -webkit-animation-duration: 1s;
+  opacity: 0;
+}
+#container > #contents > article.move_from_left {
+  display: block;
+  -webkit-animation-name: move_from_left;
+  -webkit-animation-duration: 1s;
+  opacity: 1;
+}
+#container > #contents > article.move_to_right {
+  display: block;
+  -webkit-animation-name: move_to_right;
+  -webkit-animation-duration: 1s;
+  opacity: 0;
+}
+@-webkit-keyframes move_from_right {
+from {
+  opacity: 0;
+  -webkit-transform: translate(900px, 0px);
+}
+to {
+  opacity: 1;
+  -webkit-transform: translate(0px, 0px);
+}
+}
+@-webkit-keyframes move_to_left {
+from {
+  opacity: 1;
+  -webkit-transform: translate(0px, 0px);
+}
+to {
+  opacity: 0;
+  -webkit-transform: translate(-900px, 0px);
+}
+}
+@-webkit-keyframes move_from_left {
+from {
+  opacity: 0;
+  -webkit-transform: translate(-900px, 0px);
+}
+to {
+  opacity: 1;
+  -webkit-transform: translate(0px, 0px);
+}
+}
+@-webkit-keyframes move_to_right {
+from {
+  opacity: 1;
+  -webkit-transform: translate(0px, 0px);
+}
+to {
+  opacity: 0;
+  -webkit-transform: translate(900px, 0px);
+}
+}
