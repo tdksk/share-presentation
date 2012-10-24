@@ -17,9 +17,6 @@ html, body {
 body {
   margin: 0;
   padding: 0;
-  display: -webkit-box;
-  -webkit-box-align: center;
-  -webkit-box-pack: center;
   font-size: 24px;
   background: #ccc;
   color: #333;
@@ -32,6 +29,13 @@ body {
   width: 900px;
   height: 600px;
   overflow: hidden;
+}
+#container > #contents {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -450px;
+  margin-top: -300px;
 }
 #container > #contents > article {
   position: absolute;
