@@ -37,7 +37,7 @@
     }
 
     /* Initialze editor */
-    _editor = ace.edit('editor'),
+    _editor = ace.edit('editor');
 
     // Set styles
     _editor.setShowPrintMargin(false);
