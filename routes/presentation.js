@@ -78,7 +78,7 @@ exports.show = function (req, res) {
       // presenter or listener
       user_type = (user_id === req.session.user_id) ? 'presenter' : 'listener';
       res.render('presentation/show', {
-        title: presentation_id
+        title: 'Show Presentation'
       , user_type: user_type
       , user_id: user_id
       , presentation_id: presentation_id

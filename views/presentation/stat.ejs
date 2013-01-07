@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="utf-8">
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/css/style.css'>
-  </headi>
+  <% include ../head_pc %>
   <body>
-    <header><h1><%= title %></h1></header>
+    <% include ../header %>
     <h2>User ID: <%= user_id %>, Presentation ID: <%= presentation_id %></h2>
     <p class="button"><a href="/<%= user_id %>/<%= presentation_id %>/show" target="_blank">Show Presentation</a></p>
     <p id="user-count"></p>

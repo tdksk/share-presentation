@@ -28,7 +28,7 @@ exports.index = function (req, res) {
     });
   } else {
     // else, render login page
-    res.render('user/login', { title: 'Share Presentation' });
+    res.render('user/login', { title: '' });
   }
 };
 
