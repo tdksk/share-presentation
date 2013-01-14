@@ -1,7 +1,13 @@
 /* global */
 html,
 body {
-  -webkit-text-size-adjust: auto;
+  -webkit-text-size-adjust: none;
   width: auto;
   padding: 25px 5px;
+}
+
+header h1 {
+  width: auto;
+  padding-left: 10px;
+  padding-right: 10px;
 }
