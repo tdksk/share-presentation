@@ -1,6 +1,8 @@
 Plezen
 ======
 
+Plezen is a web application to share presentations and viewers' reactions in real-time.
+
 Demo
 ----
 
