@@ -1,10 +1,11 @@
-Share Presentation
-==================
+Plezen
+======
 
 Demo
 ----
 
-<http://tdksk.com/s/>
+* <http://tdksk.com/s/>
+* <http://tdksk.com/p/> (Sample presentation)
 
 Supported browsers
 ------------------
@@ -76,5 +77,5 @@ Presenter のみの機能
 
 Statistics の見方
 -----------------
-* Red line=> Presenter の現在のページ
+* Red line => Presenter の現在のページ
 * Blue bar => Listener view count
