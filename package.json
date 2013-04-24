@@ -14,6 +14,7 @@
     "mongoose-schema-extend": "~0.1.1",
     "socket.io-client": "~0.9.10",
     "should": "~1.1.0",
-    "mongoose-hashed-password": "*"
+    "mongoose-hashed-password": "*",
+    "markdown": "~0.4.0"
   }
 }

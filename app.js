@@ -52,6 +52,7 @@ app.get('/user/logout', routes.user.logout);
 // Presentation
 app.get('/presentation/new', routes.presentation.new);
 app.post('/presentation/create', routes.presentation.create);
+app.post('/presentation/update', routes.presentation.update);
 app.post('/presentation/delete', routes.presentation.delete);
 app.post('/presentation/view', routes.presentation.view);
 app.get('/:uid/:pid/show', routes.presentation.show);
@@ -64,8 +65,6 @@ app.get('/admin/new', routes.admin.new);
 app.post('/admin/create', routes.admin.create);
 app.get('/admin/:uid/detail', routes.admin.user);
 app.get('/admin/logout', routes.admin.logout);
-// Utils
-app.post('/utils/write', routes.utils.write);
 
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

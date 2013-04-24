@@ -10,13 +10,10 @@
       _params = getJsParam(),  // Load at first
       _user_id = _params.user_id,
       _presentation_id = _params.presentation_id,
-      _filePath,
       _isSaved = true;
 
   var _CONTENTS_ID = 'editor',
-      _CHANGE_ID = 'change',
-      _PRESENTATION_DIR = '/data',
-      _TEMPLATE_FILE_PATH = _PRESENTATION_DIR + '/template.html';
+      _CHANGE_ID = 'change';
 
   function confirm(event) {
     event = event || window.event;
@@ -28,14 +25,6 @@
     _contentsElem = document.getElementById(_CONTENTS_ID);
     _changeElem = document.getElementById(_CHANGE_ID);
 
-    /* Load file */
-    _filePath = _PRESENTATION_DIR + '/' + _user_id + '/' + _presentation_id + '.html';
-    _loadFile(_filePath);
-    // Template file is loaded at first
-    if (!_contentsElem.innerHTML) {
-      _loadFile(_TEMPLATE_FILE_PATH);
-    }
-
     /* Initialze editor */
     _editor = ace.edit('editor');
 
@@ -46,8 +35,8 @@
     _editor.session.setFoldStyle('markbeginend');
 
     // Set mode and theme
-    _editor.session.setMode('ace/mode/html');
-    _editor.setTheme('ace/theme/dreamweaver');
+    _editor.session.setMode('ace/mode/markdown');
+    _editor.setTheme('ace/theme/chrome');
 
     // Resize
     _onResize();
@@ -84,12 +73,12 @@
     // Display informations while saving file
     _changeElem.disabled = true;
     _changeElem.innerText = 'Saving...';
-    // Save contents
-    var contents = _editor.session.getValue();
-    _executeAjax('POST', '/utils/write', {
+    // Save data
+    var data = _editor.session.getValue();
+    _executeAjax('POST', '/presentation/update', {
       user_id: _user_id
-    , filePath: _filePath
-    , contents: contents
+    , presentation_id: _presentation_id
+    , presentation_data: data
     }, function () {
       _afterSaveFile();
     });
@@ -107,13 +96,6 @@
     _changeElem.disabled = false;
     _changeElem.className = null;
     _isSaved = false;
-  }
-
-  function _loadFile(filePath) {
-    _executeAjax('GET', filePath, null, function () {
-      var contents = document.createTextNode(_xmlHttp.responseText);
-      _contentsElem.appendChild(contents);
-    });
   }
 
   /**

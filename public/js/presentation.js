@@ -4,8 +4,7 @@
    */
   // TODO: Sync hide elements
 
-  var _xmlHttp,
-      _pages,
+  var _pages,
       _currentIndex = 0,
       _elemIndex = 0,
       _hideElems,
@@ -30,14 +29,12 @@
 
   var _ANIMATION_TIME = '1s',
       _CONTAINER_ID = 'container',
-      _CONTENTS_ID = 'contents',
       _CANVAS_ID = 'canvas',
       _BUTTONS_LEFT_ID = 'buttons-left',
       _BUTTONS_RIGHT_ID = 'buttons-right',
       _GRAPH_LEFT_ID = 'graph-left',
       _GRAPH_RIGHT_ID = 'graph-right',
       _PAGE_INDEX_ID = 'page-index',
-      _PRESENTATION_DIR = '/data',
       _MAX_VALUE = 50;
 
   var _BLUE = 'rgba(0, 122, 255, .8)',
@@ -99,13 +96,10 @@
    */
   function _initContents() {
     var pageNum, page;
-    // Load user file
-    _filePath = _PRESENTATION_DIR + '/' + _user_id + '/' + _presentation_id + '.html';
-    _loadFile(_filePath);
 
     // Initialize page
     pageNum = _getCurrentIndex();
-    _pages = document.querySelectorAll('#' + _CONTAINER_ID +' article');
+    _pages = document.querySelectorAll('#' + _CONTAINER_ID +' section');
     if (pageNum < 0 || pageNum >= _pages.length) {
       pageNum = 0;
     }
@@ -113,25 +107,6 @@
     page = _pages[_currentIndex];
     page.style.display = 'block';
     _initPage(_currentIndex);
-  }
-
-  function _loadFile(filePath) {
-    if (window.XMLHttpRequest) {
-      _xmlHttp = new XMLHttpRequest();
-    } else {
-      _xmlHttp = null;
-    }
-
-    _xmlHttp.onreadystatechange = _checkStatus;
-    _xmlHttp.open('GET', filePath, false);
-    _xmlHttp.send(null);
-  }
-
-  function _checkStatus() {
-    if (_xmlHttp.readyState == 4 && _xmlHttp.status == 200) {
-      var contents = document.getElementById(_CONTENTS_ID);
-      contents.innerHTML = _xmlHttp.responseText;
-    }
   }
 
   /**

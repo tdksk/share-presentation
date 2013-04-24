@@ -38,7 +38,7 @@
       <!-- Canvas -->
       <canvas id="canvas"></canvas>
       <!-- Contents -->
-      <div id="contents"></div>
+      <div id="contents"><% if (presentation_data) { %><%- presentation_data %><% } else { %><p>NO DATA</p><% } %></div>
     </div>
 
     <script src='/socket.io/socket.io.js'></script>

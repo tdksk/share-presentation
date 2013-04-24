@@ -6,7 +6,7 @@
     <h2><%= presentation_id %></h2>
     <p class="button"><a href="/<%= user_id %>/<%= presentation_id %>/show" target="_blank">Preview</a></p>
     <button id="change" class="disabled" disabled=true onclick="onSaveFile()">Save</button>
-    <div id="editor"></div>
+    <div id="editor"><% if (presentation_data) { %><%= presentation_data %><% } else { %><%= include template %><% } %></div>
 
     <script src='/js/ace/ace.js'></script>
     <script src='/js/utils.js'></script>

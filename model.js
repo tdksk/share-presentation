@@ -49,6 +49,7 @@ var Presentation = new mongoose.Schema({
   , validate: [validatePresenceOf, 'Empty Error']
   }
 , user_id: { type: String, required: true, validate: [validatePresenceOf, 'Empty Error'] }
+, data: { type: String }
 , style: { type: String, default: _STYLE_DEFAULT }
 , created_at: { type: Date, default: Date.now }
   // TODO: Add modified_at
