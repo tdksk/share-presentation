@@ -23,7 +23,7 @@ exports.create = function (req, res) {
   newPresentation.save(function (err) {
     if (err) {
       console.log(err);
-      res.reqirect('back');
+      res.redirect('back');
     } else {
       // Edit page
       res.redirect(user_id + '/' + presentation_id + '/edit');
@@ -71,7 +71,7 @@ exports.show = function (req, res) {
   Presentation.findByUserIdAndPresentationId(user_id, presentation_id, function (err, presentation) {
     if (err) {
       console.log(err);
-      res.render('back');
+      res.redirect('back');
     } else {
       // Get presentation style
       style = presentation.get('style');
