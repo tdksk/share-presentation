@@ -6,8 +6,13 @@ body {
   padding: 25px 5px;
 }
 
-header h1 {
+header .header-wrapper {
   width: auto;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+header .header-right {
+  position: absolute;
+  right: 10px;
 }
