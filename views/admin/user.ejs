@@ -10,12 +10,14 @@
         <tr>
           <th>Presentation ID</th>
           <th>Created at</th>
-          <th>Delete</th>
+          <th>Modified at</th>
+          <th></th>
         </tr>
       </thead>
       <tfoot>
         <tr>
           <td>&nbsp;</td>
+          <td></td>
           <td></td>
           <td></td>
         </tr>
@@ -25,6 +27,7 @@
       <tr>
         <td><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/show" target="_blank"><%= presentation.presentation_id %></a></td>
         <td><%= presentation.created_at %></td>
+        <td><%= presentation.modified_at %></td>
         <td>
           <form method="post" action="/presentation/delete">
             <input type="hidden" name="user_id" value="<%= presentation.user_id %>">

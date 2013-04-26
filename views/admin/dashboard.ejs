@@ -10,12 +10,14 @@
         <tr>
           <th>User ID</th>
           <th>Created at</th>
+          <th>Modified at</th>
           <th></th>
         </tr>
       </thead>
       <tfoot>
         <tr>
           <td>&nbsp;</td>
+          <td></td>
           <td></td>
           <td></td>
         </tr>
@@ -25,6 +27,7 @@
       <tr>
         <td><a href="/admin/<%= user.user_id %>/detail"><%= user.user_id %></a></td>
         <td><%= user.created_at %></td>
+        <td><%= user.modified_at %></td>
         <td>
           <form method="post" action="/user/delete">
             <input type="hidden" name="user_id" value="<%= user.user_id %>">

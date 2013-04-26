@@ -197,6 +197,12 @@ table form {
   padding: 0;
 }
 
+table td .date {
+  font-size: 12px;
+  color: #999;
+  margin: 5px 0 10px;
+}
+
 table td p.button {
   position: relative;
   top: 11px;

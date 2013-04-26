@@ -23,7 +23,12 @@ var User = new mongoose.Schema({
   , validate: [validatePresenceOf, 'Empty Error']
   }
 , created_at: { type: Date, default: Date.now }
-  // TODO: Add modified_at
+, modified_at: { type: Date, default: null }
+});
+
+User.pre('save', function (next) {
+  this.modified_at = new Date();
+  next();
 });
 
 User.defineHashedPassword('sha256', validatePassword);
@@ -52,11 +57,16 @@ var Presentation = new mongoose.Schema({
 , data: { type: String }
 , style: { type: String, default: _STYLE_DEFAULT }
 , created_at: { type: Date, default: Date.now }
-  // TODO: Add modified_at
+, modified_at: { type: Date, default: null }
+});
+
+Presentation.pre('save', function (next) {
+  this.modified_at = new Date();
+  next();
 });
 
 Presentation.statics.findByUserId = function (user_id, callback) {
-  this.find({ user_id: user_id }, callback);
+  this.find({ user_id: user_id }).sort('-modified_at').exec(callback);
 };
 
 Presentation.statics.findByUserIdAndPresentationId = function (user_id, presentation_id, callback) {
