@@ -38,6 +38,10 @@ header {
   left: 0;
 }
 
+header.header-admin {
+  background: #444;
+}
+
 header .header-wrapper {
   width: 870px;
   height: 30px;
