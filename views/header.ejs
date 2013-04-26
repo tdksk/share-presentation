@@ -1,3 +1,12 @@
 <header>
-  <h1><a href="/">Plezen</a></h1>
+  <div class="header-wrapper">
+    <h1><a href="/">Plezen</a></h1>
+    <div class="header-right">
+    <% if (typeof user_id === 'undefined') { -%>
+      <a href="/">Sign in</a>
+    <% } else { -%>
+      <a href="/"><%= user_id %></a>
+    <% } -%>
+    </div>
+  </div>
 </header>

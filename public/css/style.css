@@ -38,16 +38,30 @@ header {
   left: 0;
 }
 
-header h1 {
+header .header-wrapper {
   width: 870px;
+  height: 30px;
   margin: 0 auto;
   padding: 5px 0;
+}
+
+header h1 {
   font-size: 24px;
+  float: left;
 }
 
 header h1 a {
   color: #aaa;
   text-decoration: none;
+}
+
+header .header-right {
+  height: 100%;
+  float: right;
+}
+
+header .header-right a {
+  line-height: 30px;
 }
 
 h2 {
