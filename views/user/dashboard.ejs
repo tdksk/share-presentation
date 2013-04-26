@@ -3,7 +3,7 @@
   <% include ../head %>
   <body>
     <% include ../header %>
-    <h2><%= title %> - <%= user_id %></h2>
+    <h2><%= title %></h2>
     <p class="logout"><a href="/user/logout">Sign out</a></p>
 
     <h3>New Presentation</h3>
@@ -41,11 +41,12 @@
       <% } %>
     </table>
 
+    <h2>View Presentation</h2>
     <form method="post" action="/presentation/view" target="_blank">
       <ul>
         <li><label>User ID:</label><input type="text" name="user_id_p" placeholder="Enter User ID"></li>
         <li><label>Presentation ID:</label><input type="text" name="presentation_id_p" placeholder="Enter Presentation ID"></li>
-        <li><input type="submit" class="blue" value="View Presentation"></li>
+        <li><input type="submit" class="blue" value="View"></li>
       </ul>
     </form>
   </body>

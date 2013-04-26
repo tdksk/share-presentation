@@ -3,8 +3,7 @@
   <% include ../head_pc %>
   <body>
     <% include ../header %>
-    <h2>User ID: <%= user_id %>, Presentation ID: <%= presentation_id %></h2>
-    <p class="button"><a href="/<%= user_id %>/<%= presentation_id %>/show" target="_blank">Show Presentation</a></p>
+    <h2><a href="/<%= user_id %>/<%= presentation_id %>/show" target="_blank">User ID: <%= user_id %>, Presentation ID: <%= presentation_id %></a></h2>
     <p id="user-count"></p>
     <canvas id="canvas"></canvas>
 

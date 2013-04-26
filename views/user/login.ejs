@@ -4,6 +4,7 @@
   <body>
     <% include ../header %>
     <p class="button"><a href="/user/new">Sign up</a></p>
+
     <form method="post" action="/">
       <ul>
         <li><label>User ID:</label><input type="text" name="user_id" placeholder="Enter Your User ID"></li>
@@ -12,11 +13,12 @@
       </ul>
     </form>
 
+    <h2>View Presentation</h2>
     <form method="post" action="/presentation/view" target="_blank">
       <ul>
         <li><label>User ID:</label><input type="text" name="user_id_p" placeholder="Enter User ID"></li>
         <li><label>Presentation ID:</label><input type="text" name="presentation_id_p" placeholder="Enter Presentation ID"></li>
-        <li><input type="submit" class="blue" value="View Presentation"></li>
+        <li><input type="submit" class="blue" value="View"></li>
       </ul>
     </form>
   </body>

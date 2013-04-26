@@ -65,15 +65,20 @@ header .header-right {
 }
 
 header .header-right a {
+  color: #444;
   line-height: 30px;
 }
 
 h2 {
   font-size: 20px;
   width: 100%;
-  margin: 0 0 20px 0;
+  margin: 30px 0 20px;
   padding: 0 0 10px 0;
   border-bottom: 1px solid #ccc;
+}
+
+header + h2 {
+  margin-top: 0;
 }
 
 form {
@@ -95,7 +100,7 @@ input {
   background: #fff;
   border: 1px solid #bababa;
   font-size: 13px;
-  margin: 0 0 10px 0;
+  margin: 0 0 5px 0;
   padding: 6px;
   border-radius: 3px;
 }
@@ -109,6 +114,7 @@ input[type="submit"] {
   height: 30px;
   line-height: 30px;
   padding: 0 10px;
+  margin-top: 15px;
   border-radius: 3px;
 }
 
@@ -133,9 +139,9 @@ p.button a {
   float: left;
 }
 
-p.logout a {
+p.logout a,
+p.back-page a {
   font-size: 14px;
-  position: relative;
   float: right;
 }
 
@@ -208,7 +214,9 @@ button#change {
   cursor: pointer;
   font-size: 14px;
   margin: 0 0 0 20px;
-  padding: 8px 10px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
   border-radius: 3px;
 }
 
@@ -222,13 +230,4 @@ button#change.disabled {
 
 button#change.saved {
   background: #05c65f;
-}
-
-/**
- * Statistics
- */
-#user-count {
-  position: relative;
-  top: 7px;
-  left: 20px;
 }
