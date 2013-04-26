@@ -48,7 +48,7 @@ app.post('/', routes.user.login);
 app.get('/user/new', routes.user.new);
 app.post('/user/create', routes.user.create);
 app.post('/user/delete', routes.user.delete);
-app.get('/user/logout', routes.user.logout);
+app.get('/logout', routes.user.logout);
 // Presentation
 app.post('/presentation/create', routes.presentation.create);
 app.post('/presentation/update', routes.presentation.update);
