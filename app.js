@@ -50,7 +50,6 @@ app.post('/user/create', routes.user.create);
 app.post('/user/delete', routes.user.delete);
 app.get('/user/logout', routes.user.logout);
 // Presentation
-app.get('/presentation/new', routes.presentation.new);
 app.post('/presentation/create', routes.presentation.create);
 app.post('/presentation/update', routes.presentation.update);
 app.post('/presentation/delete', routes.presentation.delete);

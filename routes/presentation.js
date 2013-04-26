@@ -9,10 +9,6 @@ var Presentation = model.Presentation;
 
 var markdown = require('markdown');
 
-exports.new = function (req, res) {
-  res.render('presentation/new', { title: 'Create your presentation' });
-};
-
 exports.create = function (req, res) {
   var user_id,
       presentation_id;

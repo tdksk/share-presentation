@@ -86,6 +86,10 @@ form ul {
   list-style: none;
 }
 
+form ul.inline li {
+  display: inline-block;
+}
+
 input {
   display: block;
   background: #fff;
@@ -102,7 +106,9 @@ input[type="submit"] {
   color: #fff;
   cursor: pointer;
   font-size: 14px;
-  padding: 8px 10px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
   border-radius: 3px;
 }
 
@@ -119,7 +125,9 @@ p.button a {
   border: none;
   color: #fff;
   font-size: 14px;
-  padding: 8px 10px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
   border-radius: 3px;
   text-decoration: none;
   float: left;

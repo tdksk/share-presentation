@@ -5,7 +5,15 @@
     <% include ../header %>
     <h2><%= title %> - <%= user_id %></h2>
     <p class="logout"><a href="/user/logout">Sign out</a></p>
-    <p class="button"><a href="/presentation/new" target="_blank">Create Presentation</a></p>
+
+    <h3>New Presentation</h3>
+    <form method="post" action="/presentation/create">
+      <ul class="inline">
+        <li><input type="text" name="presentation_id"  placeholder="Enter Presentation ID"></li>
+        <li><input type="submit" class="blue" value="Create"></li>
+      </ul>
+    </form>
+
     <table>
       <thead>
         <tr>
