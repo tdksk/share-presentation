@@ -3,10 +3,12 @@
   <% include ../head_pc %>
   <body>
     <% include ../header %>
-    <h2><%= presentation_id %></h2>
-    <p class="back-page"><a href="/">Back to Dashboard</a></p>
-    <p class="button"><a href="/<%= user_id %>/<%= presentation_id %>/show" target="_blank">Preview</a></p>
-    <button id="change" class="disabled" disabled=true onclick="onSaveFile()">Save</button>
+    <div class="editor-left-block">
+      <p class="back-page"><a href="/">&lt;&lt; Dashboard</a></p>
+      <button id="change" class="disabled" disabled=true onclick="onSaveFile()">Save</button>
+      <p class="button"><a href="/<%= user_id %>/<%= presentation_id %>/show" target="_blank">Preview</a></p>
+    </div>
+    <p class="presentation-id"><%= presentation_id %></p>
     <div id="editor"><% if (presentation_data) { %><%= presentation_data %><% } else { %><%= include template %><% } %></div>
 
     <script src='/js/ace/ace.js'></script>

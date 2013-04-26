@@ -139,10 +139,17 @@ p.button a {
   float: left;
 }
 
-p.logout a,
-p.back-page a {
+p.logout a {
   font-size: 14px;
   float: right;
+}
+
+p.back-page a {
+  font-size: 14px;
+}
+
+p.back-page + p.button {
+  margin-top: 10px;
 }
 
 /* Table */
@@ -203,8 +210,17 @@ table td input[type="submit"] {
 /**
  * Editor
  */
+.editor-left-block {
+  width: 100px;
+  float: left;
+}
+
 #editor {
-  margin: 20px 0;
+  margin-left: 110px;
+}
+
+.presentation-id {
+  margin: 0 0 10px 110px;
 }
 
 button#change {
@@ -213,7 +229,7 @@ button#change {
   color: #fff;
   cursor: pointer;
   font-size: 14px;
-  margin: 0 0 0 20px;
+  margin: 10px 0;
   height: 30px;
   line-height: 30px;
   padding: 0 10px;

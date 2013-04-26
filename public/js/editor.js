@@ -62,8 +62,8 @@
 
   // TODO: Optimize size
   function _onResize() {
-    var width = 870;
-    var height = window.innerHeight - 180;
+    var width = 760;
+    var height = window.innerHeight - 90;
 
     _contentsElem.style.width = width + 'px';
     _contentsElem.style.height = height + 'px';

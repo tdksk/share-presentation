@@ -27,7 +27,7 @@
       <% presentations.forEach(function (presentation) { %>
       <tr>
         <td><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/show" target="_blank"><%= presentation.presentation_id %></a></td>
-        <td><p class="button"><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/edit" target="_blank">Edit</a></p></td>
+        <td><p class="button"><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/edit">Edit</a></p></td>
         <td><p class="button"><a href="/<%= presentation.user_id %>/<%= presentation.presentation_id %>/stats" target="_blank">Stats</a></p></td>
         <td>
           <form method="post" action="/presentation/delete">
