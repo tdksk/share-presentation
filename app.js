@@ -54,9 +54,9 @@ app.post('/presentation/create', routes.presentation.create);
 app.post('/presentation/update', routes.presentation.update);
 app.post('/presentation/delete', routes.presentation.delete);
 app.post('/presentation/view', routes.presentation.view);
-app.get('/:uid/:pid/show', routes.presentation.show);
-app.get('/:uid/:pid/edit', routes.presentation.edit);
-app.get('/:uid/:pid/stats', routes.presentation.stats);
+app.get('/p/:uid/:pid/', routes.presentation.show);
+app.get('/p/:uid/:pid/edit', routes.presentation.edit);
+app.get('/stats/:uid/:pid/', routes.presentation.stats);
 // Admin
 app.get('/admin', routes.admin.index);
 app.post('/admin', routes.admin.login);

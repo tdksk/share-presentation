@@ -24,7 +24,7 @@ exports.create = function (req, res) {
       res.redirect('back');
     } else {
       // Edit page
-      res.redirect(user_id + '/' + presentation_id + '/edit');
+      res.redirect('/p/' + user_id + '/' + presentation_id + '/edit');
     }
   });
 };
@@ -80,7 +80,7 @@ exports.view = function (req, res) {
   user_id = req.body.user_id_p;
   presentation_id = req.body.presentation_id_p;
   // Show presentation
-  res.redirect(user_id + '/' + presentation_id + '/show');
+  res.redirect('/p/' + user_id + '/' + presentation_id + '/');
 };
 
 exports.show = function (req, res) {

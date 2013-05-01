@@ -6,7 +6,7 @@
     <div class="editor-left-block">
       <p class="back-page"><a href="/">&lt;&lt; Dashboard</a></p>
       <button id="change" class="disabled" disabled=true onclick="onSaveFile()">Save</button>
-      <p class="button"><a href="/<%= user_id %>/<%= presentation_id %>/show" target="_blank">Preview</a></p>
+      <p class="button"><a href="/p/<%= user_id %>/<%= presentation_id %>/" target="_blank">Preview</a></p>
     </div>
     <p class="presentation-id"><%= presentation_id %></p>
     <div id="editor"><% if (presentation_data) { %><%= presentation_data %><% } else { %><%= include template %><% } %></div>
