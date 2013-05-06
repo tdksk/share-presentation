@@ -19,9 +19,9 @@ body {
   margin: 0;
   padding: 0;
   font-size: 24px;
-  background: #ccc;
+  background: #f2f0f0;
   color: #333;
-  font-family: 'ヒラギノ角ゴ Pro W6', "ＭＳ ゴシック", sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, sans-serif;
   overflow: hidden;
 }
 
@@ -46,12 +46,12 @@ body {
   height: 560px;
   padding: 20px;
   background: #fff;
-  border-radius: 10px;
-  -moz-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
-  -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
-  -o-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
-  -ms-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  -moz-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   display: none;
 }
 
@@ -59,7 +59,7 @@ body {
 #contents > section.move_from_right {
   display: block;
   -webkit-animation-name: move_from_right;
-  -webkit-animation-duration: 1s;
+  -webkit-animation-duration: .3s;
   opacity: 1;
 }
 
@@ -72,15 +72,15 @@ body {
 
 #contents > section.move_from_left {
   display: block;
-  -webkit-animation-name: move_from_left;
-  -webkit-animation-duration: 1s;
+  /* -webkit-animation-name: move_from_left; */
+  /* -webkit-animation-duration: .5s; */
   opacity: 1;
 }
 
 #contents > section.move_to_right {
   display: block;
   -webkit-animation-name: move_to_right;
-  -webkit-animation-duration: 1s;
+  -webkit-animation-duration: .5s;
   opacity: 0;
 }
 
@@ -98,22 +98,22 @@ to {
 @-webkit-keyframes move_to_left {
 from {
   opacity: 1;
-  -webkit-transform: translate(0px, 0px);
+  /* -webkit-transform: translate(0px, 0px); */
 }
 to {
   opacity: 0;
-  -webkit-transform: translate(-900px, 0px);
+  /* -webkit-transform: translate(-900px, 0px); */
 }
 }
 
 @-webkit-keyframes move_from_left {
 from {
   opacity: 0;
-  -webkit-transform: translate(-900px, 0px);
+  /* -webkit-transform: translate(-900px, 0px); */
 }
 to {
   opacity: 1;
-  -webkit-transform: translate(0px, 0px);
+  /* -webkit-transform: translate(0px, 0px); */
 }
 }
 
