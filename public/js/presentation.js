@@ -278,16 +278,6 @@
 
     page = _pages[index];
 
-    /*
-    _hideElems = page.querySelectorAll('.wrapper > section > *, .wrapper > section li, .wrapper > section p.slide > *');
-    _elemIndex = 0;
-    for (i = 0, len = _hideElems.length; i < len; i++) {
-      elem = _hideElems[i];
-      elem.style.opacity = (showFlg) ? 1 : 0;
-      delete elem.style.webkitTransition;
-    }
-    */
-
     if (showFlg) {
       _hideElems = [];
     }
