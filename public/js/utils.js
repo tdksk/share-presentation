@@ -89,3 +89,14 @@ var ajax = function (options) {
     return params.join('&');
   }
 };
+
+/* Support innerText for Firefox */
+(function () {
+  var dummy = document.createElement('div');
+  if (dummy.innerText === undefined) {
+    Object.defineProperty(HTMLElement.prototype, 'innerText', {
+      get: function ()  { return this.textContent; },
+      set: function (v) { this.textContent = v; }
+    });
+  }
+})();
