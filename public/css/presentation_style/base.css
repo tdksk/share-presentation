@@ -43,9 +43,9 @@ body {
 
 #contents > section {
   position: absolute;
-  width: 860px;
-  height: 560px;
-  padding: 20px 30px;
+  width: 840px;
+  height: 540px;
+  padding: 30px;
   background: #fff;
   border-radius: 5px;
   -moz-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);

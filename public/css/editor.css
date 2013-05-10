@@ -164,9 +164,9 @@ p.button.show {
 }
 
 #preview > #contents > section {
-  width: 860px;
-  height: 560px;
-  padding: 20px;
+  width: 840px;
+  height: 540px;
+  padding: 30px;
   background: #fff;
   border-bottom: 5px solid #ccc;
 }
