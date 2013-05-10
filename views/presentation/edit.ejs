@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <% include ../head_pc %>
+  <head>
+    <meta charset="utf-8">
+    <title><% if (title) { %><%= title %> - <% } %>Plezen</title>
+    <link rel='stylesheet' href='/css/editor.css'>
+  </head>
   <body>
     <% include ../header %>
     <div class="editor-left-block">
       <p class="back-page"><a href="/">&lt;&lt; Dashboard</a></p>
-      <button id="change" class="disabled" disabled=true onclick="onSaveFile()">Save</button>
-      <p class="button"><a href="/p/<%= user_id %>/<%= presentation_id %>/" target="_blank">Preview</a></p>
+      <p class="presentation-id"><%= presentation_id %></p>
+      <p class="button show"><a href="/p/<%= user_id %>/<%= presentation_id %>/" target="_blank">Show</a></p>
+      <p id="change"></p>
+      <div id="preview"></div>
     </div>
-    <p class="presentation-id"><%= presentation_id %></p>
     <div id="editor"><% if (presentation_data) { %><%= presentation_data %><% } else { %><%= include template %><% } %></div>
 
     <script src='/js/ace/ace.js'></script>
     <script src='/js/utils.js'></script>
     <script src='/js/editor.js?user_id=<%= user_id %>&presentation_id=<%= presentation_id %>'></script>
+    <script>
+      var cssPath = '/css/presentation_style/<%= style %>.css';
+      loadCss(cssPath);
+    </script>
   </body>
 </html>

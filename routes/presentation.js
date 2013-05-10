@@ -124,7 +124,8 @@ exports.show = function (req, res) {
 exports.edit = function (req, res) {
   var user_id,
       presentation_id,
-      presentation_data;
+      presentation_data,
+      style;
   // Get user_id and presentation_id
   user_id = req.params.uid;
   presentation_id = req.params.pid;
@@ -136,11 +137,14 @@ exports.edit = function (req, res) {
       } else {
         // Get presentation data
         presentation_data = presentation.data;
+        // Get presentation style
+        style = presentation.get('style');
         res.render('presentation/edit', {
           title: 'Edit Presentation'
-          , user_id: user_id
-          , presentation_id: presentation_id
-          , presentation_data: presentation_data
+        , user_id: user_id
+        , presentation_id: presentation_id
+        , presentation_data: presentation_data
+        , style: style
         });
       }
     });
