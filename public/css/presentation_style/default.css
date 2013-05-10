@@ -34,10 +34,11 @@
 
 #contents > section > h4 {
   display: inline-block;
-  border: 2px solid #599eff;
-  border-radius: 10px;
-  padding: 5px 10px;
-  margin: 10px 10px 0 0;
+  background: #599eff;
+  color: #fff;
+  border-radius: 5px;
+  padding: .1em .5em;
+  margin: .75em 0 0;
 }
 
 #contents > section > h3 + h4 {
