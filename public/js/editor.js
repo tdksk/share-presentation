@@ -45,6 +45,9 @@
     _onResize();
     window.onresize = _onResize;
 
+    // Save
+    _onSaveFile();
+
     // Set commands
     _initCommands();
 
@@ -120,6 +123,5 @@
    * Initialize
    */
   window.addEventListener('DOMContentLoaded', initialize, false);
-  window.addEventListener('DOMContentLoaded', _onSaveFile, false);
   window.addEventListener('beforeunload', confirm, false);
 })();
