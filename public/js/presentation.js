@@ -258,8 +258,8 @@
     nextPage.style.display = 'block';
 
     if (_currentIndex < toIndex) {
-      currentPage.className = 'move_to_left';
       nextPage.className = 'move_from_right';
+      currentPage.className = 'move_to_left';
     } else {
       currentPage.className = 'move_to_right';
       nextPage.className = 'move_from_left';
