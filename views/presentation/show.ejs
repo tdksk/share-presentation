@@ -6,6 +6,7 @@
     <title><%= presentation_id %> [<%= user_type %>]</title>
     <link rel='stylesheet' href='/css/presentation.css'>
     <link rel='stylesheet' href='/css/presentation_style/base.css'>
+    <link rel='stylesheet' href='/css/presentation_style/<%= style %>.css'>
   </head>
   <body>
     <!-- Buttons -->
@@ -47,9 +48,5 @@
     <script src='/js/graph.js'></script>
     <script src='/js/utils.js'></script>
     <script src='/js/presentation.js?type=<%= user_type %>&user_id=<%= user_id %>&presentation_id=<%= presentation_id %>'></script>
-    <script>
-      var cssPath = '/css/presentation_style/<%= style %>.css';
-      loadCss(cssPath);
-    </script>
   </body>
 </html>

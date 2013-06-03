@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title><% if (title) { %><%= title %> - <% } %>Plezen</title>
     <link rel='stylesheet' href='/css/editor.css'>
+    <link rel='stylesheet' href='/css/presentation_style/<%= style %>.css'>
   </head>
   <body>
     <% include ../header %>
@@ -20,9 +21,5 @@
     <script src='/js/ace/ace.js'></script>
     <script src='/js/utils.js'></script>
     <script src='/js/editor.js?user_id=<%= user_id %>&presentation_id=<%= presentation_id %>'></script>
-    <script>
-      var cssPath = '/css/presentation_style/<%= style %>.css';
-      loadCss(cssPath);
-    </script>
   </body>
 </html>
