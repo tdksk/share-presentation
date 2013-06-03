@@ -83,6 +83,44 @@ exports.view = function (req, res) {
   res.redirect('/p/' + user_id + '/' + presentation_id + '/');
 };
 
+exports.print = function (req, res) {
+  var user_id,
+      presentation_id,
+      presentation_data,
+      style,
+      user_type;
+  // Get user id and presentation id
+  user_id = req.params.uid;
+  presentation_id = req.params.pid;
+  // Find presentation
+  Presentation.findByUserIdAndPresentationId(user_id, presentation_id, function (err, presentation) {
+    if (err) {
+      console.log(err);
+      res.redirect('back');
+    } else {
+      // Get presentation data
+      presentation_data = presentation.data;
+      // Convert markdown to HTML
+      if (presentation_data) {
+        presentation_data = markdown.parse(presentation_data);
+        presentation_data = htmlToSlide(presentation_data);
+      }
+      // Get presentation style
+      style = presentation.get('style');
+      // presenter or listener
+      user_type = (user_id === req.session.user_id) ? 'presenter' : 'listener';
+      res.render('presentation/print', {
+        title: 'Print Presentation'
+      , user_type: user_type
+      , user_id: user_id
+      , presentation_id: presentation_id
+      , presentation_data: presentation_data
+      , style: style
+      });
+    }
+  });
+};
+
 exports.show = function (req, res) {
   var user_id,
       presentation_id,

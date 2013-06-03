@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title><%= presentation_id %></title>
+    <link rel='stylesheet' href='/css/presentation_style/print.css'>
+    <link rel='stylesheet' href='/css/presentation_style/<%= style%>.css'>
+  </head>
+  <body>
+    <!-- Main -->
+    <div id="container">
+      <!-- Contents -->
+      <div id="contents"><% if (presentation_data) { %><%- presentation_data %><% } else { %><p>NO DATA</p><% } %></div>
+      <!-- End of Contents -->
+    </div>
+  </body>
+</html>
